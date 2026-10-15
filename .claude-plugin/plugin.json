@@ -8,5 +8,9 @@
   },
   "license": "LicenseRef-Proprietary",
   "homepage": "https://synthesisintelligence.ai",
-  "privacyPolicyUrl": "https://synthesisintelligence.ai/privacy-policy"
+  "privacyPolicyUrl": "https://synthesisintelligence.ai/privacy-policy",
+  "supportUrl": "https://synthesisintelligence.ai/support",
+  "repository": "https://github.com/axiomsynthesis/synthesis-plugin",
+  "documentationUrl": "https://synthesisintelligence.ai/integrations",
+  "termsOfServiceUrl": "https://synthesisintelligence.ai/terms-of-service"
 }
