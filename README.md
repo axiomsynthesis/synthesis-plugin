@@ -9,34 +9,21 @@ who knows your category would, not the way a platform dashboard presents them.
 
 ## Install
 
-Paste this one line into a terminal. It needs Claude Code 2.1.224 or later
-(`claude --version` shows yours, `claude update` gets the newest).
+Add Synthesis from Claude's plugin directory. Then sign in: in Claude Code, type
+`/mcp`, choose `plugin:synthesis:synthesis`, press Authenticate, and paste your
+Synthesis access key, which you make on the Connect your AI page. You see your
+brand and nothing else. You need a Synthesis account and a paid Claude plan.
+
+You can also install from a terminal with one line. It needs Claude Code
+2.1.224 or later, and it also installs `synthesis-design`, a second plugin with
+design skills for landing pages, banners, design systems and UI:
 
 ```
-command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash; export PATH="$HOME/.local/bin:$PATH"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude mcp login plugin:synthesis:synthesis
+claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude mcp login plugin:synthesis:synthesis
 ```
 
-The same line also installs `synthesis-design`, a second plugin with design
-skills for landing pages, banners, design systems and UI.
-
-The line first installs Claude Code itself if this computer does not have it
-(you need a paid Claude plan). The last part opens the Synthesis sign-in in your browser. Paste
-your Synthesis access key, which you make on the Connect your AI page. You see
-your brand and nothing else. If no window opens, open Claude Code, type `/mcp`,
-choose `plugin:synthesis:synthesis` and press Authenticate.
-
-## Updates
-
-Every change we ship is a new version. Claude Code does not fetch updates from
-a marketplace like this one unless you ask it to, so turn that on once. Tell
-Claude "Turn on auto-update for the Synthesis plugin" and it switches it on for
-you. Or update by hand:
-
-```
-claude plugin marketplace update axiom-synthesis && claude plugin update synthesis@axiom-synthesis && claude plugin update synthesis-design@axiom-synthesis
-```
-
-After an update, run `/reload-plugins` or start a new session.
+If you installed with that line, tell Claude "Turn on auto-update for the
+Synthesis plugin" once, so you get every new version.
 
 ## Set up
 
