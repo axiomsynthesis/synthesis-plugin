@@ -1,0 +1,11 @@
+{
+  "name": "synthesis",
+  "displayName": "Synthesis",
+  "description": "Your brand's real numbers, and the operating doctrine for reading them, inside your own Claude Code.",
+  "author": {
+    "name": "Axiom Synthesis",
+    "url": "https://synthesisintelligence.ai"
+  },
+  "license": "LicenseRef-Proprietary",
+  "homepage": "https://synthesisintelligence.ai"
+}
