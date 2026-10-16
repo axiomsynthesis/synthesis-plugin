@@ -41,10 +41,15 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`brand_kit` · `propose_brand_kit` · `brand_context` · `find_product` · `review_themes` · `competitor_review_voice` · `marketing_pack` · `score_voice_consistency`
+`brand_kit` · `propose_brand_kit` · `brand_context` · `find_product` · `review_themes` · `competitor_review_voice` · `marketing_pack`
+`strategy_framework`, with `framework` set to: `score_voice_consistency`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `framework` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`score_voice_consistency` means `strategy_framework` with `framework` set to `score_voice_consistency`.
 
 ## When the method names another page
 
