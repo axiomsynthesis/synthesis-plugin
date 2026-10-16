@@ -17,14 +17,14 @@ What to read: Levanta, Growi, TikTok creators
 What to give me: What each creator or affiliate was paid next to the sales they drove, and who to review first
 
 Synthesis tools to use:
-- `growi_top_creators`
-- `growi_creator_payouts`
+- `growi_metric metric=top_creators`
+- `growi_metric metric=creator_payouts`
 - `levanta_metric metric=top_creators`
 - `levanta_metric metric=commission_economics`
 - `cruva_metric metric=creator_leaderboard`
 
 Steps:
-1. Call `growi_top_creators` with `limit=50` for sales, retainer and commission per creator, and `growi_creator_payouts` with `months=6` for cash actually paid.
+1. Call `growi_metric metric=top_creators` with `limit=50` for sales, retainer and commission per creator, and `growi_metric metric=creator_payouts` with `months=6` for cash actually paid.
 2. Call `levanta_metric` with `metric=top_creators`, `months=6` and `limit=50`, then `metric=commission_economics` with `months=6` for commission owed less the referral bonus.
 3. Call `cruva_metric` with `metric=creator_leaderboard`, `days=180` and `limit=50` for TikTok Shop creators.
 4. For each creator, work out sales per dollar paid and flag anyone paid more than the sales they drove.

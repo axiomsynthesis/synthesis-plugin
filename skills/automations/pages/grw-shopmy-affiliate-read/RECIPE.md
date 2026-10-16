@@ -17,7 +17,7 @@ What to read: ShopMy affiliate sales and commissions, Reacher outreach and resul
 What to give me: Sales and commissions per creator on these platforms, beside your other creator channels
 
 Synthesis tools to use:
-- `growi_top_creators limit=25`
+- `growi_metric metric=top_creators limit=25`
 
 Steps:
 1. When readers exist: pull sales, orders and commission by creator and month; outreach sent, replies and posts for Reacher.

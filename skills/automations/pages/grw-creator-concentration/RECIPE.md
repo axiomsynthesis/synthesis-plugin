@@ -17,12 +17,12 @@ What to read: Creator revenue by creator on each creator platform
 What to give me: The share of creator sales from your top five, and the risk if one leaves
 
 Synthesis tools to use:
-- `growi_top_creators limit=25`
+- `growi_metric metric=top_creators limit=25`
 - `levanta_metric metric=top_creators months=6 limit=25`
 - `cruva_metric metric=creator_leaderboard limit=25`
 
 Steps:
-1. Pull the leaderboard from each connected creator platform: `growi_top_creators limit=25`, `levanta_metric metric=top_creators months=6 limit=25`, `cruva_metric metric=creator_leaderboard limit=25`.
+1. Pull the leaderboard from each connected creator platform: `growi_metric metric=top_creators limit=25`, `levanta_metric metric=top_creators months=6 limit=25`, `cruva_metric metric=creator_leaderboard limit=25`.
 2. Per platform, compute the top 1 and top 5 share of creator revenue.
 3. List creators ranked 6 to 20 with rising revenue. They are the bench.
 

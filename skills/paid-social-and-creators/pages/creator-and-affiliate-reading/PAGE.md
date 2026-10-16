@@ -40,10 +40,15 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`data_freshness` · `growi_creator_channel_trend` · `growi_creator_payouts` · `growi_top_creators` · `growi_campaign_performance` · `growi_roster_health` · `growi_post_compliance` · `trybe_creator_program` · `cruva_metric` · `tiktok_metric` · `amazon_metric` · `levanta_metric` · `describe_schema` · `run_sql` · `create_ad_links` · `capture_turn`
+`data_freshness` · `trybe_creator_program` · `cruva_metric` · `tiktok_metric` · `amazon_metric` · `levanta_metric` · `describe_schema` · `run_sql` · `create_ad_links` · `capture_turn`
+`growi_metric`, with `metric` set to: `creator_channel_trend` · `creator_payouts` · `top_creators` · `campaign_performance` · `roster_health` · `post_compliance`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `metric` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`growi_creator_channel_trend` means `growi_metric` with `metric` set to `creator_channel_trend`.
 
 ## When the method names another page
 

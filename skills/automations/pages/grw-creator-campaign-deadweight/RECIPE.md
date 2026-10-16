@@ -17,13 +17,13 @@ What to read: Creator campaign enrolments, earnings and retainers by campaign
 What to give me: Campaigns carrying creators and retainers with no sales, to close or fix
 
 Synthesis tools to use:
-- `growi_campaign_performance limit=50`
-- `growi_creator_payouts months=6`
+- `growi_metric metric=campaign_performance limit=50`
+- `growi_metric metric=creator_payouts months=6`
 
 Steps:
-1. Pull `growi_campaign_performance limit=50`.
+1. Pull `growi_metric metric=campaign_performance limit=50`.
 2. Flag campaigns with creators enrolled, retainers committed and no creator earning.
-3. Pull `growi_creator_payouts months=6` for what was actually paid against creator sales over the same dates.
+3. Pull `growi_metric metric=creator_payouts months=6` for what was actually paid against creator sales over the same dates.
 
 Checks before answering:
 - Lifetime, dated and per-cycle figures never divide into each other. Only compare numbers over the same dates.

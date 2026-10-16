@@ -36,10 +36,15 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`growi_creator_payouts` · `growi_top_creators` · `growi_campaign_performance` · `growi_roster_health` · `growi_post_compliance` · `growi_creator_channel_trend` · `describe_schema` · `run_sql` · `data_freshness`
+`describe_schema` · `run_sql` · `data_freshness`
+`growi_metric`, with `metric` set to: `creator_payouts` · `top_creators` · `campaign_performance` · `roster_health` · `post_compliance` · `creator_channel_trend`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `metric` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`growi_creator_payouts` means `growi_metric` with `metric` set to `creator_payouts`.
 
 ## When the method names another page
 

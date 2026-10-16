@@ -18,13 +18,13 @@ What to give me: Your candidates tiered by size, scored against your past creato
 
 Synthesis tools to use:
 - `tier_creators`
-- `growi_top_creators limit=25`
+- `growi_metric metric=top_creators limit=25`
 - `tiktok_metric metric=shop_video_performance days=120 limit=25`
 
 Steps:
 1. Ask for the list with name, followers and engagement rate.
 2. Run `tier_creators candidates=[...]`.
-3. Pull `growi_top_creators limit=25` and `tiktok_metric metric=shop_video_performance days=120 limit=25` for the creators who sell for you now. TikTok's bestseller lists rank the whole US market, not your shop, so never use them for this.
+3. Pull `growi_metric metric=top_creators limit=25` and `tiktok_metric metric=shop_video_performance days=120 limit=25` for the creators who sell for you now. TikTok's bestseller lists rank the whole US market, not your shop, so never use them for this.
 4. Find the tiers and engagement bands where your winners sit.
 5. Rank candidates by fit with that band.
 

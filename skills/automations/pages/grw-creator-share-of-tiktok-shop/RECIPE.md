@@ -20,14 +20,14 @@ Synthesis tools to use:
 - `tiktok_metric metric=shop_video_performance days=120 limit=30`
 - `tiktok_metric metric=shop_product_performance days=120 limit=30`
 - `tiktok_metric metric=shop_sales_trend months=6`
-- `growi_creator_channel_trend months=6 granularity=month`
+- `growi_metric metric=creator_channel_trend months=6 granularity=month`
 
 Steps:
 1. Pull `tiktok_metric metric=shop_video_performance days=30 limit=30`, then again with `days=60`, `days=90` and `days=120`. Each gives video sales split by who posted: creators, your own account and marketing accounts.
 2. Pull `tiktok_metric metric=shop_product_performance days=30 limit=30` and the same three longer windows. Its total is whole-shop sales on the same basis as the video read.
 3. Take each 30-day block by subtracting the shorter window from the longer one. Creator share = creator video sales over shop sales in the same block. Own-account share the same way.
 4. Pull `tiktok_metric metric=shop_sales_trend months=6` only for the monthly shape of the shop. Never divide a creator figure by it. It leaves out cancelled orders and the video read keeps them.
-5. Pull `growi_creator_channel_trend months=6 granularity=month` if connected, as a second view. Show it beside, never add it.
+5. Pull `growi_metric metric=creator_channel_trend months=6 granularity=month` if connected, as a second view. Show it beside, never add it.
 
 Checks before answering:
 - Creator sales are the platform's own attribution. They will not tie to your order records, and they are a slice of the shop, not all of it.

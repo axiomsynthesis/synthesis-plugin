@@ -17,14 +17,14 @@ What to read: Creator roster, contracts, posting against quota, and retainers
 What to give me: Creators on retainer who posted nothing or missed quota, with the money at stake
 
 Synthesis tools to use:
-- `growi_roster_health months=6`
-- `growi_post_compliance`
-- `growi_top_creators limit=50`
+- `growi_metric metric=roster_health months=6`
+- `growi_metric metric=post_compliance`
+- `growi_metric metric=top_creators limit=50`
 
 Steps:
-1. Pull `growi_roster_health months=6` for the enrolled, contracted, posted and earning funnel.
-2. Pull `growi_post_compliance` for posted vs not posted per window against contracted quota and retainer.
-3. Pull `growi_top_creators limit=50` for each creator's retainer and contract status.
+1. Pull `growi_metric metric=roster_health months=6` for the enrolled, contracted, posted and earning funnel.
+2. Pull `growi_metric metric=post_compliance` for posted vs not posted per window against contracted quota and retainer.
+3. Pull `growi_metric metric=top_creators limit=50` for each creator's retainer and contract status.
 4. List contracted creators with no post in 30 days, and those under half their quota in 90 days, with retainer per cycle.
 
 Checks before answering:
