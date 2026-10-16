@@ -36,7 +36,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`brand_context` · `review_themes` · `competitor_review_voice` · `meta_metric`
+`brand_context` · `amazon_metric` · `competitor_review_voice` · `meta_metric`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

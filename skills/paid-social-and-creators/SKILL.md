@@ -33,6 +33,8 @@ the page alone is not the method.
 | `pages/campaign-and-event-lift/PAGE.md` | For "how did the campaign, launch, TV week, promo, billboard, celebrity deal or site change do", "sales jumped this week, was it the campaign", "is this a step change", "did the SEO change bring sales", or any readout over an… |
 | `pages/ad-test-and-learn/PAGE.md` | When launching a new batch of ads or reading how one did ("how should we test these statics", "which of the new ads won", "what should the next batch be", "when do we kill an ad"). |
 | `pages/ad-health-check/PAGE.md` | When someone wants one verdict across all their ad accounts rather than one platform ("check my ads", "ad health check", "audit my ad accounts", "is my ad spend healthy", "what is wrong with my ads", "run a health check on… |
+| `pages/ad-launch-check/PAGE.md` | When someone has just launched or is building Meta ads and wants each ad's SETUP checked ("are these ads set up right", "check the ads I just launched", "double-check my new ads", "did I send this video to the right page", "check… |
+| `pages/meta-ad-build-and-publish/PAGE.md` | When someone is about to build, load or publish Meta ads, by hand in Ads Manager or from a creator platform ("load these creator videos", "put the new videos in the test campaign", "copy the winners into the main campaign", "set… |
 | `pages/competitor-ad-research/PAGE.md` | When asked what ads rivals or leading brands are running and which of them work ("what statics are the top brands running", "show me our competitors' Meta ads", "what formats are winning in our category"). |
 
 ## When a page names another skill

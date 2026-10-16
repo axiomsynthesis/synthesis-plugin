@@ -14,16 +14,23 @@ Add Synthesis from Claude's plugin directory. Then sign in: in Claude Code, type
 Synthesis access key, which you make on the Connect your AI page. You see your
 brand and nothing else. You need a Synthesis account and a paid Claude plan.
 
-You can also install from a terminal with one line. It needs Claude Code
-2.1.224 or later, and it also installs `synthesis-design`, a second plugin with
+You can also install from a terminal with one line. It installs Claude Code
+first if this computer does not have it, and it also installs `synthesis-design`, a second plugin with
 design skills for landing pages, banners, design systems and UI:
 
 ```
-claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude mcp login plugin:synthesis:synthesis
+command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash; export PATH="$HOME/.local/bin:$PATH"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude mcp login plugin:synthesis:synthesis
 ```
 
 If you installed with that line, tell Claude "Turn on auto-update for the
 Synthesis plugin" once, so you get every new version.
+Or update by hand:
+
+```
+claude plugin marketplace update axiom-synthesis && claude plugin update synthesis@axiom-synthesis && claude plugin update synthesis-design@axiom-synthesis
+```
+
+After an update, run `/reload-plugins` or start a new session.
 
 ## Set up
 

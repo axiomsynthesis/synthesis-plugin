@@ -52,6 +52,7 @@ follow the instructions it returns. Never answer that the command does not exist
 | `/adcheck` | Check my ads |
 | `/adcopy` | Write ad copy for every buyer stage |
 | `/adloss` | Find ads that lose money after product cost |
+| `/adroi` | Which Meta ads lose or make money |
 | `/afford` | Can we afford this order? |
 | `/bids` | Build the keyword bid change sheet |
 | `/costup` | A cost went up. Now what? |
@@ -64,6 +65,7 @@ follow the instructions it returns. Never answer that the command does not exist
 | `/ltv` | Which first product makes the best customers? |
 | `/mer` | Is all your marketing paying, together? |
 | `/mix` | Was it price, volume or mix? |
+| `/newads` | Check the ads I just launched |
 | `/nextdollar` | Where should the next ad dollar go? |
 | `/payback` | How fast does a new customer pay back? |
 | `/price` | What happens if you change the price? |

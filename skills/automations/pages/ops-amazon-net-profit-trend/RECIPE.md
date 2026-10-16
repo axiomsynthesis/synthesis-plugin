@@ -11,9 +11,9 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Lays out Amazon profit for the last six settled months as one waterfall per month: sales, referral fee, fulfilment fee, product cost, advertising, net. It shows which line is eating the margin over time, which no single-month view can show.
+Lays out Amazon profit for the last six settled months as one waterfall per month: sales, discounts, refunds, referral fee, fulfilment fee, Amazon account charges, product cost, advertising, net. Each month matches the Profit page. It shows which line is eating the margin over time, which no single-month view can show.
 
-What to read: Amazon settlement sales, fees, product cost and ad spend by month
+What to read: Amazon sales, discounts, refunds, fees, account charges, product cost and ad spend by month, as the Profit page shows them
 What to give me: Six months of Amazon account profit line by line down to net, and which line moved
 
 Synthesis tools to use:
@@ -28,13 +28,13 @@ Steps:
 5. Each waterfall carries `settlement_status`. Mark a month part-settled when it says the month is not fully settled. Amazon pays roughly every two weeks with a few days of lag.
 
 Checks before answering:
-- Refunds are already netted into sales on this waterfall. Do not subtract them again.
+- Sales are before discounts and refunds. Both are their own lines below sales. Never subtract them a second time.
 - If any product with sales has no cost, profit is overstated. Say how much revenue is uncosted, and never treat a missing cost as zero.
-- A part-settled month reads low on sales and odd on fee rate. Label it and leave it out of the trend comparison.
+- A part-settled month has no settled net, only an estimate, and its fees are partly estimated. Label it and leave it out of the trend comparison.
 - If ad spend is zero for a month with known campaigns, the ad feed may be missing. Say so rather than reporting a profit jump.
 
 Output:
-- Table: Month | Sales | Referral fee | Fulfilment fee | Product cost | Ads | Net | Net as % of sales.
+- Table: Month | Sales | Discounts | Refunds | Referral fee | Fulfilment fee | Account charges | Product cost | Ads | Net | Net as % of sales.
 - Two lines: the trend in net margin, and the line responsible.
 
 Never:

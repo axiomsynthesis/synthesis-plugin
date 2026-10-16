@@ -5,7 +5,7 @@ description: >
   estimates, new versus repeat customer economics, break-even ACoS or ROAS, or plan versus
   actual ("what did Amazon actually make last month", "are we profitable after ads", "what
   is our break-even ACoS", "how hard can we bid", "are we on plan this month"). Picks the one
-  read that ends at net, keeps refunds as a memo line, defaults to the last settled month,
+  read that ends at net (the Profit page's own figure), defaults to the last settled month,
   refuses a net when costs or ads are missing, and reads the estimate lines as estimates.
 ---
 

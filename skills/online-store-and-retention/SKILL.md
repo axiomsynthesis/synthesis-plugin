@@ -1,7 +1,7 @@
 ---
 name: online-store-and-retention
 description: >-
-  Load for Shopify or TikTok Shop sales, site traffic and conversion, email and SMS, subscriptions, support tickets, customer lifetime value, cohorts, retention, cross-sell, bundles and customer or product mix.
+  Load for Shopify or TikTok Shop sales, site traffic and conversion, email and SMS, subscriptions, support tickets, customer lifetime value, cohorts, retention, cross-sell, offers, bundles and customer or product mix.
 ---
 
 # Online store, subscriptions and retention
@@ -28,6 +28,10 @@ the page alone is not the method.
 | `pages/cross-sell-and-bundles/PAGE.md` | For cross-sell, attach, bundle and upgrade questions: "do buyers of A buy B", "what do our buyers buy next", "which product is the front door", "should we bundle these two", "why didn't the bundle sell", "how do I get A buyers to… |
 | `pages/customer-and-product-mix/PAGE.md` | Before answering who the customers are and what actually sells: value segments, which states the money comes from, which products carry the window, who to win back, how to lift order value, and which products to keep or cut… |
 | `pages/tiktok-shop-sales-and-payouts/PAGE.md` | For any TikTok Shop question: "how is TikTok Shop doing", "what did we sell on TikTok last month", "which products sell on TikTok", "what did TikTok actually pay us", "why is the payout so far below sales", "did TikTok raise its… |
+| `pages/landing-page-go-live/PAGE.md` | When someone wants a new or changed landing page for paid traffic on a Shopify store ("build a page for these ads", "make a version of our best page with the bigger pack", "push this page live", "is the new page live", "the price… |
+| `pages/store-test-readout/PAGE.md` | When planning or reading a test on an online store: a page against a page, a pre-picked pack, a price, an add-on box, free shipping, or a copy change ("set up an A/B test for the 4-pack", "who is winning the page test", "can we… |
+| `pages/offers-upsells-and-discounts/PAGE.md` | When setting or changing what a website order contains or costs: pack sizes and pack prices, free shipping lines, an add-on box, an after-payment upsell, free gifts with bigger packs, or discount codes ("should we add a 6-pack",… |
+| `pages/email-flow-go-live/PAGE.md` | When building, fixing or switching on an automated email flow in Klaviyo or the store ("set up an after-purchase series", "our abandoned checkout emails make nothing", "turn the new flow on", "is the welcome flow sending",… |
 
 ## When a page names another skill
 
