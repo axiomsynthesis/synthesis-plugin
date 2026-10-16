@@ -1,7 +1,7 @@
 ---
 name: taking-action
 description: >-
-  Load when the brand wants to change something rather than read it: block ad searches that waste money, raise a capped budget, rewrite a listing, build a reorder sheet, tag lapsed customers. Hands over an exact change list and an upload file the brand reviews and applies itself in the platform's own tool. Synthesis never changes an account.
+  Load when the brand wants to change something rather than read it: block wasted ad searches, raise a capped budget, rewrite a listing, build a reorder sheet, tag lapsed customers. Hands over an exact change list the brand applies itself, in the platform or via its own Claude, one approved change at a time. Synthesis never changes an account.
 ---
 
 # Taking action
@@ -27,6 +27,7 @@ the page alone is not the method.
 | `pages/amazon-bid-trim/PAGE.md` | When you want a list of Amazon keyword bids to bring down, ready to upload yourself ("which bids are too high", "trim my keyword bids", "what should each bid be", "make me a bulksheet of bid changes", "which keywords are losing… |
 | `pages/amazon-harvest/PAGE.md` | When you want to give Amazon searches that already sell their own exact-match keywords, as a list you upload yourself ("harvest my winning search terms", "which searches should become exact keywords", "promote converting searches… |
 | `pages/google-block-wasted-searches/PAGE.md` | When you want to turn wasted Google Ads searches into negative keywords you add yourself ("which Google searches should I block", "give me negatives for Google Ads", "stop paying Google for searches that never convert", "make me… |
+| `pages/apply-a-change-in-the-browser/PAGE.md` | When the brand wants its own Claude to make the changes on a Synthesis change list, in the brand's own browser and signed in as the brand: "apply this for me", "make these changes", "go pause those ads", "add the negatives in the… |
 
 ## When a page names another skill
 

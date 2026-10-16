@@ -104,8 +104,8 @@ with them rather than leaving you to remember it.
 
 ## What it does not do
 
-It does not change anything. It reads, it reasons, and it tells you. Spending
-decisions stay yours.
+It does not change anything and holds no login to your ad or store accounts. It reads, it reasons, and it hands you an exact list of changes.
+Your own Claude can apply that list in your browser, signed in as you, one change at a time with your yes. Spending decisions stay yours.
 
 ## Support
 
