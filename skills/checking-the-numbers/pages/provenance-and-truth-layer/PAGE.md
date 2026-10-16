@@ -39,7 +39,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`query_series` · `metric_timeseries` · `total_net_revenue` · `declare_not_known` · `score_truth_tpfe` · `emit_chart` · `get_calibration_for_claim` · `track_record`
+`query_series` · `metric_timeseries` · `total_net_revenue` · `declare_not_known` · `strategy_framework` · `emit_chart` · `get_calibration_for_claim` · `track_record`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

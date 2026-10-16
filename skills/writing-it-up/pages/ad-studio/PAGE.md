@@ -42,7 +42,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`brand_kit` · `brand_context` · `find_product` · `meta_metric`
+`brand_kit` · `brand_context` · `find_product` · `winning_hooks` · `meta_metric`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
