@@ -5,8 +5,8 @@ description: >
   months, a "what are we actually keeping per product" view, or a weekly profit ("what did we
   make last week, Monday to Sunday"), or when you are reading the weekly P&L email and want to
   know why a figure is missing. Checks how far back every line reaches before promising a
-  window, builds monthly from settlement and weekly on order basis with measured fee rates, and
-  keeps a product with no cost entered from showing a fake margin.
+  window, builds monthly from settlement, reads the weekly from your Profit page's own figures,
+  and keeps a product with no cost entered from showing a fake margin.
 ---
 
 # Build an Amazon P&L, monthly or weekly
