@@ -1,10 +1,10 @@
 ---
-description: "Weekly Inventory Report: Every Monday, one email: what is sold out or runs out within 30 days, what runs out in the next 90, where your stock sits, and what is on its way, with the full detail as a spreadsheet"
+description: "Send me the inventory report every Monday: Every Monday, one email: what is sold out or runs out within 30 days, what runs out in the next 90, where your stock sits, and what is on its way, with the full detail as a spreadsheet"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
 
-# Weekly Inventory Report
+# Send me the inventory report every Monday
 
 Channel: Inventory · Level: On a schedule · Status: Ready now
 Schedule: every Monday, early morning Pacific time, from our server
@@ -12,7 +12,7 @@ Schedule: every Monday, early morning Pacific time, from our server
 Follow these instructions when someone asks to run this automation.
 
 ---
-Run the Synthesis automation "Weekly Inventory Report" (id: inventory-weekly-stock-email, Inventory).
+Run the Synthesis automation "Send me the inventory report every Monday" (id: inventory-weekly-stock-email, Inventory).
 
 Use the Synthesis tools connected in this Claude for my brand's real numbers. Do not guess a number. If a figure is missing, say so plainly.
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."

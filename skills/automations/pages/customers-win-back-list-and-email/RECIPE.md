@@ -11,38 +11,37 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Finds customers who stopped buying, past the point they would normally reorder. It splits them into groups by value, picks an offer for each, and drafts the email. A person uploads the list to Klaviyo and sends.
+Finds repeat customers who have not ordered in 3 to 12 months. It splits them into groups by value, picks an offer for each, hands over the contact list as a download, and drafts one email per group. A person uploads the list to the email tool and sends.
 
 What to read: Shopify orders, Klaviyo
-What to give me: Lapsed customers grouped by value, the offer for each group, and the email draft
+What to give me: Lapsed customers grouped by value, the offer for each group, a contact list for your email tool, and the email drafts
 
 Synthesis tools to use:
-- `shopify_metric metric=winback_candidates`
 - `shopify_metric metric=time_to_repeat`
-- `winback_tiers`
+- `shopify_metric metric=winback_candidates export=true`
 - `klaviyo_metric metric=flow_funnel`
-- `export_xlsx`
 
 Steps:
-1. Call `shopify_metric` with `metric=time_to_repeat` for how long customers usually wait between orders. This read has no date setting, so say the dates the result covers.
-2. Call `shopify_metric` with `metric=winback_candidates` for lapsed repeat customers. Size each group from `tiers`, which covers every customer; the rows are only the top of the list. Customers come back as `customer_ref`, never an email.
-3. For each group, call `winback_tiers` with `days_since_last` and `lifecycle_value` for the tier, offer and expected recovery.
-4. Call `klaviyo_metric` with `metric=flow_funnel` to see whether a win-back flow already runs and how it does. Flow numbers are Klaviyo's running totals, with no date setting.
-5. Call `export_xlsx` with `filename=winback_list.xlsx`, one sheet per tier, and write the email drafts into `winback_emails.md`. If you can save files here, save it and tell me its name. If not, show it in full.
+1. Call `shopify_metric` with `metric=time_to_repeat` for how long customers usually wait between orders. Give the share of repeat orders that come within 60 days, and the average gap, saying long gaps pull the average up. The list in step 2 uses a fixed 90 to 365 days since the last order, whatever the gap.
+2. Call `shopify_metric` with `metric=winback_candidates` and `export=true`. Size each group from `tiers`, which covers every customer; the rows shown are only the top of the list. The download link holds the full list for the email tool.
+3. Call `klaviyo_metric` with `metric=flow_funnel` to see whether a win-back email series has sent recently. It covers recent sends only and leaves out series that have not sent.
+4. Write one short email per group into `winback_emails.md`: subject, preview line, body, offer. If you can save files here, save it and tell me its name. If not, show it in full.
 
 Checks before answering:
-- If a win-back flow already runs, say so. Do not double-mail the same people.
+- If a win-back series already sends, say so. Do not double-mail the same people.
 - If the order read is empty, say it could not be read. Never ship an empty list as "nobody lapsed".
-- Expected recovery is an estimate. Say so in dollars with a range.
+- The expected return rates are a rule of thumb, not measured on these customers. Give them as a share of customers, never as dollars won back.
+- The download link holds customer emails. Hand it only to the person who will send the email.
 
 Output:
-- One line first: how many customers lapsed and the dollars a win-back could recover.
-- A file named `winback_list.xlsx` with customer ID, last order date, orders, value and tier. Personal details stay in Shopify.
-- A file named `winback_emails.md` with one short email per tier: subject, preview line, body, offer.
+- One line first: how many customers lapsed and what they spent before.
+- A table: group, customers, average past spend, days since last order, offer.
+- The download link for the contact list.
+- A file named `winback_emails.md` with one short email per group.
 
 Never:
 - Never send an email or create a Klaviyo list or flow. A person does that.
-- Never offer a discount deeper than the tier calls for.
+- Never offer a discount deeper than the group calls for.
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.

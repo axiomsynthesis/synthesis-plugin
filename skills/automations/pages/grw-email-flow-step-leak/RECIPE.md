@@ -24,14 +24,15 @@ Steps:
 1. Pull `klaviyo_metric metric=flow_funnel`.
 2. Pull `klaviyo_metric metric=flow_step_performance limit=60`.
 3. For each flow, compute click rate and placed-order rate per step from summed counts.
-4. Flag steps whose click rate falls more than half from the step before, and steps with no orders on more than 1,000 deliveries.
+4. Flag steps whose click rate falls more than half from the step before, and steps with fewer than 1 order per 1,000 delivered.
 5. Name one rewrite or removal per flagged step.
 
 Checks before answering:
 - Open rates are inflated by Apple's privacy auto-opens. Judge on clicks and placed orders, never on opens alone.
 - Klaviyo revenue is last-touch credit on website orders. It cannot see Amazon orders. Never call it email's total effect.
-- Flow numbers are all-time, not a window. Say so.
-- Most brands have under a year of sends. Say how many campaigns a finding rests on, and call anything under 10 a hint, not a result.
+- Flow numbers cover recent sends, up to the last 12 months, not a fixed window. Say so.
+- The step order is a guess made from how many people each email reached. Where the email names or templates show a different order, use theirs, and say when the order is a guess.
+- Say how many orders each verdict rests on, and call anything under 10 orders a hint, not a result.
 
 Output:
 - Answer first. Table with columns flow, step, delivered, click rate, order rate, problem, move.

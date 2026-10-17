@@ -1,17 +1,17 @@
 ---
-description: "What to reorder, and the PO to send: How much of each product to order and by when, with a purchase order drafted for you to check"
+description: "What to reorder, and the purchase order to send: How much of each product to order and by when, with a purchase order drafted for you to check"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
 
-# What to reorder, and the PO to send
+# What to reorder, and the purchase order to send
 
 Channel: Inventory · Level: Prepare · Status: Ready now
 
 Follow these instructions when someone asks to run this automation.
 
 ---
-Run the Synthesis automation "What to reorder, and the PO to send" (id: inventory-reorder-plan-and-po-draft, Inventory).
+Run the Synthesis automation "What to reorder, and the purchase order to send" (id: inventory-reorder-plan-and-po-draft, Inventory).
 
 Use the Synthesis tools connected in this Claude for my brand's real numbers. Do not guess a number. If a figure is missing, say so plainly.
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."

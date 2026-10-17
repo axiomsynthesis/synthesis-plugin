@@ -59,9 +59,12 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/adroi` | Which Meta ads lose or make money |
 | `/afford` | Can we afford this order? |
 | `/bids` | Build the keyword bid change sheet |
+| `/bundles` | Find bundles buyers already want |
+| `/cancels` | Why subscribers cancel, and what to change |
 | `/costup` | A cost went up. Now what? |
 | `/deals` | Did that deal make money? |
 | `/fees` | Catch Amazon fee overcharges |
+| `/flows` | Where your email flows lose people |
 | `/halo` | Does Meta grow your Amazon sales? |
 | `/health` | Is all my data fresh? |
 | `/ideas` | Find your next product in search demand |
@@ -75,11 +78,13 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/payback` | How fast does a new customer pay back? |
 | `/price` | What happens if you change the price? |
 | `/profit` | Which products actually make money? |
-| `/reorder` | What to reorder, and the PO to send |
+| `/reorder` | What to reorder, and the purchase order to send |
+| `/returning` | Is growth from new or old customers? |
 | `/reviews` | Turn reviews into selling lines |
 | `/risk` | What if we lost our biggest one? |
 | `/rivals` | Who's stealing your search shoppers? |
 | `/saleready` | Get ready for the next big Amazon sale |
-| `/stock` | Weekly Inventory Report |
+| `/stock` | Send me the inventory report every Monday |
 | `/stockout` | Warn me before we run out |
 | `/whyprofit` | Why did profit move this month? |
+| `/winback` | Win back customers who stopped buying |

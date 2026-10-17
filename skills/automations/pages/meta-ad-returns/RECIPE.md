@@ -16,7 +16,7 @@ Each gets a verdict: losing, winning, watch, too early, or no keep line. It is t
 Ad sets that send people to Amazon are left out and counted, because Meta cannot see their sales.
 
 What to read: Live Meta ad sets and ads that buy website sales, with spend and sales over the last 3 and 7 closed days, against the brand's own money lines
-What to give me: Ad sets and ads losing money, ads ready for more budget, and what to watch, each with its cost per sale against the keep line
+What to give me: Ad sets and ads losing money, ads ready for more budget, and what to watch, each with its cost per sale against the most you can pay for a sale
 
 Synthesis tools to use:
 - `meta_metric metric=ad_returns`

@@ -11,28 +11,28 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Splits each month's website revenue into first-time buyers and returning ones. A business living on returning customers while new ones fall is shrinking slowly.
+Splits each month's website revenue into first-time buyers and returning ones, against the same months a year earlier. A business living on returning customers while new ones fall is shrinking slowly.
 
-What to read: New and returning website customers and revenue by month
+What to read: New and returning website customers and revenue by month, two years back
 What to give me: Where growth came from, and whether the new-customer engine is slowing
 
 Synthesis tools to use:
-- `shopify_metric metric=new_vs_returning months=12`
-- `new_customers_dtc month=<YYYY-MM>`
-- `returning_customers_dtc month=<YYYY-MM>`
+- `shopify_metric metric=new_vs_returning months=24`
 
 Steps:
-1. Pull `shopify_metric metric=new_vs_returning months=12`.
-2. For the last 3 closed months, pull `new_customers_dtc` and `returning_customers_dtc`. Both count website customers only. Never use the Amazon new-to-brand count here: it is a different channel with a different meaning of new.
-3. Show the year-on-year change in new and returning revenue.
+1. Pull `shopify_metric metric=new_vs_returning months=24`, so the last three closed months each have a year-ago month to compare with.
+2. Add up the last three closed months, and the same three months a year earlier, for new and returning revenue.
+3. Show the year-on-year change in new and returning revenue, then the month-by-month count of new customers over the last six closed months, so a slide inside the year is not hidden.
 
 Checks before answering:
-- If a customer tool returns gated, do not state the number. Give its refusal reason.
-- Shopify new means first website order, not first purchase from the brand anywhere. Say so.
+- Shopify new means first website order, not first purchase from the brand anywhere. Say so. Never use the Amazon new-to-brand count here.
+- A first subscription order counts as new, so a business moving to subscriptions shows fewer returning orders than it really has. If the result says so, say it in one line.
 - Leave the current month out.
 
 Output:
-- Answer first. Table by month: new customers, new revenue, returning customers, returning revenue.
+- Answer first: the year-on-year change in new and returning revenue for the last three closed months.
+- Table by month: new customers, new revenue, returning customers, returning revenue, and the same month a year earlier.
+- One line on whether new customers are rising or falling over the last six months.
 
 Never:
 - Nothing changes in any live account. A person on your team makes every change.

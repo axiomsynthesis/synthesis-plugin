@@ -13,24 +13,28 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 What it does:
 Groups the reasons subscribers give when they cancel and turns each into a change you can make. Too much product is usually a timing problem, not a product problem.
 
-What to read: Subscription cancellation reasons by month and product
+What to read: Six months of subscription cancel reasons, plan lengths and products
 What to give me: The top cancel reasons turned into product, cadence and offer changes
 
 Synthesis tools to use:
 - `recharge_metric metric=cancellation_reasons months=6`
 - `recharge_metric metric=interval_mix`
-- `recharge_metric metric=product_subscriptions limit=20`
+- `recharge_metric metric=product_subscriptions limit=60`
+- `recharge_metric metric=rebill_health`
 
 Steps:
 1. Pull `recharge_metric metric=cancellation_reasons months=6`.
-2. Pull `recharge_metric metric=interval_mix` and `recharge_metric metric=product_subscriptions limit=20`.
-3. Rank named reasons by count. Show other as a residual, not a driver.
-4. Map each top reason to a change: too much product to a longer interval or skip offer, too expensive to a smaller pack, did not work to a product question.
+2. Pull `recharge_metric metric=interval_mix` and `recharge_metric metric=product_subscriptions limit=60`.
+3. Pull `recharge_metric metric=rebill_health` for how many charges fail each month. It counts failed charges, not cancellations.
+4. Rank named reasons by count. Show other as a residual, not a driver.
+5. Map each top reason to a change: too much product to a longer plan or a skip offer, too expensive to a smaller pack, stopped using to a pause offer and a how-to-use reminder, signed up by accident to a clearer sign-up step, dissatisfied to a product question.
 
 Checks before answering:
 - If no subscription app is connected, say so. Never say zero subscribers or zero churn.
 - Report how many cancellations had a named reason.
-- Payment-error cancellations are a different problem. Keep them apart.
+- Failed payments are a different problem from cancels. Give them on their own line as failed charges; never count them as cancellations.
+- Cancel reasons are six-month totals. They are not split by month or product, so never tie a reason to a plan length or a product. Show plan lengths beside them as their own read.
+- Count only subscriptions that are billing now as active. The plan-length read also counts old ones that never formally ended. Say which number you use.
 
 Output:
 - Answer first. Table: reason, cancellations, share, change to make.
