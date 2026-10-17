@@ -32,18 +32,18 @@ Synthesis tools to use:
 Steps:
 1. Ask which format (five_reasons, pack_picker, before_after, proof, problem_solve) and which product. Call `render_report` with `format=landing_page` and `page_format` set to it. It returns that format's playbook, section by section, and every setting. Follow the playbook.
 2. Gather the real content. Products, packs, prices and pictures from the store's public product data (`/products/<handle>.js`). Colours and fonts from `brand_kit`; for an agency, the client's own kit (`client_kit`), because the page lives on the client's store. Claims only from `brand_facts`. Reviews only real, verified and dated, from the store's reviews or a file the person gives. Shipping rates as set in the store.
-3. Call `render_report` with `format=landing_page` and `page` filled. If it returns problems, fix each one and call again. Read every warning.
-4. In Claude Code, download the zip from `download_url`, pull the live theme, add the two theme files, and push the copy as a new unpublished theme:
+3. Call `render_report` with `format=landing_page` and `page` filled, with `store` set to the store's address so every product is checked against the store. Fix every problem and call again. Read every warning.
+4. In Claude Code, download the zip from `download_url`, unzip it, and from that folder run the preview. It finds or makes the preview theme, pushes only the two files, checks every price and four screen sizes, and writes `lpk-report.md`:
 ```bash
-shopify theme pull --store <store>.myshopify.com --live --path theme-copy
-shopify theme push --store <store>.myshopify.com --unpublished --theme "Landing page preview" --path theme-copy
+node lpk.mjs preview --store <store>.myshopify.com
 ```
-5. Open any page of the store with `?view=<view>&preview_theme_id=<new theme id>` added. That is the preview link.
-6. In Claude Code, run the price check from the zip. Every line must say ok:
+5. Stop at the first FAIL: fix the content, a discount in Shopify, or the product, then build and run again. A store at Shopify's 20-theme limit stops with its list of unpublished themes; run the preview again naming one, as the message shows.
+6. Show the person the preview link at the top of the report and the pictures in `lpk-shots/`. Read them the checklist at the bottom of the report.
+7. Only after their explicit yes, go live, then create the page in Shopify with template `lpk-<name>` and check it:
 ```bash
-node lpk-check.mjs "<preview link>"
+node lpk.mjs live --store <store>.myshopify.com --page <any page handle> --confirm
+node lpk.mjs check "<new page link>"
 ```
-7. Open the preview link in a browser at phone (375 wide), tablet (768) and computer (1440) sizes. Check that the buy button shows in the first screen on a phone, nothing is wider than the screen, the sticky bar appears on scroll, and picking each pack changes the button.
 
 Checks before answering:
 - A price line that is not ok means the store has no discount charging that price. Never publish around it.
