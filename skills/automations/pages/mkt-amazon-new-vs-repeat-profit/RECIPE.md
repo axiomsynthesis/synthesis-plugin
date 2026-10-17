@@ -18,11 +18,11 @@ What to give me: How much of your Amazon profit comes from repeat buyers, how th
 
 Synthesis tools to use:
 - `amazon_metric metric=pnl_by_customer_type days=90`
-- `amazon_metric metric=pnl_by_customer_type days=365`
+- `amazon_metric metric=pnl_by_customer_type start_date=<YYYY-MM-DD> end_date=<YYYY-MM-DD>`
 - `amazon_metric metric=tacos`
 
 Steps:
-1. Call `amazon_metric metric=pnl_by_customer_type days=90` and again with `days=365`.
+1. Call `amazon_metric metric=pnl_by_customer_type days=90`, and again with `start_date` and `end_date` set to the same 90 days a year earlier. One call covers at most 90 days.
 2. Compare order share, revenue share and profit share for new and repeat buyers, now and over the year.
 3. Call `amazon_metric metric=tacos month=<last closed month>` to set the ad cost beside it.
 
