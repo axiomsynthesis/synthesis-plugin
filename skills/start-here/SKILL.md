@@ -47,8 +47,12 @@ automation's title, and it reached you as plain text because the command did
 not run, run it anyway: call get_skill with that word (or the /go text) and
 follow the instructions it returns. Never answer that the command does not exist.
 
+When the person is new, or asks what they can do or which shortcut to use,
+tell them to type /start: it shows the shortcuts for their job and runs the first.
+
 | Type | Runs |
 |---|---|
+| `/start` | The shortcuts for your job, and the first one run on your data |
 | `/adcheck` | Check my ads |
 | `/adcopy` | Write ad copy for every buyer stage |
 | `/adloss` | Find ads that lose money after product cost |
