@@ -3,7 +3,7 @@ name: ssi-ad-image-prompts
 description: >
   Load when an ad needs an AI-made picture: a background, a scene, a texture,
   a prop or an illustration ("make a bathroom-counter background for the
-  tube", "we need a tooth cross-section illustration", "give me a dark blue
+  tube", "we need a cross-section illustration of how it works", "give me a dark blue
   light-ray backdrop"). Gives prompt templates for any image model and the
   rules that keep AI away from the product, the words and fake results.
 ---

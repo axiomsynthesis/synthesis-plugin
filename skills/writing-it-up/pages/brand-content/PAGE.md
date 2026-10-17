@@ -3,7 +3,7 @@ name: ssi-brand-content
 description: >
   Load when asked to make something a customer will see: a landing page, a
   product page, an ad or social post, a banner, an email, a one-pager or a
-  pitch deck ("build a landing page for the strips", "make three Instagram
+  pitch deck ("build a landing page for the new serum", "make three Instagram
   posts for the launch", "draft a page for our new bundle"). Builds it in the
   brand's own colours, type and voice, from its real products, proof and
   customer words, and never invents a claim, a review or a number.

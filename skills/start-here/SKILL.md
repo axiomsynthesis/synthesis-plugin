@@ -62,6 +62,7 @@ follow the instructions it returns. Never answer that the command does not exist
 | `/health` | Is all my data fresh? |
 | `/ideas` | Find your next product in search demand |
 | `/incremental` | Are your ads buying sales you'd get anyway? |
+| `/landingpage` | Build a landing page from the kit |
 | `/ltv` | Which first product makes the best customers? |
 | `/mer` | Is all your marketing paying, together? |
 | `/mix` | Was it price, volume or mix? |

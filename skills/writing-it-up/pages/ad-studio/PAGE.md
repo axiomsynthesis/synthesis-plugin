@@ -3,7 +3,7 @@ name: ssi-ad-studio
 description: >
   Load when asked to make paid social ads: Meta or Instagram statics, short
   vertical videos, a batch of new ad concepts, or "make ads for this landing
-  page" ("make five statics for the toothpaste page", "turn our best video into
+  page" ("make five statics for the protein bar page", "turn our best video into
   three new ones", "we need new creative for Meta"). Runs the whole loop: hooks
   from the brand's own data, layouts built in code around the real product
   photo, a pre-flight check, an upload pack, then reading results into the

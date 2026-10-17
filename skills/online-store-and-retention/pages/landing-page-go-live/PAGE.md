@@ -38,7 +38,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`ga4_metric`
+`ga4_metric` · `render_report`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

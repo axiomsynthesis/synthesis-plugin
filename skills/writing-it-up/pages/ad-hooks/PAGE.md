@@ -3,7 +3,7 @@ name: ssi-ad-hooks
 description: >
   Load when writing the headline or opening line of an ad: a static's big
   words, the first text card of a short video, or the first line of primary
-  text ("write hooks for the toothpaste ads", "give me ten angles for Meta",
+  text ("write hooks for the new serum ads", "give me ten angles for Meta",
   "why do our ads not stop the scroll"). Builds hooks from the brand's own
   facts and customers' own words across distinct hook families, and refuses
   any hook that rests on a claim not on file.
