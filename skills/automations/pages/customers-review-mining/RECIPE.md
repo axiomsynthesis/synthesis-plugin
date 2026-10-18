@@ -25,8 +25,8 @@ Synthesis tools to use:
 
 Steps:
 1. Use `find_product` to pick your top products and their IDs.
-2. Call `amazon_metric` with `metric=review_voice`, each `asin` and `limit=200` for the review text.
-3. Pass the reviews to `review_themes` for themes, counts and positive or negative lean.
+2. Call `amazon_metric` with `metric=review_voice`, each `asin` and `limit=200` for the review text. Run it once per product family, and check a second product. It already returns topic counts, praise or complaint, quotes and a themes block.
+3. Use `review_themes` only if raw review text with star ratings is available. The quotes from step 2 carry no ratings, so it adds nothing to them.
 4. Call `amazon_metric` with `metric=rating_watch` and `days=90` to see whether any theme moved the star rating.
 5. Write FAQ answers, bullets and ad angles from the top themes, then call `export_docx` with `filename=review_mining.docx`.
 

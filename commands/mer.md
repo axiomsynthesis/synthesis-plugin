@@ -25,20 +25,20 @@ What to give me: Your whole-business return on ad spend by month, and marketing 
 Synthesis tools to use:
 - `cost_rules for=grw-blended-mer-trend`
 - `mer month=<YYYY-MM>`
-- `meta_metric metric=spend month=<YYYY-MM>`
 - `tiktok_metric metric=spend_trend months=12`
 - `google_ads_metric metric=efficiency_trend weeks=13`
 - `amazon_metric metric=ad_spend_monthly months=12`
 
 Steps:
 1. For each of the last 12 closed months, run `mer`.
-2. Pull spend by channel: `meta_metric metric=spend`, `tiktok_metric metric=spend_trend months=12` (auction plus shop ads), `amazon_metric metric=ad_spend_monthly months=12` for Amazon ad spend by month across all three ad types, and Google from `google_ads_metric metric=efficiency_trend weeks=13` summed into months.
+2. Pull spend by channel. Meta spend is already a line inside each `mer` result, so do not call Meta separately. Then `tiktok_metric metric=spend_trend months=12` (auction plus shop ads), `amazon_metric metric=ad_spend_monthly months=12` for Amazon ad spend by month across all three ad types, and Google from `google_ads_metric metric=efficiency_trend weeks=13` summed into months.
 3. Show spend mix by channel beside the efficiency number.
 
 Checks before answering:
 - If `mer` is gated for a month, do not state it. Give its reason.
 - Count TikTok spend from both auction and shop ads.
 - Google Ads campaign spend is kept only from where its history starts. Months before that show Google as not measured, never zero, and their total spend is labelled as excluding Google.
+- If a month's return is withheld, show its `upper_bound_only` as a ceiling, labelled, never as the month's number.
 - Leave the current month out.
 - Amazon ad spend counts Sponsored Products, Brands and Display. A month before the brand's Amazon ad history begins shows Amazon ads as not measured, never zero.
 

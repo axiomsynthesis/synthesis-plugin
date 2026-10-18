@@ -26,13 +26,13 @@ What to give me: The named rival products winning shoppers on your searches, and
 Synthesis tools to use:
 - `amazon_metric metric=search_competitors grain=week periods=4 top=20`
 - `scrape_amazon_product`
-- `amazon_metric metric=shelf_position days=30 limit=30`
+- `amazon_metric metric=shelf_position days=30 limit=40`
 
 Steps:
-1. Call `amazon_metric metric=search_competitors grain=week periods=4 top=20`.
+1. Call `amazon_metric metric=search_competitors grain=week periods=4 top=20`. Rivals and terms come back over several pages. Call again with the next `result_page` until all 20 rivals are in hand. Skip terms whose `search_relevance` is off_category.
 2. Rank rivals by the number of your searches where they are in the top three clicked, then by click share.
-3. For the top three rivals, call `scrape_amazon_product asin=<rival product id>` for live price, rating and reviews. Ask before more than three scrapes: they draw on a shared monthly allowance.
-4. Call `amazon_metric metric=shelf_position days=30 limit=30` to see whether those rivals cut price recently.
+3. Call `amazon_metric metric=shelf_position days=30 limit=40` first. It already holds price, rating and review count for tracked rivals, and shows whether they cut price recently.
+4. Scrape only top-three rivals missing from it: call `scrape_amazon_product asin=<rival product id>` for live price, rating and reviews. Ask before more than three scrapes: they draw on a shared monthly allowance.
 
 Checks before answering:
 - Rival data comes from Amazon's top-three clicked list. A rival outside the top three is invisible here. Say so.

@@ -25,8 +25,8 @@ Synthesis tools to use:
 
 Steps:
 1. Call `amazon_metric metric=inventory_position limit=200` for the stock in every bucket and Amazon's update time.
-2. Call `amazon_metric metric=stockout_forecast limit=200` for each product's run-out dates: `late_runs_out` (the date to plan against), `runs_out_for_good`, the gap before stock on its way lands (`gap_days`, `gap_lost_units`) and `normal_sales_usd_per_day`.
-3. Call `amazon_metric metric=inbound_shipments limit=200` for every open shipment and the units still owed on it.
+2. Call `amazon_metric metric=stockout_forecast limit=200` for each product's run-out dates: `late_runs_out` (the date to plan against), `runs_out_for_good`, the gap before stock on its way lands (`gap_days`, `gap_lost_units`) and `normal_sales_usd_per_day`. Read every page: call again with the next `result_page` the result names. The product list is cut to a few rows per page whatever the limit.
+3. Call `amazon_metric metric=inbound_shipments limit=200` for every open shipment and the units still owed on it. Read shipment totals from `by_status` and `tie_out`, not from the rows on page 1.
 4. Call `amazon_metric metric=closed_shipments limit=10` for finished shipments that came in short.
 
 Checks before answering:

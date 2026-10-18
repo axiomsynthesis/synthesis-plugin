@@ -27,10 +27,10 @@ Synthesis tools to use:
 
 Steps:
 1. Use `find_product` to pin the exact product the person means.
-2. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`. From the last fully settled month take that product's price per unit, units, Amazon fees per unit and product cost per unit. Split the fees into the share of price Amazon keeps (the referral fee, as a fraction of price) and the fixed fees per unit (fulfilment).
+2. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`. From the last fully settled month take that product's price per unit, units, Amazon fees per unit and product cost per unit. Split the fees into the share of price Amazon keeps and the fixed fees per unit. The referral share is `referral_fee` over `settled_principal`. The fixed fee is `fba_fee` over units.
 3. If the product cost is missing there, call `operator_inputs` with `section=cogs`.
 4. Look for a past price change on this product: `brand_brain` with `action=moves`, `kind=price_change` and the product's page. If one exists, call `query_series` with `metric=units`, `grain=week` and the `asin` over the weeks around it, and estimate how units moved for that price move (the elasticity). Say how you estimated it.
-5. Call `run_scenario` with `scenario_type=price_change`, the `price_change_pct`, `unit_price`, `unit_cogs`, `fee_pct` (the referral share), `unit_fees` (fixed fees per unit), `units_per_month` and `months=6`. Pass `elasticity` and an `elasticity_sigma` at least half its size only when step 4 found a past move.
+5. Call `run_scenario` with `scenario_type=price_change`, the `price_change_pct`, `unit_price`, `unit_cogs`, `fee_pct` (the referral share), `unit_fees` (fixed fees per unit), `units_per_month` and `months=6`. Always pass `unit_price` and `units_per_month` from the last settled month. If they are left out, the tool works them out from a longer window and they will not match that month. Pass `elasticity` and an `elasticity_sigma` at least half its size only when step 4 found a past move.
 
 Checks before answering:
 - If product cost is missing, stop and say so. A price test without cost is not a profit test.

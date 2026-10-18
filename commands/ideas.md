@@ -23,18 +23,20 @@ What to read: Search data, rival listings
 What to give me: Searches where shoppers want something you don't sell and the shelf is weak, ranked by demand
 
 Synthesis tools to use:
-- `amazon_metric metric=search_term_gaps`
+- `amazon_metric metric=search_term_gaps limit=15 kind=NOT_SURFACING`
 - `amazon_metric metric=keyword_opportunities`
+- `amazon_metric metric=search_query_performance`
 - `scrape_amazon_search`
 - `competitor_review_voice`
 - `google_trends`
 
 Steps:
-1. Call `amazon_metric` with `metric=search_term_gaps` and `limit=100` for searches near your products where you do not show.
+1. Call `amazon_metric` with `metric=search_term_gaps`, `limit=15` and `kind=NOT_SURFACING` for searches near your products where you do not show. A bigger limit returns too much to read.
 2. Call `amazon_metric` with `metric=keyword_opportunities` and `top=5` for search volume and how crowded each search is.
-3. For the top 3 searches, call `scrape_amazon_search` with that `keyword` and `k=20` to read the shelf: price, rating, reviews.
-4. Call `competitor_review_voice` with `limit=50` for what rival customers complain about, which points to the gap.
-5. Call `google_trends` with the top 3 searches and `timeframe="today 12-m"` to check the demand is growing, not fading.
+3. Gap rows carry no search volume. Take each gap search's volume from step 2, or from `amazon_metric` with `metric=search_query_performance`. A gap search with no volume in either stays without a demand number.
+4. For the top 3 searches, call `scrape_amazon_search` with that `keyword` and `k=20` to read the shelf: price, rating, reviews.
+5. Call `competitor_review_voice` with `limit=50` for what rival customers complain about, which points to the gap.
+6. Call `google_trends` with the top 3 searches and `timeframe="today 12-m"` to check the demand is growing, not fading.
 
 Checks before answering:
 - Search volume is an estimate. Say so and round it.

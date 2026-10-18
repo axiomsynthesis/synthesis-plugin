@@ -34,8 +34,8 @@ Synthesis tools to use:
 
 Steps:
 1. Channels and accounts: call `netsuite_metric metric=customer_trend months=12 top=12` for invoiced revenue per account and `customer_concentration` for the account read.
-2. Products: call `top_products metric=revenue top_n=20` with `start_month` and `end_month` spanning the last 12 closed months for revenue share (it covers Amazon products) and `amazon_metric metric=contribution_by_asin months=6` for profit share.
-3. Suppliers: call `netsuite_metric metric=vendor_spend limit=20` for product spend by supplier.
+2. Products: call `top_products metric=revenue top_n=20` with `start_month` and `end_month` spanning the last 12 closed months for revenue share (it covers Amazon products) and `amazon_metric metric=contribution_by_asin months=6` for profit share. That result comes in several pages. Call it again with the next `result_page` until all pages are read, and sum them, leaving out the month flagged `in_flight`, before taking profit shares. Or use the latest closed month only and say so.
+3. Suppliers: call `netsuite_metric metric=vendor_spend limit=20` for product spend by supplier. Keep only product makers and packaging. Drop ad platforms, agencies, freight, duties, lenders and tax agencies. It covers one month only, so say the supplier share is a single month.
 4. For each dimension, run `strategy_framework framework=hhi shares=[...]` on the shares and `strategy_framework framework=power_law_analysis values=[...] metric_name=<dimension>` on the dollar values.
 5. Rank the four by how much revenue or profit a failure of the top item would put at risk.
 

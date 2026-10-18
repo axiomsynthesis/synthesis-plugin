@@ -24,6 +24,7 @@ What to give me: Months to earn back the cost of a new website customer, set aga
 
 Synthesis tools to use:
 - `cost_rules for=grw-cac-payback`
+- `meta_metric metric=weekly_trend weeks=13`
 - `meta_metric metric=ad_destinations days=90`
 - `google_ads_metric metric=efficiency_trend weeks=13`
 - `tiktok_metric metric=spend_trend months=4`
@@ -31,8 +32,8 @@ Synthesis tools to use:
 - `shopify_metric metric=cohort_ltv_censor_safe`
 
 Steps:
-1. Call `meta_metric metric=ad_destinations days=90` for Meta spend split by where each ad sends people. Count only spend pointing at the website. Spend pointing at Amazon is not a website cost. Show spend with no known destination on its own line.
-2. Call `google_ads_metric metric=efficiency_trend weeks=13` and add the 13 full weeks.
+1. Call `meta_metric metric=weekly_trend weeks=13` first and read `destination_check.total_spend` and `amazon_bound_spend`. Spend pointing at Amazon is not a website cost. Then call `meta_metric metric=ad_destinations days=90` only to split the rest into website and Walmart. It covers the top ads only. What is left after Amazon, website and Walmart is the no known destination line, shown on its own.
+2. Call `google_ads_metric metric=efficiency_trend weeks=13` and add the 13 full weeks. Subtract each week's `amazon_bound_spend`, because that spend points at Amazon.
 3. Call `tiktok_metric metric=spend_trend months=4` and count only `auction_spend` for the months in the window. Shop ad spend sells inside TikTok Shop, not on the website, so leave it out.
 4. Call `new_customers_dtc` for each of the last three closed months and add them.
 5. Cost per new website customer = website spend over new website customers. Give a low figure with known website spend only, and a high figure that adds the spend with no known destination.
@@ -45,7 +46,7 @@ Checks before answering:
 - Young cohorts are unfinished. Leave immature cells blank and never read them as low.
 - Shopify new means first website order, not first purchase from the brand anywhere. Say so.
 - Never add spend that points at Amazon or sells inside TikTok Shop to the website cost. Say how much was left out and why.
-- Google and TikTok auction spend carry no destination in these reads. They are counted as website spend. Say so, because any of it that points at Amazon makes the cost read high.
+- TikTok auction spend carries no destination in these reads. It is counted as website spend. Say so, because any of it that points at Amazon makes the cost read high.
 - Google Ads campaign spend is kept only from where its history starts. Never use a month it does not reach.
 - Use website cohorts only. The brand-wide cohort tables are built from Amazon orders and must not be mixed in.
 

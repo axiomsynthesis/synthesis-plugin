@@ -23,9 +23,9 @@ Synthesis tools to use:
 - `find_product`
 
 Steps:
-1. Call `amazon_metric` with `metric=stockout_forecast` and `limit=50` for each product's run-out dates and any gap before stock on its way lands.
+1. Call `amazon_metric` with `metric=stockout_forecast` and `limit=50` for each product's run-out dates and any gap before stock on its way lands. Read every page: call again with the next `result_page` the result names. Products come soonest first, so page 1 normally holds every 30-day risk. Check `running_out_within_30_days` against the rows you read.
 2. Call `amazon_metric` with `metric=velocity_momentum` and `weeks=8` to catch products selling faster than usual.
-3. Keep products whose `late_runs_out` is within 30 days, that are already out, or that have a gap (`gap_days` over 0). Name each with `find_product`.
+3. Keep products whose `late_runs_out` is within 30 days, that are already out, or that have a gap (`gap_days` over 0). Name each product from the result's `asin_names`. Call `find_product` only for a code missing from `asin_names`.
 
 Checks before answering:
 - If the stock read fails, send "stock could not be read today", not silence. Silence means all clear.

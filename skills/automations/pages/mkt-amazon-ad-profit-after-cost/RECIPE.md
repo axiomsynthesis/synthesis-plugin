@@ -19,18 +19,18 @@ What to give me: Products whose ads turn a profit into a loss once product cost 
 
 Synthesis tools to use:
 - `cost_rules for=mkt-amazon-ad-profit-after-cost`
-- `amazon_metric metric=ppc_profit_by_asin limit=40`
+- `amazon_metric metric=ppc_profit_by_asin month=YYYY-MM limit=40`
 - `amazon_metric metric=contribution_by_asin months=3`
 - `operator_inputs section=cogs`
 
 Steps:
-1. Call `amazon_metric metric=ppc_profit_by_asin month=<last fully settled month> limit=40`.
+1. Call `amazon_metric metric=ppc_profit_by_asin month=YYYY-MM limit=40` for the latest month whose `settlement_status.fully_settled` is true. If the newest month is still settling, show it only as the estimate range the tool returns.
 2. Call `amazon_metric metric=contribution_by_asin months=3` to see whether the loss is new or steady.
 3. Call `operator_inputs section=cogs` and list any advertised product that has no cost entered.
 4. Sort losers by dollars lost. For each, give one move: cut ad spend, raise price, or stop advertising it.
 
 Checks before answering:
-- Use a fully settled month: one whose settlement coverage is at least 95%. A month that has ended but is still settling has all its ad spend and only part of its sales, so it shows false losses.
+- Use a fully settled month: the latest month whose `settlement_status.fully_settled` is true. If the newest month is still settling, show it only as the estimate range the tool returns. A month that has ended but is still settling has all its ad spend and only part of its sales, so it shows false losses.
 - A product with incomplete cost is flagged by the tool. Never call it a loser or a winner.
 - Total ad spend across products should be close to the month's ad spend. A big gap means unmatched campaigns. Say how much is unmatched.
 - One bad month is not a pattern. Use the 3-month view before recommending a stop.

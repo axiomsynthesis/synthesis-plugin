@@ -20,13 +20,13 @@ Synthesis tools to use:
 - `cost_rules for=amazon-fee-overcharge-check`
 - `amazon_metric metric=fee_anomaly`
 - `amazon_metric metric=fee_rate_trend`
-- `amazon_metric metric=fee_breakdown`
+- `amazon_metric metric=fee_breakdown month=YYYY-MM`
 - `find_product`
 
 Steps:
 1. Call `amazon_metric` with `metric=fee_anomaly` and `months=6` to get per-unit fulfilment fee step changes and referral rate drift by product.
 2. Call `amazon_metric` with `metric=fee_rate_trend` and `months=12` to see whether fees as a share of sales are creeping across the whole catalog.
-3. Call `amazon_metric` with `metric=fee_breakdown` for the latest closed month to put the changes next to total referral and fulfilment fees.
+3. Call `amazon_metric` with `metric=fee_breakdown` and `month=YYYY-MM` set to the latest closed month to put the changes next to total referral and fulfilment fees. If the tool marks that month as still posting, use the month before.
 4. For each product with a step change, use `find_product` to name it the way the brand does, and multiply the change per unit by last month's units for the monthly cost.
 5. Rank by monthly cost and mark the ones that look like a size tier or weight change.
 

@@ -26,16 +26,16 @@ Synthesis tools to use:
 - `cost_rules for=ops-profit-bridge-month`
 - `netsuite_metric metric=pnl_trend months=13`
 - `monthly_pnl month=YYYY-MM`
-- `netsuite_metric metric=opex_category months=1 limit=20`
+- `netsuite_metric metric=opex_category months=<K> limit=20`
 - `amazon_metric metric=pnl_waterfall month=YYYY-MM`
 - `emit_chart type=waterfall`
 
 Steps:
-1. Call `netsuite_metric metric=pnl_trend months=13` and pick the two months to compare. If it says no ledger is connected, skip to step 7. Default to the latest closed month against the closed month before it, and the same month last year when both are closed.
+1. Call `netsuite_metric metric=pnl_trend months=13` and pick the two months to compare. If it says no ledger is connected, skip to step 7. The latest closed month is `last_closed_month`, not the latest on file. Default to the latest closed month against the closed month before it, and the same month last year when both are closed.
 2. Call `monthly_pnl month=YYYY-MM` for each month. Read revenue, product cost, gross profit, operating cost, EBITDA and `cogs_from_month_end`.
 3. Split the gross profit change into two parts: revenue change times last month's margin rate (volume), and this month's revenue times the change in margin rate (rate).
-4. Call `netsuite_metric metric=opex_category months=1 limit=20` for each month's category amounts and take the difference for each category.
-5. Name one-off items separately when they move a month by more than $10,000, such as tariff refunds or write-offs.
+4. `netsuite_metric metric=opex_category` sums the last N months and takes no month. For one month, call `months=<K>` and `months=<K-1>` with `limit=20` and subtract (K = months back from the latest on file, that month = 1). Compare each category across the two months. Leave out Other Expense: it is below EBITDA.
+5. Name one-off items (tariff refunds, write-offs) that move a month by over $10,000.
 6. Draw the bridge with `emit_chart type=waterfall`. The chart adds up every bar as a step, so pass the earlier month's EBITDA first, then only the changes, with a cost that went up as a negative number. Never pass the later month's EBITDA as a last bar: it would be stacked on top. The top of the last step must equal the later month's EBITDA; check it before answering.
 7. No ledger: call `amazon_metric metric=pnl_waterfall month=YYYY-MM` for the latest month that is not flagged as still settling, and for the month before it. Bridge each line from one month to the next: sales, discounts, refunds, referral fee, FBA fee, Amazon account charges, product cost, ad spend, ending at net profit. Draw it the same way as step 6, starting from the earlier month's net profit. If product cost is missing, end the bridge at profit after Amazon fees and ads, and name the products that need a cost entered.
 

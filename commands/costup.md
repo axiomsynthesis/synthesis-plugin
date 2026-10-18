@@ -27,6 +27,7 @@ Synthesis tools to use:
 - `amazon_metric metric=contribution_by_asin months=3`
 - `unit_economics_waterfall asp=<price> amazon_fees=<fees> cogs=<cost>`
 - `run_scenario scenario_type=price_change`
+- `run_scenario scenario_type=price_change simulations=1000`
 - `breakeven_roas asin=<asin>`
 - `amazon_metric metric=shelf_position`
 
@@ -35,7 +36,7 @@ Steps:
 2. Call `amazon_metric metric=contribution_by_asin months=3` for price, fees, product cost and units per affected product.
 3. For each product run `unit_economics_waterfall` with the current cost and again with the new cost. Note the margin before and after.
 4. Monthly hit = increase per unit times units per month.
-5. Price option: run `run_scenario scenario_type=price_change price_change_pct=<pct> unit_price=<price> unit_cogs=<new_cost> fee_pct=<referral share> unit_fees=<fixed fees per unit> units_per_month=<units>`, with the fees from step 2. The tool has no elasticity of its own: pass one only if the person gives it or a past price move on this product shows it, and say which. Without one, give the break-even it returns, not odds.
+5. Price option: run `run_scenario scenario_type=price_change price_change_pct=<pct> unit_price=<price> unit_cogs=<new_cost> fee_pct=<referral share> unit_fees=<fixed fees per unit> units_per_month=<units>`, with the fees from step 2. The tool has no elasticity of its own: pass one only if the person gives it or a past price move on this product shows it, and say which. Without one, give the break-even it returns, not odds. If the scenario times out, retry once with `simulations=1000` added.
 6. Check the shelf with `amazon_metric metric=shelf_position` so the new price is seen against rivals.
 7. Recompute the ad ceiling with `breakeven_roas asin=<asin>` at the new cost, since a thinner margin lowers how hard you can bid.
 

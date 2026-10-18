@@ -23,20 +23,20 @@ What to read: Stock cover, buy box, ratings, ad budget caps, deal prices against
 What to give me: A go or fix checklist three weeks before a big sale event, one line per product, with what to fix by when
 
 Synthesis tools to use:
-- `amazon_metric metric=days_of_cover limit=40`
+- `amazon_metric metric=stockout_forecast limit=200`
 - `amazon_metric metric=buybox_health days=30 limit=40`
 - `amazon_metric metric=rating_watch days=60 limit=30`
 - `amazon_metric metric=ppc_budget_utilisation days=30 limit=50`
-- `amazon_metric metric=velocity_momentum weeks=52 limit=30`
+- `amazon_metric metric=velocity_momentum weeks=52 asin=<asin>`
 - `shelf_history marketplace=amazon days=30`
 
 Steps:
 1. Ask the person for the event date and the products in the event.
-2. Call `amazon_metric metric=velocity_momentum weeks=52 limit=30` to find last year's event weeks (tagged) and each product's lift.
-3. Call `amazon_metric metric=days_of_cover limit=40`. Will each product cover the event at last year's lift plus two weeks after?
+2. Call `amazon_metric metric=stockout_forecast limit=200` and read each product's `events` for this sale (`x_normal`, `extra_units`, `extra_units_high`) and `late_runs_out`. Use `amazon_metric metric=velocity_momentum weeks=52 asin=<asin>` only for a product with no event history.
+3. Use the `late_runs_out` date from step 2, not days of cover, because days of cover does not include the event lift. Will each product cover the event at last year's lift plus two weeks after?
 4. Call `amazon_metric metric=buybox_health days=30 limit=40` and `amazon_metric metric=rating_watch days=60 limit=30`. Flag products below 90% buy box or with a rating step down.
 5. Call `amazon_metric metric=ppc_budget_utilisation days=30 limit=50`. Campaigns that cap out now will cap out by morning on event day.
-6. Call `shelf_history marketplace=amazon days=30` for your own recent prices. A deal must beat the recent low Amazon checks against. Remind the person to confirm the exact rule in Seller Central.
+6. Call `shelf_history marketplace=amazon days=30` for your own recent prices. A deal must beat the recent low Amazon checks against. Remind the person to confirm the exact rule in Seller Central. This history is weekly and misses deal days, so take the recent low from Seller Central.
 
 Checks before answering:
 - Stock is Amazon's live count. Quote Amazon's update time. Count inbound units only if they will be checked in before the event; stock moving between Amazon warehouses usually returns within days.

@@ -31,7 +31,7 @@ Synthesis tools to use:
 
 Steps:
 1. Call `meta_metric` with `metric=weekly_trend` and `weeks=26` for weekly Meta spend.
-2. Call `amazon_metric` with `metric=search_query_trend`, `grain=week`, `periods=26` and your brand name as `keyword` for weekly branded searches.
+2. Call `amazon_metric` with `metric=search_query_trend`, `grain=week` and `periods=26`, with no keyword. Read `branded_series.query_volume` for weekly branded searches. Read every page of the result. A keyword returns one row per search with no weekly branded total.
 3. Call `amazon_metric` with `metric=daily_revenue` and `days=180`, rolled up to weeks, for Amazon sales.
 4. Call `amazon_metric` with `metric=attribution_sources` and `days=90` for sales Amazon tracked back to Meta links.
 5. Call `amazon_metric` with `metric=offamazon_share` and `days=90` for how much of Amazon is driven from outside Amazon.

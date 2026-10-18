@@ -19,16 +19,17 @@ What to give me: A budget split for next month, based on what the next dollar bu
 Synthesis tools to use:
 - `cost_rules for=grw-next-dollar-split`
 - `meta_metric metric=efficiency_curve`
-- `google_ads_metric metric=impression_share days=30 limit=25`
+- `meta_metric metric=weekly_trend weeks=13`
+- `google_ads_metric metric=efficiency_trend weeks=13`
 - `tiktok_metric metric=spend_trend months=6`
 - `run_scenario scenario_type=budget_shift`
 
 Steps:
-1. Pull `meta_metric metric=efficiency_curve`.
-2. Pull `google_ads_metric metric=impression_share days=30 limit=25` for budget-limited campaigns with headroom.
-3. Pull `tiktok_metric metric=spend_trend months=6`.
+1. Pull `meta_metric metric=efficiency_curve`. It withholds campaigns that send shoppers to Amazon, so also pull `meta_metric metric=weekly_trend weeks=13` and use `amazon_sales_per_dollar` for Amazon-bound spend.
+2. Pull `google_ads_metric metric=efficiency_trend weeks=13` and read `amazon_sales_per_dollar` for the Amazon-bound weeks.
+3. Pull `tiktok_metric metric=spend_trend months=6` and read `shop_ad_roas` for TikTok.
 4. Rank channels by marginal return at current spend.
-5. Run `run_scenario scenario_type=budget_shift from_channel=<flat> to_channel=<steep> amount_monthly=<value> contribution_margin_pct=<value>` and report the middle and the downside.
+5. Run `run_scenario scenario_type=budget_shift from_channel=<flat> to_channel=<steep> amount_monthly=<value> contribution_margin_pct=<value>` and report the middle and the downside. When it returns NOT SIMULATED, report the break-even it gives and the measured ceilings, never a split.
 
 Checks before answering:
 - A curve fit on under 8 weeks of spend changes is weak. Say so.

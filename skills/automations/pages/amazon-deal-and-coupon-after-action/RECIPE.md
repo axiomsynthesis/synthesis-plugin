@@ -25,9 +25,9 @@ Synthesis tools to use:
 
 Steps:
 1. Call `amazon_metric` with `metric=promotion_performance` and `months=3` to get each promotion's sales against the discount given. This read carries no deal dates. Use the start and end dates the person gives. If they give none, take the clearest sales bump in the daily numbers, and say in the first line that the window is your assumption and which dates you used.
-2. Call `amazon_metric` with `metric=pnl_daily` and `days=90` to get daily profit before, during and after the deal.
+2. Call `amazon_metric` with `metric=pnl_daily` and `days=45` to get daily profit before, during and after the deal. A longer window can time out.
 3. Call `amazon_metric` with `metric=ppc_trend` and `weeks=13` to see how much ad spend rose around the deal.
-4. Call `amazon_metric` with `metric=daily_revenue` and `days=90` to measure the dip in the two weeks after the deal.
+4. Call `amazon_metric` with `metric=daily_revenue` and `days=45` to measure the dip in the two weeks after the deal.
 5. Work out profit with the deal against a baseline of the two weeks before, minus the dip after.
 
 Checks before answering:

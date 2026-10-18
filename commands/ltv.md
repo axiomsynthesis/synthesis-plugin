@@ -25,13 +25,14 @@ What to give me: Customer lifetime value by the product they bought first and th
 Synthesis tools to use:
 - `cost_rules for=customers-lifetime-value-by-first-product`
 - `shopify_metric metric=product_ltv`
-- `find_product`
+- `top_products metric=revenue top_n=10 start_month=<YYYY-MM> end_month=<YYYY-MM>`
+- `find_product query=<name>`
 - `product_ltv`
 - `repeat_rate`
 
 Steps:
 1. Call `shopify_metric` with `metric=product_ltv` for website customers by first product: count, value, orders and repeat rate. This read has no date setting, so say the dates the result covers.
-2. Use `find_product` to list your top Amazon products and their IDs.
+2. Call `top_products metric=revenue top_n=10` with `start_month` and `end_month` spanning the last 12 closed months to pick your top Amazon first products and their IDs. To look up one product by name, call `find_product` with a `query`. It needs one.
 3. For each, call `product_ltv` with the `asin` and `window=365d` for the value of customers who started there.
 4. Call `repeat_rate` with the same `asin` for the share of those first-time buyers who ever ordered again. It is the same measure as the website repeat rate in step 1.
 5. Rank first products by 12-month value, side by side for each channel.
