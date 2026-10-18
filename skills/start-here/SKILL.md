@@ -58,6 +58,7 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/adloss` | Find ads that lose money after product cost |
 | `/adroi` | Which Meta ads lose or make money |
 | `/afford` | Can we afford this order? |
+| `/allprofit` | Whole-business profit, every channel |
 | `/amazonprofit` | Amazon profit after every fee and cost |
 | `/bids` | Build the keyword bid change sheet |
 | `/bundles` | Find bundles buyers already want |
@@ -77,6 +78,7 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/newads` | Check the ads I just launched |
 | `/nextdollar` | Where should the next ad dollar go? |
 | `/payback` | How fast does a new customer pay back? |
+| `/ppv` | Profit per website visitor |
 | `/price` | What happens if you change the price? |
 | `/profit` | Which products actually make money? |
 | `/reorder` | What to reorder, and the purchase order to send |
@@ -89,5 +91,6 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/stock` | Send me the inventory report every Monday |
 | `/stockout` | Warn me before we run out |
 | `/tiktokprofit` | TikTok Shop profit after every fee |
+| `/walmartprofit` | Walmart profit after every fee |
 | `/whyprofit` | Why did profit move this month? |
 | `/winback` | Win back customers who stopped buying |

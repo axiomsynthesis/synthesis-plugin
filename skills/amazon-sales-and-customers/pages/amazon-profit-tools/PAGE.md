@@ -40,7 +40,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`amazon_metric` · `breakeven_roas` · `first_order_contribution_margin` · `operator_inputs` · `monthly_pnl` · `propose_brand_fact` · `log_decision` · `register_prediction`
+`business_profit` · `amazon_metric` · `breakeven_roas` · `first_order_contribution_margin` · `operator_inputs` · `monthly_pnl` · `propose_brand_fact` · `log_decision` · `register_prediction`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
