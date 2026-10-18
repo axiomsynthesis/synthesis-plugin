@@ -34,9 +34,9 @@ Checks before answering:
 - The net must equal the Profit page. If `profit_page_tie` shows any drift, say so first and do not state a profit.
 - Sales are before discounts. Discounts and refunds are their own lines below. Never take them off twice.
 - A month still settling has an estimate, not a result. Say "estimate" and give its range.
-- The unlabelled deductions line is money Amazon took and named only "Others". Say how big it is. If it is over 2% of sales, say it is worth checking in Seller Central.
+- Amazon labels some deductions only "Others". Where the brand has ruled them display-ad bills, the page moves them into advertising. Say how much was moved, and if what is left unlabelled is over 2% of sales, say it is worth checking in Seller Central.
 - Shipping buyers paid is a memo line. It is not profit.
-- Costs paid outside Amazon are not on this page: creator and affiliate pay, Meta or Google ads sent to Amazon, freight you paid before the warehouse. Say they are not counted.
+- Read which outside costs the page counts from its own lines: creator and affiliate pay is counted where the brand has ruled it in. Meta ads sent to Amazon and anything a line does not show are not counted. Say which.
 - If ad spend coverage says a day or an ad type is missing, profit is overstated. Say so.
 
 Output:
