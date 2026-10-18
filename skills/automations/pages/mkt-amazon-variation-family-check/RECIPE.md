@@ -18,6 +18,7 @@ What to read: How sales, reviews and ad spend split across the sizes and flavors
 What to give me: Dead or duplicate variations to drop or merge, and children that drag the family's rating or price ladder
 
 Synthesis tools to use:
+- `cost_rules for=mkt-amazon-variation-family-check`
 - `find_product`
 - `amazon_metric metric=pnl_by_asin limit=60`
 - `amazon_metric metric=ppc_spend_by_parent days=60 limit=30`
@@ -44,6 +45,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-variation-family-check". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

@@ -17,6 +17,7 @@ What to read: Monthly units, price and Amazon fulfilment fees per product, and h
 What to give me: Products that may cost less to ship yourself or through a third-party warehouse, and the ones that must stay with Amazon
 
 Synthesis tools to use:
+- `cost_rules for=mkt-amazon-fba-or-self-ship`
 - `amazon_metric metric=fulfillment_mix`
 - `amazon_metric metric=pnl_by_asin limit=40`
 - `decide_fulfillment`
@@ -42,6 +43,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-fba-or-self-ship". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

@@ -17,6 +17,7 @@ What to read: Daily Amazon profit before and after a change you made, on the pro
 What to give me: Profit per day before and after a price, bid or coupon change, so you know in two weeks, not at month end
 
 Synthesis tools to use:
+- `cost_rules for=mkt-amazon-change-daily-profit`
 - `amazon_metric metric=pnl_daily days=42 grain=day`
 - `amazon_metric metric=ppc_account_changes days=42 limit=50`
 - `log_decision`
@@ -42,6 +43,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-change-daily-profit". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

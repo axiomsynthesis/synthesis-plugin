@@ -17,6 +17,7 @@ What to read: Refunds by channel from the ledger, Amazon return rate, and TikTok
 What to give me: What refunds cost each month in each channel, and whether any is rising
 
 Synthesis tools to use:
+- `cost_rules for=ops-refund-cost-by-channel`
 - `netsuite_metric metric=refund_rate months=12`
 - `netsuite_metric metric=returns_credits months=12`
 - `return_rate month=YYYY-MM`
@@ -46,6 +47,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-refund-cost-by-channel". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

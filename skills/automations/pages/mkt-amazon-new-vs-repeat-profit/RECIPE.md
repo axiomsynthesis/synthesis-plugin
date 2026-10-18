@@ -17,6 +17,7 @@ What to read: Amazon sales, cost and fees split by first-time buyers and buyers 
 What to give me: How much of your Amazon profit comes from repeat buyers, how that share is moving, and what it means for ad spend
 
 Synthesis tools to use:
+- `cost_rules for=mkt-amazon-new-vs-repeat-profit`
 - `amazon_metric metric=pnl_by_customer_type days=90`
 - `amazon_metric metric=pnl_by_customer_type start_date=<YYYY-MM-DD> end_date=<YYYY-MM-DD>`
 - `amazon_metric metric=tacos`
@@ -40,6 +41,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-new-vs-repeat-profit". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

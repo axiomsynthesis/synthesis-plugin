@@ -17,6 +17,7 @@ What to read: Rival price cuts from the daily shelf watch, your sales rank and u
 What to give me: Match, meet halfway or hold after a rival's price cut, based on whether it is actually costing you sales yet
 
 Synthesis tools to use:
+- `cost_rules for=mkt-amazon-rival-price-cut-response`
 - `amazon_metric metric=shelf_position days=30 limit=30`
 - `amazon_metric metric=velocity_momentum weeks=8 limit=30`
 - `amazon_metric metric=contribution_by_asin months=3`
@@ -45,6 +46,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-rival-price-cut-response". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

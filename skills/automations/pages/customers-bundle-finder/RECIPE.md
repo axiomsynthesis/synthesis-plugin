@@ -17,6 +17,7 @@ What to read: Orders
 What to give me: The products people buy together, the best pair to bundle, and a bundle price that keeps your margin
 
 Synthesis tools to use:
+- `cost_rules for=customers-bundle-finder`
 - `shopify_metric metric=market_basket`
 - `amazon_metric metric=market_basket limit=20`
 - `sequenced_cross_sell`
@@ -47,6 +48,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: customers-bundle-finder". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

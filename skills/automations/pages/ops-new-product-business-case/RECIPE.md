@@ -17,6 +17,7 @@ What to read: Search demand for the idea, rival prices and ratings, your margin 
 What to give me: A one-page case for or against, with unit economics, a first-year range, cash needed and when to kill it
 
 Synthesis tools to use:
+- `cost_rules for=ops-new-product-business-case`
 - `amazon_metric metric=search_term_gaps`
 - `scrape_amazon_search keyword=<product_search> k=20`
 - `unit_economics_waterfall asp=<price> amazon_fees=<fees> cogs=<cost>`
@@ -50,6 +51,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-new-product-business-case". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

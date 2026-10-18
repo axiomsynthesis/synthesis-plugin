@@ -40,7 +40,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`amazon_metric` · `operator_inputs` · `find_product` · `breakeven_roas` · `run_sql`
+`cost_rules` · `set_cost_rule` · `amazon_metric` · `operator_inputs` · `find_product` · `breakeven_roas` · `run_sql`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

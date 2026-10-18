@@ -23,6 +23,7 @@ What to read: Product cost, Amazon fees and price per product, sales pace, and t
 What to give me: What a supplier or tariff increase costs a month, and three priced responses: absorb it, raise price, or change the pack
 
 Synthesis tools to use:
+- `cost_rules for=ops-cost-increase-response`
 - `amazon_metric metric=contribution_by_asin months=3`
 - `unit_economics_waterfall asp=<price> amazon_fees=<fees> cogs=<cost>`
 - `run_scenario scenario_type=price_change`
@@ -56,6 +57,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-cost-increase-response". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

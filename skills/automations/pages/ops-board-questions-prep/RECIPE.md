@@ -17,6 +17,7 @@ What to read: The latest closed month and quarter, the biggest moves in revenue,
 What to give me: The ten hardest questions a board or investor will ask this period, each with a short answer backed by a number
 
 Synthesis tools to use:
+- `cost_rules for=ops-board-questions-prep`
 - `netsuite_metric metric=pnl_trend months=13`
 - `explain_metric_move metric=revenue month=YYYY-MM`
 - `metric_timeseries metric_keys=[revenue,new_customers,returning_pct] start_month=YYYY-MM end_month=YYYY-MM`
@@ -49,6 +50,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-board-questions-prep". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
