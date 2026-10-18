@@ -27,7 +27,7 @@ Steps:
 4. List spend-without-sales products (over $50, zero conversions) and ignored best sellers (top 10 site sellers under 2% of shopping spend).
 
 Checks before answering:
-- Google Ads campaign and keyword data holds at most 90 days. A short history is the age of the connection, not a business fact. Never compare year over year here.
+- Google Ads data for this view holds at most 90 days. Only campaign spend totals are kept longer. A short history is the age of the connection, not a business fact. Never compare year over year here.
 - Report the match count. Unmatched products are listed separately, never dropped.
 
 Output:

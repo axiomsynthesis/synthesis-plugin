@@ -32,7 +32,7 @@ Steps:
 Checks before answering:
 - If `mer` is gated for a month, do not state it. Give its reason.
 - Count TikTok spend from both auction and shop ads.
-- Google Ads holds about 90 days. Months before that show Google as not measured, never zero, and their total spend is labelled as excluding Google.
+- Google Ads campaign spend is kept only from where its history starts. Months before that show Google as not measured, never zero, and their total spend is labelled as excluding Google.
 - Leave the current month out.
 - Amazon ad spend counts Sponsored Products, Brands and Display. A month before the brand's Amazon ad history begins shows Amazon ads as not measured, never zero.
 

@@ -28,7 +28,7 @@ Steps:
 4. Estimate the brand share of Performance Max where the data allows, and list products taking spend with no conversions.
 
 Checks before answering:
-- Google Ads campaign and keyword data holds at most 90 days. A short history is the age of the connection, not a business fact. Never compare year over year here.
+- Google Ads data for this view holds at most 90 days. Only campaign spend totals are kept longer. A short history is the age of the connection, not a business fact. Never compare year over year here.
 - Google Ads cost is click cost from the API, not the invoice. Say so beside any total.
 - If Performance Max search term data is not present, say the brand share cannot be measured, rather than reporting zero.
 - Products with under $20 spend are listed, not judged.

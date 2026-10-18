@@ -46,7 +46,7 @@ Checks before answering:
 - Shopify new means first website order, not first purchase from the brand anywhere. Say so.
 - Never add spend that points at Amazon or sells inside TikTok Shop to the website cost. Say how much was left out and why.
 - Google and TikTok auction spend carry no destination in these reads. They are counted as website spend. Say so, because any of it that points at Amazon makes the cost read high.
-- Never use Google Ads history past 90 days. It does not exist.
+- Google Ads campaign spend is kept only from where its history starts. Never use a month it does not reach.
 - Use website cohorts only. The brand-wide cohort tables are built from Amazon orders and must not be mixed in.
 
 Output:

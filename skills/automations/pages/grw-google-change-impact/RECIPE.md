@@ -28,7 +28,7 @@ Steps:
 5. List changes followed by a clear worsening, and periods with no changes at all.
 
 Checks before answering:
-- Google Ads campaign and keyword data holds at most 90 days. A short history is the age of the connection, not a business fact. Never compare year over year here.
+- Google Ads data for this view holds at most 90 days. Only campaign spend totals are kept longer. A short history is the age of the connection, not a business fact. Never compare year over year here.
 - Before-and-after is not proof. A change during a promotion or a holiday is confounded. Say so.
 - Fewer than 20 conversions in either window is too few to judge.
 
