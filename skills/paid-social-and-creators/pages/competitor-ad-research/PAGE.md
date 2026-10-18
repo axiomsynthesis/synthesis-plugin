@@ -34,7 +34,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`competitor_review_voice`
+`competitor_ads` · `competitor_review_voice`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

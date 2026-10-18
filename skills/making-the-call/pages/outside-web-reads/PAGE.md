@@ -42,7 +42,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`web_search` · `web_fetch` · `social_listening` · `keyword_rank_tracker` · `review_themes`
+`web_search` · `web_fetch` · `social_listening` · `reddit_mentions` · `keyword_rank_tracker` · `review_themes`
 `amazon_metric`, with `metric` set to: `organic_rank`
 
 Names only. Do not guess an argument from this list — the method above

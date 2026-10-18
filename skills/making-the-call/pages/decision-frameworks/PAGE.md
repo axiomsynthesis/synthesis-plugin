@@ -41,8 +41,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`score_counter_position`
-`strategy_framework`, with `framework` set to: `weighted_score` · `plot_2x2` · `bcg_matrix` · `ansoff_matrix` · `positioning_map` · `scenario_2x2` · `swot` · `errc_grid` · `playing_to_win` · `jobs_to_be_done` · `awareness_levels` · `five_forces` · `ten_x_forces` · `war_game` · `response_severity` · `pros_cons` · `rank_decision_options` · `kelly_sizing` · `priority_score`
+`strategy_framework`, with `framework` set to: `weighted_score` · `plot_2x2` · `bcg_matrix` · `ansoff_matrix` · `positioning_map` · `scenario_2x2` · `swot` · `errc_grid` · `playing_to_win` · `jobs_to_be_done` · `awareness_levels` · `five_forces` · `ten_x_forces` · `war_game` · `response_severity` · `score_counter_position` · `pros_cons` · `rank_decision_options` · `kelly_sizing` · `priority_score`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

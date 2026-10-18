@@ -39,7 +39,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`trybe_creator_program` · `ad_health_check` · `meta_metric`
+`trybe_creator_program` · `ad_health_check` · `meta_metric` · `ad_idea_bank`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

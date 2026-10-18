@@ -5,9 +5,9 @@ description: >
   which states the money comes from, which products carry the window, who to win back,
   how to lift order value, and which products to keep or cut ("where is our revenue
   concentrated", "which customers are worth chasing", "should we kill this SKU", "how do
-  we raise AOV", "where do our buyers live"). Three of these six tools measure nothing:
-  they arrange numbers you type in, and one returns a fixed list of rules of thumb that
-  reads exactly like a measurement.
+  we raise AOV", "where do our buyers live", "who is our customer"). Three of these seven
+  tools measure nothing: they arrange numbers you type in, and one returns a fixed list of
+  rules of thumb that reads exactly like a measurement.
 ---
 
 # Customer and product mix, read correctly
@@ -20,6 +20,8 @@ description: >
 - Win-back, reactivation, lapsed-customer offers.
 - Average order value levers, bundles, volume tiers, free-shipping thresholds.
 - SKU rationalisation: keep, fix or cut a product.
+- Customer personas: "who is our customer", "build me personas", ad or copy briefs that need
+  the buyer's own words.
 - For Amazon new-vs-repeat or repeat rate, load ssi-amazon-new-repeat-and-product-customers
   instead.
 - Before any product-level read, also load ssi-product-identity-resolution: these tools key on
@@ -45,9 +47,14 @@ so in your answer and do not present a method you were not given.
 ## The server tools this subject uses
 
 `rfm_segments` · `geo_performance` · `top_products` · `winback_tiers` · `aov_levers` · `score_sku_rationalization`
+`amazon_metric`, with `metric` set to: `customer_personas`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `metric` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`amazon_customer_personas` means `amazon_metric` with `metric` set to `customer_personas`.
 
 ## When the method names another page
 

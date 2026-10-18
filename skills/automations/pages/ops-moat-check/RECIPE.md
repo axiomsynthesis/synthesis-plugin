@@ -19,7 +19,7 @@ What to give me: Which lasting advantages the business actually has, which it on
 Synthesis tools to use:
 - `cost_rules for=ops-moat-check`
 - `classify_moat`
-- `score_counter_position`
+- `strategy_framework framework=score_counter_position`
 - `amazon_metric metric=ppc_branded_split`
 - `amazon_metric metric=sns_program`
 - `amazon_metric metric=shelf_position`
@@ -29,7 +29,7 @@ Steps:
 1. Gather evidence: `amazon_metric metric=sns_program` and `brand_ltv` for switching costs, `amazon_metric metric=ppc_branded_split` for brand pull, `amazon_metric metric=shelf_position` for price premium held, cost per unit trend for scale.
 2. Rate each advantage 0 to 10 with a line of evidence.
 3. Run `classify_moat` with the ratings.
-4. If a counter-position is claimed, run `score_counter_position` on it.
+4. If a counter-position is claimed, run `strategy_framework framework=score_counter_position uniqueness=<0-10> defensibility=<0-10> lockout=<0-10> resonance=<0-10>` on it.
 5. List claimed advantages with no evidence.
 
 Checks before answering:
