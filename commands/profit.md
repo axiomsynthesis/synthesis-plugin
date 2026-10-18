@@ -30,21 +30,22 @@ Synthesis tools to use:
 - `find_product`
 
 Steps:
-1. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`, and read the last closed month for settled sales, fees and product cost by product.
-2. Call `amazon_metric` with `metric=ppc_profit_by_asin` and `month=` set to the last closed month to take ad spend off each product.
-3. Call `amazon_metric` with `metric=return_reasons` and `months=3` to see return cost by product.
+1. Call `amazon_metric` with `metric=ppc_profit_by_asin` and no month (it picks the last settled month). Each advertised product's `profit_after_ads` is the Profit page's own profit: refunds, discounts, fees, its share of Amazon's storage and other account charges, product cost and all its ads are already taken off. Use that figure as the product's profit. Do not subtract anything from it again.
+2. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3` for products with no ads that month. Their figure is before Amazon's storage and other account charges: say so beside each one.
+3. Call `amazon_metric` with `metric=return_reasons` and `months=3` to explain WHY a product's refunds are high. Refunds are already in both figures above; never subtract return cost a second time.
 4. Call `operator_inputs` with `section=cogs` to check every product has a cost. Name each product with `find_product`.
 5. Rank by profit per unit and by profit a month.
 
 Checks before answering:
 - A product with no cost entered is flagged "no cost", never shown as pure profit.
-- Use the last closed month. Fees and refunds settle late.
+- Use the last settled month. Fees and refunds settle late.
+- Profit comes from one figure per product. Never add up sales, fees, ads and returns from different tools: the per-product table already nets refunds, and it leaves out account charges.
 - If ad spend for a product is missing, say so. Do not treat it as zero ad cost.
 - One bad month is not a pattern. Check the month before when a product turns negative.
 
 Output:
 - One line first: how many products lose money and how much a month in total.
-- A table: product, units, sales, fees, ad cost, returns, product cost, profit per unit, profit a month.
+- A table: product, units, sales, fees and account charges, ad cost, refunds, product cost, profit per unit, profit a month, and which figure it is (Profit page, or before account charges).
 - One move: the product to fix first and what to change.
 
 Never:
