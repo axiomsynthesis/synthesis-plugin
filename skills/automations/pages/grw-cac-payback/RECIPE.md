@@ -23,21 +23,21 @@ Synthesis tools to use:
 - `google_ads_metric metric=efficiency_trend weeks=13`
 - `tiktok_metric metric=spend_trend months=4`
 - `new_customers_dtc month=<YYYY-MM>`
-- `shopify_metric metric=cohort_ltv_censor_safe`
+- `shopify_metric metric=cohort_ltv_censor_safe basis=contribution`
 - `shopify_metric metric=profit month=YYYY-MM`
 - `first_order_contribution_margin`
 
 Steps:
-1. Use the last three closed calendar months for every spend and customer count.
+1. Use the last three closed months for every spend and count.
 2. Call `meta_metric metric=weekly_trend weeks=13`. Add the spend of weeks that start inside the three months, minus each week's `amazon_bound_spend`. Then call `meta_metric metric=ad_destinations days=90` only to split the rest into website, Walmart and no known destination. Top ads only.
 3. Call `google_ads_metric metric=efficiency_trend weeks=13`. Same weeks, minus each week's `amazon_bound_spend`.
 4. Call `tiktok_metric metric=spend_trend months=4`. Keep `auction_spend` for the three months as a destination unknown line. Leave shop ad spend out. It sells inside TikTok Shop.
 5. Call `new_customers_dtc` for each of the three months and add them.
 6. Cost per new customer = website spend over new customers. Low figure: known website spend only. High figure: add no known destination and TikTok auction spend.
-7. Call `shopify_metric metric=profit` for the latest month. From `column`: product cost share of sales, card fee share of sales, shipping per order (shipping line over `orders`) and average order value (sales over `orders`).
-8. Call `shopify_metric metric=cohort_ltv_censor_safe` for cumulative sales per customer by acquisition month. Orders per customer = that over average order value, an estimate.
-9. Profit per customer = cumulative sales times (1 minus product cost share minus card fee share), minus orders per customer times shipping per order. Payback month = first month it passes the cost. Never use a gross margin alone.
-10. Call `first_order_contribution_margin` with `price=` the average order value, `cogs=`, `misc=` the shipping per order and `cac=` the cost per new customer.
+7. Call `shopify_metric metric=cohort_ltv_censor_safe basis=contribution`. Each point carries `cumulative_contribution_per_customer`, what a customer kept after product cost, fees, refunds and shipping.
+8. Payback month = first month a cohort's `cumulative_contribution_per_customer` passes the cost. If `contribution_basis.keep_per_sales_dollar` is missing, give `contribution_basis.why` and no payback month. Never use a margin.
+9. Call `shopify_metric metric=profit` for the latest month. Average order value is `own_store` sales over `orders`. Shipping per order is `contribution_basis.shipping_per_order`.
+10. Call `first_order_contribution_margin` with `price=` the average order value, `cogs=` its product cost, `misc=` shipping per order and `cac=` the cost per new customer.
 
 Checks before answering:
 - If a customer tool returns gated, do not state the number. Give its refusal reason.
@@ -46,7 +46,8 @@ Checks before answering:
 - New means first website order. A long-time Amazon buyer counts as new, so cost per new customer reads low. Say so.
 - Never add Amazon-bound or TikTok Shop spend to the website cost. Say how much was left out.
 - Use website cohorts only. Brand-wide cohort tables are built from Amazon orders.
-- Costs the profit column marks not connected make payback read fast. Name them.
+- Costs in `contribution_basis.not_counted` are not taken off, so payback reads fast. Name them.
+- One month's rates are applied to every cohort. Say so.
 - Email and retention spend on repeat orders is not taken off yet, so payback reads a little fast.
 
 Output:

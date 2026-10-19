@@ -31,20 +31,24 @@ Steps:
 1. Call `business_profit` with `month=` set to last month.
 2. Read `data_quality_flags` before anything else. Sort them into three groups: channels left out, channels with sales but no profit yet, and costs not counted.
 3. Read `columns`. List each sales channel with its sales, profit and margin, then each ad platform's spend.
-4. If Amazon is the largest channel and the month is still settling, call `amazon_metric` with `metric=pnl_waterfall` for the month before as well, and say which month is settled.
-5. Read `fixed_costs`. If none are entered, say net profit is before rent, salaries and software.
+4. Read `ads_by_destination` and `channels_after_ads`. For each channel give its profit after the ad spend pointing at it. Show `unallocated` (another store's shelf, no known destination) as its own row. If `channels_after_ads.withheld` is true, say the ad split did not add back and use the before-ads table only.
+5. Read `books_tie`. If `checked` is true, give net sales here, the books' net revenue and the gap. If `ok` is false, say a channel or deduction is counted differently. Show the books' net income beside the net, never tied to it. If `checked` is false, say why.
+6. Read `stopped_channels`. Name each one with the date of its last sale. Never call it not connected.
+7. If Amazon is the largest channel and the month is still settling, call `amazon_metric` with `metric=pnl_waterfall` for the month before as well, and say which month is settled.
+8. Read `fixed_costs`. If none are entered, say net profit is before rent, salaries and software.
 
 Checks before answering:
 - If `gated` is true, there is no net to state. Give the reason.
 - A channel with sales and no profit is not in the net. Say how much it sold, so the gap is visible.
-- Never add an ad platform's spend to one channel. It is its own row.
+- Only move ad spend to a channel through `channels_after_ads`. Never add a whole platform's spend to one channel.
 - A margin above 70% on any product channel almost always means a cost is missing. Say so beside it.
 - Use a closed month.
 
 Output:
 - One line first: net profit for the month, its share of sales, and how many channels or costs are missing.
-- A table: channel, sales, profit, margin, what is not counted.
-- Two lines: the channel that makes the most per dollar of sales, and the one missing cost that would change the net most.
+- A table: channel, sales, profit before ads, profit after the ads pointing at it, margin, what is not counted.
+- Two lines: the channel that makes the most per dollar of sales after its own ads, and the one missing cost that would change the net most.
+- One line: the tie to the books, or why there is none.
 - One move: the cost to enter or the feed to connect first.
 
 Never:

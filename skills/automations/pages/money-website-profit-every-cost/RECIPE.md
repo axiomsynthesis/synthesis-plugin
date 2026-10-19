@@ -13,7 +13,7 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 What it does:
 Lays out website profit for one month the way the Profit page counts it: sales after tax, discounts, refunds, product cost, card and payment fees, shipping and warehouse costs. Then it sets the ad spend beside it. It names every cost line that has no data yet, so a high margin is never read as real when costs are missing.
 
-What to read: Website orders, discounts, refunds, product cost and fees as the Profit page shows them, plus Meta, Google and TikTok ad spend
+What to read: Website orders, discounts, refunds, product cost and fees as the Profit page shows them, orders other marketplaces sent into the store, and Meta, Google and TikTok ad spend by where it sends shoppers
 What to give me: One month of website profit line by line, which costs are counted and which have no data yet, and profit before and after ads
 
 Synthesis tools to use:
@@ -26,22 +26,24 @@ Steps:
 1. Call `shopify_metric` with `metric=profit` and `month=` set to last month.
 2. If the result has `no_headline_reason`, there is no profit to state. Say why in plain words, list the products in `uncosted_products`, and say entering their costs on the costs page fixes it. Still show the lines that are real.
 3. Read every entry in `column.lines` when present. Sort them into three groups: counted, estimated, and not connected.
-4. Call `net_revenue_dtc` with the same month. If its revenue differs from the column's sales by more than 5%, state both figures. Then say which orders make the difference, usually orders another marketplace or TikTok Shop sent into the store. Read `column.marketplace_sales` for that amount. Never pick one figure and drop the other.
-5. Read `ad_columns`. Show profit before ads, then each ad platform's spend beside it, then `profit_after_all_listed_ads` as the worst case if every ad dollar went to the website.
-6. Call `operator_inputs` with `section=cogs` to check costs are entered for the products the website sells.
+4. `value` is profit on the website's own orders. If `marketplace_orders` is present, show it as its own line: orders another marketplace sent into the store, with their sales, orders and `profit_before_commission`. Say the app's commission on them is not connected. `own_store` plus `marketplace_orders` add back to `column_profit`.
+5. Call `net_revenue_dtc` with the same month. If its revenue differs from `own_store.sales` by more than 5%, state both figures. Then say which orders make the difference, usually the `marketplace_orders` sales or TikTok Shop orders sent into the store. Never pick one figure and drop the other.
+6. Read `ad_columns` and `profit_after_ads`. Show profit before ads, then `profit_after_ads.pointed_here`, the ad spend that sends shoppers to the website, and `profit_after_ads_pointed_here`. Give `profit_if_unknown_ads_also_pointed_here` as the low end of the range. Name the spend in `pointing_elsewhere`. It never comes off the website.
+7. Call `operator_inputs` with `section=cogs` to check costs are entered for the products the website sells.
 
 Checks before answering:
 - Read `data_quality_flags` first. Each line not connected makes profit too high. Say so in the same sentence as the profit.
 - If `gated` is true, there is no number. Give the reason, not a guess.
 - A margin above 70% on physical products almost always means costs are missing. Say that, and do not call the channel very profitable.
-- Meta and Google ads can send buyers to Amazon too. Never take all of their spend off the website and call that its profit. Show the range.
+- Meta and Google ads can send buyers to Amazon too. Only `pointed_here` comes off the website. Never take all of their spend off it. Show the range.
 - Use a closed month. The current month is still taking orders and refunds.
-- If `column.marketplace_sales` is more than a small share of sales, most of this profit is not from the website's own shoppers. Say so in the first line. Any commission that marketplace takes is not counted yet, so that share reads high.
+- Never call the marketplace orders website profit. They never visited the website. If they are more than a small share of the column, say so in the first line. Their app's commission is not counted yet, so their profit reads high.
 
 Output:
-- One line first: website profit before ads for the month, its share of sales, and how many cost lines are missing.
+- One line first: profit on orders placed on the website, before ads, for the month, its share of the website's own sales, and how many cost lines are missing.
+- A second line when present: orders other marketplaces sent in, their sales and profit before the app's commission.
 - A table: line, dollars, share of sales, counted / estimated / not connected.
-- Two lines: profit after ads as a range, and the one missing feed that would change the answer most.
+- Two lines: profit after website ads as a range, and the one missing feed that would change the answer most.
 - One move: the cost to enter or the feed to connect first.
 
 Never:

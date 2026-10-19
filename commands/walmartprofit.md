@@ -30,7 +30,7 @@ Synthesis tools to use:
 - `operator_inputs section=cogs`
 
 Steps:
-1. Call `walmart_metric` with `metric=profit` and `month=` set to last month.
+1. Call `walmart_metric` with `metric=profit` and `month=` set to last month. If it has `stopped_selling_since`, say Walmart had no sales since that date, so the month made $0 from Walmart sales. Never call it not connected. Then stop.
 2. If the result has `no_headline_reason`, there is no profit to state. Say why and list `uncosted_products`. Still show the lines that are real.
 3. If the month has no orders, call `walmart_metric` with `metric=orders_trend` and `months=12`. Find the last month with orders and say the channel has sold nothing since then. Stop there.
 4. Read every entry in `column.lines` and `column.tie_out`. Sort the lines into counted, estimated (orders not paid out yet) and not connected.
