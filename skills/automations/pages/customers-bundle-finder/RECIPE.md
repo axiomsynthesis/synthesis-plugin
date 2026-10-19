@@ -11,35 +11,42 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Finds the products people buy together more often than chance. It picks the best pair to bundle, says which product should lead, and sets a bundle price that keeps your margin.
+Finds the products people buy together more often than chance, starting from your top sellers. It works out what a bundle keeps after Amazon fees and product costs, against the full-price sales it replaces, and names a test to prove it.
 
-What to read: Orders
-What to give me: The products people buy together, the best pair to bundle, and a bundle price that keeps your margin
+What to read: Orders, Amazon fees and product costs
+What to give me: The best pair to bundle on your top sellers, what it keeps after fees and lost full-price sales, and a test
 
 Synthesis tools to use:
 - `cost_rules for=customers-bundle-finder`
+- `top_products metric=revenue top_n=5 start_month=<YYYY-MM> end_month=<YYYY-MM>`
+- `amazon_metric metric=market_basket months=1`
 - `shopify_metric metric=market_basket`
-- `amazon_metric metric=market_basket limit=20`
 - `sequenced_cross_sell`
-- `amazon_metric metric=contribution_by_asin`
+- `amazon_metric metric=contribution_by_asin months=3`
+- `first_order_contribution_margin`
 - `find_product`
 
 Steps:
-1. Call `shopify_metric` with `metric=market_basket` for website pairs, ranked by lift: how many times more often the two sell together than chance. It covers all time and has no last-sale date, so use `find_product` to check each product is still active and skip pairs with one that is not.
-2. Call `amazon_metric` with `metric=market_basket` and `limit=20` for Amazon pairs. Say which month the report covers.
-3. For the top three Amazon pairs where both products are yours, call `sequenced_cross_sell` with both product codes to see which product is bought first. It only sees your own orders, so a pair with another brand's product returns nothing. Website pairs come back as names only and cannot be checked this way.
-4. Call `amazon_metric` with `metric=contribution_by_asin` for each product's margin per unit after fees and product cost. There is no margin read for website-only pairs: leave their price blank and say so.
-5. Use `find_product` to name each product, then set a bundle price that keeps the bundle's margin above the single product's.
+1. Call `top_products metric=revenue top_n=5` with `start_month` and `end_month` spanning the last 3 closed months for your top products and their codes.
+2. For each, call `amazon_metric` with `metric=market_basket`, that `asin` and `months=1` for the newest month. Say which month it covers.
+3. Call `shopify_metric` with `metric=market_basket` for website pairs, ranked by lift: how many times more often the two sell together than chance. It covers all time, so use `find_product` to check each product is still active and skip pairs with one that is not.
+4. For the top three pairs where both products are yours, call `sequenced_cross_sell` with both product codes to see which is bought first. It only sees your own orders.
+5. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3` for each product's keep per unit and its fees. Referral fee divided by sales is the referral rate. Ask the person for the bundle's fulfilment fee from Amazon's fee preview.
+6. For a bundle price, call `first_order_contribution_margin` with `price`, `cogs` as both product costs, `referral_fee_pct` and `fba_fee` as the bundle's fee. That is what one bundle keeps.
+7. Compare with selling apart. Let s be the share of bundle buyers who would have bought both anyway. The rest would have bought only the lead product. The bundle wins when its keep is above s times both items' keep plus the rest times the lead's keep. Give the deepest discount that still wins at s of 0%, 25% and 50%.
 
 Checks before answering:
 - Judge pairs by lift, not raw count. Your two best sellers will pair by chance. Where a report gives no lift, say so.
+- Amazon reports only the top three pairs per product and gives a share of buyers, with no order count. If a website pair rests on under 50 orders, say it is a small sample.
+- We cannot look up the fee for a bundle that is not listed yet. Without the person's fee, leave the bundle keep blank and give the formula.
+- The share who would have bought both anyway is not measured. Show all three cases, never one.
+- There is no margin read for website-only pairs. Leave their price blank and say so.
 - If product costs are missing, say so and do not set a price.
-- Amazon pairs come as a share of buyers, with no order count. If a website pair rests on under 50 orders, say it is a small sample.
 
 Output:
-- One line first: the best bundle, which product leads, and what each bundle keeps per sale.
-- A table: pair, orders or share buying both, lift where known, which comes first, bundle price, margin per bundle.
-- One move: the bundle to test first, and how we will know it worked.
+- One line first: the bundle to test, which product leads, what it keeps per sale, and the deepest discount that still wins.
+- A table: pair, share buying both, lift where known, which comes first, bundle price, bundle keep, keep sold apart, deepest discount at 0%, 25% and 50%.
+- One test: four weeks, the bundle as a listing variation or a website offer to half of visitors. Read units per order and profit per visitor against the other half.
 
 Never:
 - Never create a bundle or listing in any store. A person does that.

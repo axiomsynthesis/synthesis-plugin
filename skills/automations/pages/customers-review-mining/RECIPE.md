@@ -21,6 +21,8 @@ Synthesis tools to use:
 - `amazon_metric metric=review_voice`
 - `review_themes`
 - `amazon_metric metric=rating_watch`
+- `amazon_metric metric=search_competitors grain=week`
+- `competitor_review_voice limit=40`
 - `export_docx`
 
 Steps:
@@ -28,17 +30,23 @@ Steps:
 2. Call `amazon_metric` with `metric=review_voice`, each `asin` and `limit=200` for the review text. Run it once per product family, and check a second product. It already returns topic counts, praise or complaint, quotes and a themes block.
 3. Use `review_themes` only if raw review text with star ratings is available. The quotes from step 2 carry no ratings, so it adds nothing to them.
 4. Call `amazon_metric` with `metric=rating_watch` and `days=90` to see whether any theme moved the star rating.
-5. Write FAQ answers, bullets and ad angles from the top themes, then call `export_docx` with `filename=review_mining.docx`.
+5. Call `amazon_metric` with `metric=search_competitors` and `grain=week` to name the two rivals that contest most of your searches. Call `competitor_review_voice` with each rival's `asin` and `limit=40`. Mark each theme as ours only, shared with rivals, or a rival weakness. A shared complaint is a category problem, not your fault.
+6. Write FAQ answers, bullets and ad angles from the top themes. Ad angles come first from rival weaknesses you do not share.
+7. If the person asks for a file, call `export_docx` with `filename=review_mining.docx`. Otherwise show the table and lines in chat.
 
 Checks before answering:
 - Every line must trace to real reviews. Show the count behind each theme.
 - If reviews come back empty, say so. Never write lines from a guess of what buyers say.
 - A theme in one or two reviews is not a theme.
+- The review read covers a small part of all reviews, and few carry a star rating. Say how many it read. It cannot rank complaints by their effect on the rating yet, because Amazon's topic score is the same for praise and complaint. Rank by count only, and say so.
+- Rival reviews exist only for products on your rival watch list. If a rival returns nothing, say so.
+- Rival reviews are Amazon's featured few, not a sample. Use their words, never their counts or shares.
 
 Output:
-- A Word file named `review_mining.docx`, two pages at most.
-- A theme table: theme, praise or complaint, reviews, a short quote.
+- One line first: the strongest ad angle and the complaint to fix first.
+- A theme table: theme, praise or complaint, reviews, ours only or shared or rival weakness, a short quote.
 - Ready-to-use lines: five FAQ answers, five listing bullets, five ad angles.
+- A Word file named `review_mining.docx`, two pages at most, only if asked.
 - A person edits and publishes them.
 
 Never:

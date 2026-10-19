@@ -14,23 +14,29 @@ What it does:
 Sorts customers into groups like champions, loyal, at risk and lost by how recently, how often and how much they buy. Each group gets a size, its value and the message to send it.
 
 What to read: Website customers grouped by recency, frequency and spend
-What to give me: Ready-to-use customer groups with size, value and the message for each
+What to give me: Customer groups with size, value and the message for each, with groups made mostly of long-gone customers flagged
 
 Synthesis tools to use:
 - `shopify_metric metric=rfm_segments`
 - `shopify_metric metric=time_to_repeat`
 
 Steps:
-1. Pull `shopify_metric metric=rfm_segments`.
-2. Pull `shopify_metric metric=time_to_repeat` to set the at-risk line just past the usual reorder gap.
-3. For each group: customers, share of revenue, last order range, the message and channel.
+1. Pull `shopify_metric metric=rfm_segments`. Read each group's average days since last order.
+2. Pull `shopify_metric metric=time_to_repeat` for the usual reorder gap.
+3. Compare each group's average days since last order with the reorder gap. A group whose average is past two years is mostly lost customers, whatever its name says. Relabel it in the table and say why.
+4. For each group: customers, share of revenue, average days since last order, the message and channel.
 
 Checks before answering:
-- Group counts must add up to total customers in the window. Show the check.
+- The groups cover every customer back to the store's first order. This cannot limit them to the last 24 months yet. Say so, and say the counts include long-gone customers.
+- Recency lines are fixed at 30, 60, 90 and 180 days, not set from this brand's reorder gap. Anyone past 180 days scores lowest. Say so.
+- Group counts must add up to total customers. Show the check.
+- This gives counts, not a list to send. The list is built in the email or ad platform from the same rules.
 - Keep customer emails out of chat.
 
 Output:
-- Table: group, customers, revenue share, message, channel. Export spec for Klaviyo and Meta audience lists.
+- Answer first: which groups are worth a message now.
+- Table: group, customers, revenue share, average days since last order, message, channel.
+- The rules to rebuild each group in Klaviyo and Meta.
 
 Never:
 - Nothing changes in any live account. A person on your team makes every change.

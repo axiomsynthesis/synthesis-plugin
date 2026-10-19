@@ -23,19 +23,23 @@ Synthesis tools to use:
 Steps:
 1. Pull `klaviyo_metric metric=flow_funnel`.
 2. Pull `klaviyo_metric metric=flow_step_performance limit=60`.
-3. For each flow, compute click rate and placed-order rate per step from summed counts.
-4. Flag steps whose click rate falls more than half from the step before, and steps with fewer than 1 order per 1,000 delivered.
-5. Name one rewrite or removal per flagged step.
+3. Put each flow's steps in their real order. Use the email names or templates first, and the number of people reached only when they say nothing.
+4. For each flow, compute click rate and placed-order rate per step from summed counts. Give each rate a 95% range, using the Wilson method for a share. Flag a step only when its range sits fully below the step before. Otherwise say there are too few sends to tell, and about how many more sends would settle it.
+5. Flag steps with fewer than 1 order per 1,000 delivered only when the range backs it.
+6. Name one rewrite or removal per flagged step. List common flows that are missing, such as win-back or browse abandon, with when each last sent.
 
 Checks before answering:
 - Open rates are inflated by Apple's privacy auto-opens. Judge on clicks and placed orders, never on opens alone.
 - Klaviyo revenue is last-touch credit on website orders. It cannot see Amazon orders. Never call it email's total effect.
 - Flow numbers cover recent sends, up to the last 12 months, not a fixed window. Say so.
-- The step order is a guess made from how many people each email reached. Where the email names or templates show a different order, use theirs, and say when the order is a guess.
+- Say when the step order is a guess made from how many people each email reached.
+- Later steps reach fewer people because some already bought or left. Compare a step only with the step before it, among people sent both.
 - Say how many orders each verdict rests on, and call anything under 10 orders a hint, not a result.
 
 Output:
-- Answer first. Table with columns flow, step, delivered, click rate, order rate, problem, move.
+- Answer first: the one step that is truly leaking, or that no step has enough sends to call, and the biggest missing flow.
+- Table with columns flow, step, delivered, orders, order rate with its range, problem, move.
+- One move: switch on a 10% held-back group in each flow, who get no email, and read extra website orders after 30 days. Name the read date. Say that a discount in the first welcome email may pay buyers who would have ordered anyway.
 
 Never:
 - Nothing changes in any live account. A person on your team makes every change.

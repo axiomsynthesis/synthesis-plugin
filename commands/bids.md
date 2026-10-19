@@ -17,10 +17,9 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-This turns ad data into a bid sheet a person can upload. Every keyword gets a target bid set from what its product can afford, not from a rule of thumb.
-It covers both directions: cuts on keywords losing money and raises on keywords leaving sales on the table.
+A bid sheet a person can upload. Each keyword's target bid comes from what its product can afford. It cuts keywords losing money and raises keywords leaving sales on the table.
 
-What to read: Every Sponsored Products keyword and product target with its current bid, spend, clicks and sales over a mature window, plus each product's break-even ad cost
+What to read: Every Sponsored Products keyword, product target and automatic target with its current bid, spend, clicks and sales over a mature window, plus each product's break-even ad cost
 What to give me: A ready-to-upload sheet of bid cuts and raises by keyword, each tied to the product's real break-even
 
 Synthesis tools to use:
@@ -28,21 +27,23 @@ Synthesis tools to use:
 - `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=EXACT`
 - `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=PHRASE`
 - `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=BROAD`
+- `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact`
 - `amazon_metric metric=breakeven_acos_ltv months=12 limit=12`
 - `amazon_metric metric=ppc_purchase_latency days=60 limit=10`
 - `export_xlsx`
 
 Steps:
 1. Call `amazon_metric metric=ppc_purchase_latency days=60 limit=10` to see how long sales take to land after a click.
-2. Call `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact` three times, once each with `match_type=EXACT`, `match_type=PHRASE` and `match_type=BROAD`. Leave dates unset: the tool picks a window whose sales have landed. Rows come cuts first, then paid_above_ceiling, hold, below_evidence_floor. Keep the campaign, ad group and target ids. If `paging` says more rows exist, call again with `offset` set to where the next page starts. Stop paging once `action` reaches below_evidence_floor: those go to the skipped tab without reading further.
-3. Call `amazon_metric metric=breakeven_acos_ltv months=12 limit=12`. It takes no offset; if the result says it was split into pages, call again with `result_page` set to the next page. Use the first-order break-even for one-time products and the 3-month figure for products people rebuy. Say which you used.
-4. For each keyword the target is the most it can pay per click and still make money: revenue per click x the product's break-even ad cost share (the tool returns it as `max_profitable_cpc`). Compare the target with the cost actually paid per click, never with the bid. The compact shape has no cpc column, so work it out as spend over clicks: the paid cost often runs well above the bid. Cut where the paid cost is over 15% above target. Raise only where the paid cost is over 25% below target AND the keyword has orders. A keyword paying more per click than its target is never raised, whatever its bid says. The tool's own `suggested_bid` only ever cuts, so work out raises yourself.
-5. Build the sheet with `export_xlsx`: a "changes" tab with campaign id, ad group id, target id, keyword, match type, current bid, new bid, reason; and a "skipped" tab for thin or uncosted keywords.
+2. Call `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact` four times: with `match_type=EXACT`, `match_type=PHRASE`, `match_type=BROAD`, then with match type unset. The last pass adds product and automatic targets. From it keep only target ids not already in hand. Its `totals.spend` is the whole window's spend. Leave dates unset, so the window's sales have landed. Rows come cuts first. Keep the campaign, ad group and target ids. If `paging` says more rows exist, call again with `offset` set to where the next page starts. Stop paging once `action` reaches below_evidence_floor: those go to the skipped tab.
+3. Call `amazon_metric metric=breakeven_acos_ltv months=12 limit=12`. If it is split into pages, call again with the next result_page the result names. Use the first-order break-even for one-time products and the 3-month figure for products people rebuy. Say which you used.
+4. Each keyword's target is the most it can pay per click and still make money: `max_profitable_cpc`, which is revenue per click x the product's break-even ad cost share. Compare it with the cost paid per click (spend over clicks), never with the bid. Cut where the paid cost is over 15% above target. Raise only where it is over 25% below target AND the keyword has orders. A keyword paying more than its target is never raised. The tool's `suggested_bid` only cuts, so work out raises yourself.
+5. Build the sheet with `export_xlsx`: a "changes" tab (campaign id, ad group id, target id, keyword, match type, current bid, new bid, reason) and a "skipped" tab for thin or uncosted keywords.
 
 Checks before answering:
 - Keywords under 20 clicks go to "skipped". Too few clicks to set a bid.
-- A product with no entered product cost has no real break-even. Leave its keywords out and list the product as missing a cost.
-- Say how much of the window's Sponsored Products keyword spend the sheet covers, in dollars and percent. If a read says it was cut, the sheet is partial: say so in the first line, never as a footnote.
+- A product with no entered cost has no real break-even. Leave its keywords out and list it as missing a cost.
+- Say how much of the window's spend the sheet covers, in dollars and percent of `totals.spend` from the call with no match type. If a read says it was cut, the sheet is partial: say so in the first line.
+- This sheet changes base bids only. It cannot yet see a bid robot's goal or placement premiums. Where paid cost per click runs well above the bid, something else sets the price: say so first, with the dollars a bid upload cannot reach.
 - Never set a bid below Amazon's minimum. Cap any single change at 30%, so one sheet cannot swing the account.
 
 Output:
@@ -53,7 +54,6 @@ Output:
 Never:
 - Never upload or change bids in the account. A person uploads the file.
 - Never guess a missing product cost.
-- Never judge keywords on a window that is still collecting sales.
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.

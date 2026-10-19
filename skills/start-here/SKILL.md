@@ -57,7 +57,7 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/adcopy` | Write ad copy for every buyer stage |
 | `/adloss` | Find ads that lose money after product cost |
 | `/adroi` | Which Meta ads lose or make money |
-| `/afford` | Can we afford this order? |
+| `/afford` | Test a purchase order (needs your cash balance) |
 | `/allprofit` | Whole-business profit, every channel |
 | `/amazonprofit` | Amazon profit after every fee and cost |
 | `/bids` | Build the keyword bid change sheet |
@@ -65,7 +65,7 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/cancels` | Why subscribers cancel, and what to change |
 | `/costup` | A cost went up. Now what? |
 | `/deals` | Did that deal make money? |
-| `/fees` | Catch Amazon fee overcharges |
+| `/fees` | Check for Amazon fee jumps |
 | `/flows` | Where your email flows lose people |
 | `/halo` | Does Meta grow your Amazon sales? |
 | `/health` | Is all my data fresh? |
@@ -76,13 +76,13 @@ tell them to type /start: it shows the shortcuts for their job and runs the firs
 | `/mer` | Is all your marketing paying, together? |
 | `/mix` | Was it price, volume or mix? |
 | `/newads` | Check the ads I just launched |
-| `/nextdollar` | Where should the next ad dollar go? |
+| `/nextdollar` | What each channel must return to earn the next dollar |
 | `/payback` | How fast does a new customer pay back? |
-| `/ppv` | Profit per website visitor |
+| `/ppv` | Profit per website visit |
 | `/price` | What happens if you change the price? |
-| `/profit` | Which products actually make money? |
+| `/profit` | Which Amazon products actually make money? |
 | `/reorder` | What to reorder, and the purchase order to send |
-| `/returning` | Is growth from new or old customers? |
+| `/returning` | Is website growth from new or old customers? |
 | `/reviews` | Turn reviews into selling lines |
 | `/risk` | What if we lost our biggest one? |
 | `/rivals` | Who's stealing your search shoppers? |

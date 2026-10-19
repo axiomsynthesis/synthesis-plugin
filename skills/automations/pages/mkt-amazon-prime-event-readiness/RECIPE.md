@@ -28,7 +28,7 @@ Steps:
 1. Ask the person for the event date and the products in the event.
 2. Call `amazon_metric metric=stockout_forecast limit=200` and read each product's `events` for this sale (`x_normal`, `extra_units`, `extra_units_high`) and `late_runs_out`. Use `amazon_metric metric=velocity_momentum weeks=52 asin=<asin>` only for a product with no event history.
 3. Use the `late_runs_out` date from step 2, not days of cover, because days of cover does not include the event lift. Will each product cover the event at last year's lift plus two weeks after?
-4. Call `amazon_metric metric=buybox_health days=30 limit=40` and `amazon_metric metric=rating_watch days=60 limit=30`. Flag products below 90% buy box or with a rating step down.
+4. Call `amazon_metric metric=buybox_health days=30 limit=40` and `amazon_metric metric=rating_watch days=60 limit=30`. Use `days_below_sla` and `avg_buy_box_pct` (the day average), not `wtd_buy_box_pct`. A product fails at 3 or more days under 90% in 30. Also flag a rating step down.
 5. Call `amazon_metric metric=ppc_budget_utilisation days=30 limit=50`. Campaigns that cap out now will cap out by morning on event day.
 6. Call `shelf_history marketplace=amazon days=30` for your own recent prices. A deal must beat the recent low Amazon checks against. Remind the person to confirm the exact rule in Seller Central. This history is weekly and misses deal days, so take the recent low from Seller Central.
 
@@ -36,9 +36,12 @@ Checks before answering:
 - Stock is Amazon's live count. Quote Amazon's update time. Count inbound units only if they will be checked in before the event; stock moving between Amazon warehouses usually returns within days.
 - A product with no event last year has no lift to borrow. Use the family's lift and say so.
 - Never state Amazon's deal eligibility rules as fact. They change. Point to Seller Central.
+- The budget column is per campaign, not per product. No tool maps campaigns to products yet. Say so, never fill it by guess.
+- If the last 30 days held a big sale, budget caps from that window run high. Say so.
+- The check-in cut-off is not computed. Take it from Seller Central.
 
 Output:
-- One line: how many products are ready.
+- One line first: go or fix, how many products are ready, and the first fix with its date.
 - A table: product, stock ready, buy box, rating, budget, deal price check, fix and by when.
 
 Never:

@@ -32,7 +32,7 @@ Steps:
 1. Call `shopify_metric` with `metric=profit` and `month=` set to last month.
 2. If the result has `no_headline_reason`, there is no profit to state. Say why in plain words, list the products in `uncosted_products`, and say entering their costs on the costs page fixes it. Still show the lines that are real.
 3. Read every entry in `column.lines` when present. Sort them into three groups: counted, estimated, and not connected.
-4. Call `net_revenue_dtc` with the same month. If its revenue differs from the column's sales by more than 5%, say the two count sales differently and that the Profit page figure is the one used.
+4. Call `net_revenue_dtc` with the same month. If its revenue differs from the column's sales by more than 5%, state both figures. Then say which orders make the difference, usually orders another marketplace or TikTok Shop sent into the store. Read `column.marketplace_sales` for that amount. Never pick one figure and drop the other.
 5. Read `ad_columns`. Show profit before ads, then each ad platform's spend beside it, then `profit_after_all_listed_ads` as the worst case if every ad dollar went to the website.
 6. Call `operator_inputs` with `section=cogs` to check costs are entered for the products the website sells.
 
@@ -42,6 +42,7 @@ Checks before answering:
 - A margin above 70% on physical products almost always means costs are missing. Say that, and do not call the channel very profitable.
 - Meta and Google ads can send buyers to Amazon too. Never take all of their spend off the website and call that its profit. Show the range.
 - Use a closed month. The current month is still taking orders and refunds.
+- If `column.marketplace_sales` is more than a small share of sales, most of this profit is not from the website's own shoppers. Say so in the first line. Any commission that marketplace takes is not counted yet, so that share reads high.
 
 Output:
 - One line first: website profit before ads for the month, its share of sales, and how many cost lines are missing.

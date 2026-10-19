@@ -1,5 +1,5 @@
 ---
-description: "Find your next product in search demand: Searches where shoppers want something you don't sell and the shelf is weak, ranked by demand"
+description: "Find your next product in search demand: Searches for things you could make but don't sell, on a weak shelf, sized in yearly revenue"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -17,41 +17,44 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Finds searches where shoppers want something you do not sell, and where the products that show up are weak. It ranks the ideas by demand and by how easy the shelf looks to win.
+Finds searches where shoppers want something you do not sell and the products that win are weak. It keeps only ideas the brand could make, sizes each in yearly revenue, and ranks them.
 
-What to read: Search data, rival listings
-What to give me: Searches where shoppers want something you don't sell and the shelf is weak, ranked by demand
+What to read: Amazon search data, the winners on each search, rival reviews, what the brand makes
+What to give me: Searches for things you could make but don't sell, on a weak shelf, sized in yearly revenue
 
 Synthesis tools to use:
-- `amazon_metric metric=search_term_gaps limit=15 kind=NOT_SURFACING`
-- `amazon_metric metric=keyword_opportunities`
-- `amazon_metric metric=search_query_performance`
-- `scrape_amazon_search`
+- `amazon_metric metric=search_term_gaps limit=15 kind=NOT_SURFACING weeks=12`
+- `amazon_metric metric=search_query_performance scope=nonbranded top=25`
+- `brand_facts`
 - `competitor_review_voice`
-- `google_trends`
+- `scrape_amazon_search`
 
 Steps:
-1. Call `amazon_metric` with `metric=search_term_gaps`, `limit=15` and `kind=NOT_SURFACING` for searches near your products where you do not show. A bigger limit returns too much to read.
-2. Call `amazon_metric` with `metric=keyword_opportunities` and `top=5` for search volume and how crowded each search is.
-3. Gap rows carry no search volume. Take each gap search's volume from step 2, or from `amazon_metric` with `metric=search_query_performance`. A gap search with no volume in either stays without a demand number.
-4. For the top 3 searches, call `scrape_amazon_search` with that `keyword` and `k=20` to read the shelf: price, rating, reviews.
-5. Call `competitor_review_voice` with `limit=50` for what rival customers complain about, which points to the gap.
-6. Call `google_trends` with the top 3 searches and `timeframe="today 12-m"` to check the demand is growing, not fading.
+1. Call `amazon_metric` with `metric=search_term_gaps`, `limit=15`, `kind=NOT_SURFACING` and `weeks=12`. These are searches near your products where Amazon never shows you. Searches for a rival's brand name and off-category searches are already set aside.
+2. Call `amazon_metric` with `metric=search_query_performance`, `scope=nonbranded` and `top=25`. For each gap, find the nearest search you do show on. Take its purchases per search (market purchases divided by searches).
+3. Shelf strength, free, from the gap rows: add the top 3 winners' click shares. Under 30% is open, 30% to 60% is contested, over 60% is locked. Winnable share: 5% if open, 2% if contested, 0 if locked. Say these shares are rules of thumb.
+4. Trend, free: call `amazon_metric` with `metric=search_term_gaps`, `kind=NOT_SURFACING` and `weeks=4`. A term whose best rank in the last 4 weeks matches its 12-week best is holding or rising. Much worse means fading.
+5. Fit: call `brand_facts`. Mark FIT yes only if the idea is a format or formula the brand already makes, or its supplier lists. Otherwise FIT no, and say why.
+6. Size each FIT yes idea: weekly searches x 52 x purchases per search x winnable share x price. For price, use the brand's own price for its nearest product.
+7. Call `competitor_review_voice` with `asin` set to each winner of the top 2 ideas. It only works for products on your watchlist. Say so when one is not.
+8. Only if the person asks, call `scrape_amazon_search` with that `keyword` and `k=20` for the top idea's shelf prices and ratings. It is paid.
 
 Checks before answering:
-- Search volume is an estimate. Say so and round it.
-- Google Trends is a relative index with no volume in it. Never call it searches a month.
-- If a shelf read fails, say the search could not be checked. Never call it an easy shelf.
+- Search counts are the biggest single week, not a month. Call them searches a week, rounded, as estimates.
+- A gap with no search count stays unsized. Never fill it. This cannot yet estimate volume from search rank alone.
 - Leave out searches for products you already sell.
-- Every shelf read and trend check spends a paid search allowance. Make at most three shelf reads and one trend check per run, and ask before doing more.
+- A search for a part or refill that fits another brand's device is an add-on play. List it on its own.
+- Revenue is sized before costs. Margin, launch and stock costs are not in it. Say so.
+- Duplicate rival reviews across two listings count once.
 
 Output:
-- One line first: the single best idea and the demand behind it.
-- A table of up to 10 ideas: search, searches a month, top rival rating, average price, trend, why it is open.
+- One line first: the single best FIT yes idea, its yearly revenue size, and why the shelf is open.
+- A table of up to 10 ideas: search, searches a week (estimate), top-3 click share, trend, fit, yearly size.
+- Then FIT no ideas in one line each.
 
 Never:
 - Never launch, list or order anything. A person decides.
-- Never make up a search volume or a rival's rating.
+- Never make up a search count, a share or a rival's rating.
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.

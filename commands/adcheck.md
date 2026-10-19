@@ -40,11 +40,14 @@ Checks before answering:
 - Where a platform says "not enough data to judge", give no verdict for that platform.
 - Each dollar figure says what it measures: some are money wasted, some are spend exposed to a problem. Never add them up as savings.
 - Not applicable means the platform is not connected or the thing checked does not exist for this brand. Do not list those as passes.
+- These are housekeeping checks. None of them judges whether a platform's return beats break-even, the return at which ads stop making money. So "0 failed" on a platform never means its spend is profitable. Say this plainly.
+- A dollar figure on a failure is often spend exposed to a problem, not money lost. Say "spend exposed" when that is what it measures.
 
 Output:
 - One line first: the headline the tool returned.
 - A table of failures in the order returned: platform, check, dollars a month, what the number measures, why.
 - The coverage line, then one line per platform with its verdict.
+- One line: this check cannot yet say what share of last month's ad spend had its return judged against break-even. Point to /adloss for Amazon ad profit and /adroi for Meta website ads.
 - The top three fixes, each with the recipe that builds its change list.
 - Under 20 lines in total.
 

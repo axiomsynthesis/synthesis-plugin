@@ -11,10 +11,10 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Divides the ad spend that sends shoppers to the website by the new website customers it won, for one cost per new customer over the last 90 days. It then follows earlier months' customers to see how many months their spending takes to pay that cost back after product cost.
+Divides ad spend that sends shoppers to the website by the new website customers it won, over the same three closed months. It then follows earlier customers to see how many months their profit, after product cost, shipping and card fees, takes to pay that cost back.
 
 What to read: Ad spend that sends shoppers to the website, new website customers and their cumulative value by acquisition month
-What to give me: Months to earn back the cost of a new website customer, set against how each month's customers have spent since
+What to give me: Months to earn back a new website customer's cost from profit after product cost, shipping and fees
 
 Synthesis tools to use:
 - `cost_rules for=grw-cac-payback`
@@ -24,30 +24,36 @@ Synthesis tools to use:
 - `tiktok_metric metric=spend_trend months=4`
 - `new_customers_dtc month=<YYYY-MM>`
 - `shopify_metric metric=cohort_ltv_censor_safe`
+- `shopify_metric metric=profit month=YYYY-MM`
+- `first_order_contribution_margin`
 
 Steps:
-1. Call `meta_metric metric=weekly_trend weeks=13` first and read `destination_check.total_spend` and `amazon_bound_spend`. Spend pointing at Amazon is not a website cost. Then call `meta_metric metric=ad_destinations days=90` only to split the rest into website and Walmart. It covers the top ads only. What is left after Amazon, website and Walmart is the no known destination line, shown on its own.
-2. Call `google_ads_metric metric=efficiency_trend weeks=13` and add the 13 full weeks. Subtract each week's `amazon_bound_spend`, because that spend points at Amazon.
-3. Call `tiktok_metric metric=spend_trend months=4` and count only `auction_spend` for the months in the window. Shop ad spend sells inside TikTok Shop, not on the website, so leave it out.
-4. Call `new_customers_dtc` for each of the last three closed months and add them.
-5. Cost per new website customer = website spend over new website customers. Give a low figure with known website spend only, and a high figure that adds the spend with no known destination.
-6. Call `shopify_metric metric=cohort_ltv_censor_safe` for cumulative website value per customer by acquisition month.
-7. Ask for gross margin if unknown. Payback month = first month where a cohort's value times margin passes the cost.
+1. Use the last three closed calendar months for every spend and customer count.
+2. Call `meta_metric metric=weekly_trend weeks=13`. Add the spend of weeks that start inside the three months, minus each week's `amazon_bound_spend`. Then call `meta_metric metric=ad_destinations days=90` only to split the rest into website, Walmart and no known destination. Top ads only.
+3. Call `google_ads_metric metric=efficiency_trend weeks=13`. Same weeks, minus each week's `amazon_bound_spend`.
+4. Call `tiktok_metric metric=spend_trend months=4`. Keep `auction_spend` for the three months as a destination unknown line. Leave shop ad spend out. It sells inside TikTok Shop.
+5. Call `new_customers_dtc` for each of the three months and add them.
+6. Cost per new customer = website spend over new customers. Low figure: known website spend only. High figure: add no known destination and TikTok auction spend.
+7. Call `shopify_metric metric=profit` for the latest month. From `column`: product cost share of sales, card fee share of sales, shipping per order (shipping line over `orders`) and average order value (sales over `orders`).
+8. Call `shopify_metric metric=cohort_ltv_censor_safe` for cumulative sales per customer by acquisition month. Orders per customer = that over average order value, an estimate.
+9. Profit per customer = cumulative sales times (1 minus product cost share minus card fee share), minus orders per customer times shipping per order. Payback month = first month it passes the cost. Never use a gross margin alone.
+10. Call `first_order_contribution_margin` with `price=` the average order value, `cogs=`, `misc=` the shipping per order and `cac=` the cost per new customer.
 
 Checks before answering:
 - If a customer tool returns gated, do not state the number. Give its refusal reason.
-- The spend window is the last 90 days and the customer count is the last three closed months. Say they overlap but do not match to the day.
-- Young cohorts are unfinished. Leave immature cells blank and never read them as low.
-- Shopify new means first website order, not first purchase from the brand anywhere. Say so.
-- Never add spend that points at Amazon or sells inside TikTok Shop to the website cost. Say how much was left out and why.
-- TikTok auction spend carries no destination in these reads. It is counted as website spend. Say so, because any of it that points at Amazon makes the cost read high.
-- Google Ads campaign spend is kept only from where its history starts. Never use a month it does not reach.
-- Use website cohorts only. The brand-wide cohort tables are built from Amazon orders and must not be mixed in.
+- Weeks do not match months to the day. Say so.
+- Young cohorts are unfinished. Leave immature cells blank, never read them as low.
+- New means first website order. A long-time Amazon buyer counts as new, so cost per new customer reads low. Say so.
+- Never add Amazon-bound or TikTok Shop spend to the website cost. Say how much was left out.
+- Use website cohorts only. Brand-wide cohort tables are built from Amazon orders.
+- Costs the profit column marks not connected make payback read fast. Name them.
+- Email and retention spend on repeat orders is not taken off yet, so payback reads a little fast.
 
 Output:
-- Answer first: cost per new website customer as a low and high figure, and payback in months.
+- Answer first: does a new website customer pay back, and in how many months? Cost per new customer as low and high. If no cohort pays back within 12 months, say so plainly.
 - Table: spend by source counted and left out, new customers, cost each.
-- Table by acquisition month: value at month 1, 3, 6 and 12, payback month.
+- Table by acquisition month: profit per customer at month 1, 3, 6 and 12, payback month.
+- One line: whether the first order alone covers its cost.
 
 Never:
 - Nothing changes in any live account. A person on your team makes every change.

@@ -1,26 +1,26 @@
 ---
-description: "Catch Amazon fee overcharges: Every product whose Amazon fee per unit jumped, and what it costs you"
+description: "Check for Amazon fee jumps: Every product whose fee per unit or referral rate changed, and what it costs"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
 
-# Catch Amazon fee overcharges
+# Check for Amazon fee jumps
 
 Channel: Money · Level: Advise · Status: Ready now
 
 Follow these instructions when someone asks to run this automation.
 
 ---
-Run the Synthesis automation "Catch Amazon fee overcharges" (id: amazon-fee-overcharge-check, Money).
+Run the Synthesis automation "Check for Amazon fee jumps" (id: amazon-fee-overcharge-check, Money).
 
 Use the Synthesis tools connected in this Claude for my brand's real numbers. Do not guess a number. If a figure is missing, say so plainly.
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Finds Amazon fees that jumped for no business reason, like a product re-measured into a bigger size tier or a referral rate that crept up. It sizes each change in dollars a month and says which ones are worth a case with Amazon.
+Finds Amazon fees that changed for no business reason, like a product re-measured into a bigger size tier or a referral rate that crept up. It sizes each change in dollars a month and says which ones are worth a case with Amazon. It finds changes only. A fee that was wrong from the start, or a storage, placement or returns fee, is not checked yet.
 
 What to read: Amazon settlement fees by product
-What to give me: Every product whose Amazon fee per unit jumped, and what it costs you
+What to give me: Every product whose fee per unit or referral rate changed, and what it costs
 
 Synthesis tools to use:
 - `cost_rules for=amazon-fee-overcharge-check`
@@ -32,7 +32,7 @@ Synthesis tools to use:
 Steps:
 1. Call `amazon_metric` with `metric=fee_anomaly` and `months=6` to get per-unit fulfilment fee step changes and referral rate drift by product.
 2. Call `amazon_metric` with `metric=fee_rate_trend` and `months=12` to see whether fees as a share of sales are creeping across the whole catalog.
-3. Call `amazon_metric` with `metric=fee_breakdown` and `month=YYYY-MM` set to the latest closed month to put the changes next to total referral and fulfilment fees. If the tool marks that month as still posting, use the month before.
+3. Call `amazon_metric` with `metric=fee_breakdown` and `month=YYYY-MM` set to the latest closed month to put the changes next to total referral and fulfilment fees. If it marks that month still posting while the fee change tool counts it closed, say the two disagree and use the month before for totals only.
 4. For each product with a step change, use `find_product` to name it the way the brand does, and multiply the change per unit by last month's units for the monthly cost.
 5. Rank by monthly cost and mark the ones that look like a size tier or weight change.
 
@@ -41,9 +41,12 @@ Checks before answering:
 - A step change needs at least two weeks at the new fee before it counts. One odd order is not a change.
 - If the fee tools return nothing or an error, say the fee data could not be read. Never report "no overcharges" from an empty result.
 - Check the change against a price change. A referral fee rises with price, and that is not an overcharge.
+- "Per unit" is really per order line. A month with many multi-unit orders can look like a jump. Say so beside any jump.
+- If fees as a share of sales rose with no product jump, say it is mix or price, a pricing and pack-size question, not a case to open.
 
 Output:
-- One line answer first: how much a month the fee changes cost.
+- One line answer first: open a case or not, and how much a month the fee changes cost.
+- One line on fees as a share of sales over 12 months, and what drove it.
 - A table: product, old fee per unit, new fee per unit, date it changed, units a month, cost a month, likely cause.
 - One move: which product to open a case for first, and what to ask Amazon to re-measure.
 

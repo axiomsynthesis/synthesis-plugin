@@ -26,23 +26,28 @@ Synthesis tools to use:
 - `cost_rules for=money-walmart-profit-every-fee`
 - `walmart_metric metric=profit month=YYYY-MM`
 - `walmart_metric metric=payouts periods=6`
+- `walmart_metric metric=orders_trend months=12`
 - `operator_inputs section=cogs`
 
 Steps:
 1. Call `walmart_metric` with `metric=profit` and `month=` set to last month.
 2. If the result has `no_headline_reason`, there is no profit to state. Say why and list `uncosted_products`. Still show the lines that are real.
-3. Read every entry in `column.lines` and `column.tie_out`. Sort the lines into counted, estimated (orders not paid out yet) and not connected.
-4. Call `walmart_metric` with `metric=payouts` and `periods=6` for what Walmart paid out and its fee rates per payout.
-5. Call `operator_inputs` with `section=cogs` to check costs are entered for the products Walmart sells.
+3. If the month has no orders, call `walmart_metric` with `metric=orders_trend` and `months=12`. Find the last month with orders and say the channel has sold nothing since then. Stop there.
+4. Read every entry in `column.lines` and `column.tie_out`. Sort the lines into counted, estimated (orders not paid out yet) and not connected.
+5. Call `walmart_metric` with `metric=payouts` and `periods=6` for what Walmart paid out and its fee rates per payout.
+6. Call `operator_inputs` with `section=cogs` to check costs are entered for the products Walmart sells.
 
 Checks before answering:
 - Read `data_quality_flags` first. If `gated` is true, there is no number: give the reason.
 - If `tie_out` shows our sales do not match Walmart's own record, say so before any profit.
 - A payout period is not the same orders as a sales month. Use the profit column for profit and the payouts only for rates and what is unpaid.
 - A small month swings on a handful of orders. Say how many orders the month holds.
+- A connected account with no orders is a stopped channel, not an unconnected one. Never call it unconnected. Say the date it last sold.
+- Check the date of the newest payout. If it is more than a month old while orders still come in, say the payouts may be stale and the fee rates may be out of date.
+- Walmart Connect ad spend is not read yet. If the brand runs Walmart ads, profit here reads too high. Say so in plain words.
 
 Output:
-- One line first: Walmart profit for the month, its share of sales, settled or partly estimated.
+- One line first: Walmart profit for the month, its share of sales, settled or partly estimated. If the channel has stopped selling, that line is the date it last sold and nothing else.
 - A table: line, dollars, share of sales, counted / estimated / not connected.
 - Two lines: what Walmart takes per $100 of sales, and the amount not yet paid.
 - One move: the one fee or cost to work on first.

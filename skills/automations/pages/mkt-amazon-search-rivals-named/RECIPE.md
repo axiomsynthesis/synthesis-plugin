@@ -18,12 +18,12 @@ What to read: Amazon's top clicked products on your own search terms, with their
 What to give me: The named rival products winning shoppers on your searches, and which of your searches each one threatens
 
 Synthesis tools to use:
-- `amazon_metric metric=search_competitors grain=week periods=4 top=20`
+- `amazon_metric metric=search_competitors periods=4 top=20`
 - `scrape_amazon_product`
 - `amazon_metric metric=shelf_position days=30 limit=40`
 
 Steps:
-1. Call `amazon_metric metric=search_competitors grain=week periods=4 top=20`. Rivals and terms come back over several pages. Call again with the next `result_page` until all 20 rivals are in hand. Skip terms whose `search_relevance` is off_category.
+1. Call `amazon_metric metric=search_competitors periods=4 top=20`. It reads by week when no grain is given. Rivals and terms come back over several pages. Call again with the next result_page the result names until all 20 rivals are in hand. Skip terms whose `search_relevance` is off_category. If the latest week holds a marketplace event, such as Prime Day, Big Deal Days or Black Friday, or its `contested_volume_change_pct` is above 25%, judge the change on the prior clean week. Say so in the first line.
 2. Rank rivals by the number of your searches where they are in the top three clicked, then by click share.
 3. Call `amazon_metric metric=shelf_position days=30 limit=40` first. It already holds price, rating and review count for tracked rivals, and shows whether they cut price recently.
 4. Scrape only top-three rivals missing from it: call `scrape_amazon_product asin=<rival product id>` for live price, rating and reviews. Ask before more than three scrapes: they draw on a shared monthly allowance.
@@ -31,6 +31,8 @@ Steps:
 Checks before answering:
 - Rival data comes from Amazon's top-three clicked list. A rival outside the top three is invisible here. Say so.
 - Shares are percentages already. Never rescale.
+- Click share is not dollars. This answer cannot yet say what a rival costs you in sales. Say so if asked "how much".
+- A review count that jumps or falls by hundreds in a week is usually a change in how reviews are counted, not real reviews. Say so, never call it a trend.
 - Scraped data is a snapshot from a third-party source. Label it scraped, with the date.
 - If the tool returns no rivals, check whether search data is loaded before saying you have none.
 

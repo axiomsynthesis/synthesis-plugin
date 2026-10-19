@@ -35,13 +35,15 @@ Steps:
 1. Use `find_product` to pin the exact product the person means.
 2. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`. From the last fully settled month take that product's price per unit, units, Amazon fees per unit and product cost per unit. Split the fees into the share of price Amazon keeps and the fixed fees per unit. The referral share is `referral_fee` over `settled_principal`. The fixed fee is `fba_fee` over units.
 3. If the product cost is missing there, call `operator_inputs` with `section=cogs`.
-4. Look for a past price change on this product: `brand_brain` with `action=moves`, `kind=price_change` and the product's page. If one exists, call `query_series` with `metric=units`, `grain=week` and the `asin` over the weeks around it, and estimate how units moved for that price move (the elasticity). Say how you estimated it.
-5. Call `run_scenario` with `scenario_type=price_change`, the `price_change_pct`, `unit_price`, `unit_cogs`, `fee_pct` (the referral share), `unit_fees` (fixed fees per unit), `units_per_month` and `months=6`. Always pass `unit_price` and `units_per_month` from the last settled month. If they are left out, the tool works them out from a longer window and they will not match that month. Pass `elasticity` and an `elasticity_sigma` at least half its size only when step 4 found a past move.
+4. Do not estimate how buyers react to price (the elasticity) by hand from one move. The weeks around a single move also carry ads, deals and season, so the number comes out wrong. List past price changes on this product with `brand_brain` with `action=moves`, `kind=price_change` and the product's page, and show units around them with `query_series` with `metric=units`, `grain=week` and the `asin`, as context only. Pass an elasticity only when the person gives one that was measured, and say where it came from. Otherwise give the break-even and propose a 4-week price test on one pack size.
+5. Call `run_scenario` with `scenario_type=price_change`, the `price_change_pct`, `unit_price`, `unit_cogs`, `fee_pct` (the referral share), `unit_fees` (fixed fees per unit), `units_per_month` and `months=6`. Always pass `unit_price` and `units_per_month` from the last settled month. If they are left out, the tool works them out from a longer window and they will not match that month. Pass `elasticity` and an `elasticity_sigma` at least half its size only for a measured elasticity from step 4.
 
 Checks before answering:
 - If product cost is missing, stop and say so. A price test without cost is not a profit test.
 - Always pass the fees. Without them the tool's margin is price minus product cost only, which on Amazon overstates it by a third or more.
-- With no past price change there is no elasticity, and the tool returns the break-even (how much volume the change can lose and still pay) and a table of what-ifs, not odds. Give those, say plainly that the odds need a short price test, and never invent an elasticity.
+- There is no tool yet that measures elasticity from past price moves. So the answer cannot give odds unless the person supplies a measured one. Say so.
+- The break-even is on profit before ads. A higher price can lower conversion and raise ad cost per unit, which this does not include. Say so.
+- With no measured elasticity the tool returns the break-even (how much volume the change can lose and still pay) and a table of what-ifs, not odds. Give those, say plainly that the odds need a short price test, and never invent an elasticity.
 - Never state a single profit number. Give the break-even, and the range and odds when an elasticity exists.
 
 Output:
@@ -51,7 +53,7 @@ Output:
 
 Never:
 - Never change a price in any account. A person does that.
-- Never invent a past price change or a cost.
+- Never invent a past price change, an elasticity or a cost.
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
