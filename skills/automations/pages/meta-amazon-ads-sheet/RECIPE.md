@@ -14,7 +14,7 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 What it does:
 Fills your Meta to Amazon ads sheet: tabs for last week, the month so far, all time, and raw data with one row per ad per week. Each tab is broken out by product. Every ad shows spend, Amazon sales, ROAS, orders, clicks, cost per click, conversion rate and a link to watch it. Last week's tab also lists the top ads, new possible winners and ads dropping fast.
 
-What to read: Meta ad spend, Amazon Attribution sales, your ad link tracker
+What to read: Meta ad spend, Amazon Attribution sales, your ad link tracker or your own ad links
 What to give me: Weekly, month to date, all time and raw data tabs, broken out by product, for every Meta ad that sends shoppers to Amazon, each with a link to watch the ad
 
 Synthesis tools to use:
@@ -34,6 +34,7 @@ Steps:
 
 Checks before answering:
 - If a result says unavailable, say why in one line and stop. Never fill a tab with zeros.
+- If it says no_linked_ads, give its reason and action in one line and stop. If error, say it is not a zero.
 - If the sheet cannot be opened or edited, say so and hand back the file. Never call the sheet updated unless the write returned no error.
 - When a result says it has not settled, put its settling note above that tab. Amazon keeps crediting orders for 14 days after a click, so recent weeks will still rise.
 - Ads that share one Amazon link are one row. Never split their sales between them.
