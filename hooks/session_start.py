@@ -267,7 +267,8 @@ def _start_update_check() -> tuple[threading.Thread, list, float]:
         try:
             import _update_check            # lazy: an import error here is rule 1 too
             line = _update_check.notice()
-            if line == _update_check.NOTICE:   # the fixed string, or nothing
+            # One of the two fixed strings, or nothing.
+            if line in (_update_check.NOTICE, _update_check.SELF_UPDATING):
                 box.append(line)
         except Exception:                   # noqa: BLE001 — rule 1
             pass

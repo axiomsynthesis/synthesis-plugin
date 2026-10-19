@@ -181,9 +181,129 @@ def served(have: str, now: float | None = None) -> str:
 
 
 def notice() -> str:
-    """NOTICE when the served version differs from the installed one, else ''."""
+    """The line to print: SELF_UPDATING when this hook just started the update
+    itself, NOTICE when a newer version is served and it could not, else ''."""
     have = installed()
     if not have:
         return ""
     serve = served(have)
-    return NOTICE if serve and serve != have else ""
+    if not serve or serve == have:
+        return ""
+    if self_update(serve):
+        return SELF_UPDATING
+    return NOTICE
+
+
+# ---------------------------------------------------------------------------
+# Updating ourselves when the person asked for it and Claude Code will not
+# ---------------------------------------------------------------------------
+# WHY (2026-10-18). The founder turned auto-update on (autoUpdate true on our
+# marketplace, in settings.json and in Claude Code's own known_marketplaces.json)
+# and his copy still sat 12 days behind. The desktop app starts the Claude Code
+# inside it with DISABLE_AUTOUPDATER=1, because the app updates Claude Code
+# itself, and that switch also stops Claude Code updating marketplaces. So for
+# anyone using Synthesis in the desktop app, "turn on auto-update" did nothing.
+#
+# So the hook does what Claude Code would have done, ONLY when all of these hold:
+#   * the person turned auto-update on for our marketplace (their own choice),
+#   * Claude Code's own updater is switched off in this process
+#     (DISABLE_AUTOUPDATER), so this never races Claude Code doing it itself,
+#   * a newer version is served, and this hook has not already tried it,
+#   * a `claude` command can be found to run the update with.
+# It runs Claude Code's own update commands, detached, so the session never
+# waits on it. Nothing the server sends is passed to the command: the commands
+# and the marketplace name are fixed strings in this file.
+SELF_UPDATING = (
+    "Synthesis update: tell the person this once, as one line at the end of your "
+    "first answer, word for word, and never repeat it: \"Synthesis is installing "
+    "its latest update in the background. Open a new chat in a minute to use it.\""
+)
+SELF_UPDATE_FILE = "self_update.json"
+SELF_UPDATE_RETRY_S = 6 * 3600
+_UPDATE_ARGS = (("plugin", "marketplace", "update", MARKETPLACE),
+                ("plugin", "update", f"{PLUGIN}@{MARKETPLACE}"),
+                ("plugin", "update", f"synthesis-design@{MARKETPLACE}"))
+
+
+def _claude_dir() -> str:
+    return (os.getenv("CLAUDE_CONFIG_DIR") or "").strip() or os.path.join(
+        os.path.expanduser("~"), ".claude")
+
+
+def auto_update_opted_in() -> bool:
+    """True when the person turned auto-update on for OUR marketplace, read where
+    they set it (settings.json) or where Claude Code copies it."""
+    places = ((os.path.join(_claude_dir(), "settings.json"), ("extraKnownMarketplaces", MARKETPLACE)),
+              (os.path.join(_claude_dir(), "plugins", "known_marketplaces.json"), (MARKETPLACE,)))
+    for path, keys in places:
+        try:
+            with open(path, encoding="utf-8") as fh:
+                node = json.load(fh)
+            for k in keys:
+                node = node.get(k) if isinstance(node, dict) else None
+            if isinstance(node, dict) and node.get("autoUpdate") is True:
+                return True
+        except Exception:                   # noqa: BLE001 — unreadable: not opted in
+            continue
+    return False
+
+
+def claude_updater_off() -> bool:
+    return (os.getenv("DISABLE_AUTOUPDATER") or "").strip().lower() not in ("", "0", "false", "no")
+
+
+def claude_cli() -> str | None:
+    """A `claude` command to run the update with: the one on PATH, the standard
+    install, or (macOS) the newest copy the desktop app keeps for itself."""
+    import glob
+    import shutil
+    found = shutil.which("claude")
+    if found:
+        return found
+    home = os.path.expanduser("~")
+    local = os.path.join(home, ".local", "bin", "claude")
+    if os.path.isfile(local) and os.access(local, os.X_OK):
+        return local
+    bundled = glob.glob(os.path.join(home, "Library", "Application Support", "Claude",
+                                     "claude-code", "*", "*", "claude.app", "Contents",
+                                     "MacOS", "claude"))
+    bundled = [p for p in bundled if os.access(p, os.X_OK)]
+    return max(bundled, key=os.path.getmtime) if bundled else None
+
+
+def _self_update_path() -> str:
+    return os.path.join(os.path.expanduser("~"), ".synthesis", SELF_UPDATE_FILE)
+
+
+def _already_tried(serve: str, now: float) -> bool:
+    try:
+        with open(_self_update_path(), encoding="utf-8") as fh:
+            c = json.load(fh)
+        return c.get("served") == serve and now - float(c.get("started_at", 0)) < SELF_UPDATE_RETRY_S
+    except Exception:                       # noqa: BLE001 — never tried, or unreadable
+        return False
+
+
+def self_update(serve: str, now: float | None = None) -> bool:
+    """Start the update in the background. True only when it was started now."""
+    now = time.time() if now is None else now
+    if not (auto_update_opted_in() and claude_updater_off()) or _already_tried(serve, now):
+        return False
+    cli = claude_cli()
+    if not cli:
+        return False
+    import shlex
+    import subprocess
+    script = " ; ".join(" ".join(shlex.quote(a) for a in (cli,) + args) for args in _UPDATE_ARGS)
+    try:
+        path = _self_update_path()
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        # Stamped BEFORE starting, so a crash here cannot loop a retry every session.
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump({"served": serve, "started_at": now, "cli": cli}, fh)
+        log = open(os.path.join(os.path.dirname(path), "self_update.log"), "a", encoding="utf-8")
+        subprocess.Popen(["/bin/sh", "-c", script], stdin=subprocess.DEVNULL, stdout=log,
+                         stderr=log, start_new_session=True, close_fds=True)
+        return True
+    except Exception:                       # noqa: BLE001 — rule 1: fall back to the notice
+        return False
