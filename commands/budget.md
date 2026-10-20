@@ -18,7 +18,7 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 
 What it does:
 Raises or cuts the daily budget on the Meta ad sets you name, or moves their end date.
-It works in your own signed-in Ads Manager, because no Meta connection can change a budget today.
+It uses the Synthesis ad change tools where the brand has them switched on, and your own signed-in Ads Manager otherwise.
 It also puts back budgets Meta raised on its own when an ad set was published.
 
 What to read: Each named ad set's daily budget, end date, last 7 closed days of spend, sales and cost per sale, then the same ad set read back live after the change
@@ -36,16 +36,17 @@ Steps:
 2. Call `meta_metric` with `metric=ad_returns` and `limit=50` for 7-day spend, sales and cost per sale of each named ad set. Call `meta_metric` with `metric=pacing_anomaly`. If a named ad set's campaign spiked or stalled in the last 3 days, say so first.
 3. Call `ad_health_check` with `ads={"adset_id": "<id>"}` and `only=["switched_on","schedule_budget"]` for each one to read its live budget, end date and switches. If it ends within 7 days, say so. A raise on an ad set that stops tomorrow needs an end-date yes too, with the added spend shown.
 4. Show one line per ad set: name, budget now, budget asked, 7-day spend, sales, cost per sale.
-5. Ask the brand's raise rule. Default: raise only when cost per sale sits under the keep line after at least 4 sales, in steps of about 20%. Default cut: any ad set over the keep line after 4 more sales.
+5. Ask the brand's raise rule. Default: raise 20% after 5 sales at 0.75x the keep line or less, once per 3 days, never above the brand's ceiling. Default cut: spent 3x the keep line with an 80% chance the true cost per sale is over 1.25x it.
 6. Prefer raising a winner's own ad set over copying the winner into a bigger one.
-7. In Ads Manager, open the Ad sets tab and filter to the named ad sets only. Check the row name before typing, because a mis-click on the biggest ad set costs the most. Click the budget cell, type the agreed figure and use that cell's own Publish.
-8. For an end date, open the ad set, change only Schedule, End, and publish that ad set alone.
-9. Never use the global Review and publish. It bundles every draft in the account.
-10. If the inline editor shows someone else's pending draft on that ad set, stop and ask. Leave it alone.
-11. Meta may offer to raise the budget further. Decline it every time.
-12. Reload the page and read the budget cell again. Meta can round a budget up on publish, for example $10 to $15 or $100 to $134. If it moved, set it back to the agreed figure.
-13. Call `ad_health_check` again the same way. It reads the budget and end date from Meta, so it is the final read-back, not the page.
-14. Call `log_decision` with `kind=budget`, the old and new figure as `decision`, and `measure` set to cost per sale over the next 7 days.
+7. If `ad_change` is in your tools and offers a budget change, call it with `action=propose` and each new daily budget. Show the plan. After the yes, call `ad_change_apply`. Go to step 14.
+8. Otherwise, in Ads Manager, open the Ad sets tab and filter to the named ad sets only. Check the row name before typing, because a mis-click on the biggest ad set costs the most. Click the budget cell, type the agreed figure and use that cell's own Publish.
+9. For an end date, open the ad set, change only Schedule, End, and publish that ad set alone.
+10. Never use the global Review and publish. It bundles every draft in the account.
+11. If the inline editor shows someone else's pending draft on that ad set, stop and ask. Leave it alone.
+12. Meta may offer to raise the budget further. Decline it every time.
+13. Reload the page and read the budget cell again. Meta can round a budget up on publish, for example $10 to $15 or $100 to $134. If it moved, set it back to the agreed figure.
+14. Call `ad_health_check` again the same way. It reads the budget and end date from Meta, so it is the final read-back, not the page.
+15. Call `log_decision` with `kind=budget`, the old and new figure as `decision`, and `measure` set to cost per sale over the next 7 days.
 
 Checks before answering:
 - Every new figure was named in chat by the person, per ad set. A raise with no number is not done.

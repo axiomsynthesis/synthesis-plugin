@@ -32,12 +32,12 @@ Synthesis tools to use:
 
 Steps:
 1. If the person asks "is it live?", answer that first from a live read.
-2. Ask which rows and on or off, or "apply the stop rules" to a named test. Ask the stop rules. Default: a test ad goes off at the no-sale line with no sale (`no_sale_cap` in `ad_health_check`). Default keep: at or under the keep line per sale after 4 sales.
+2. Ask which rows and on or off, or "apply the stop rules" to a named test. Ask the stop rules. Default: off at 2x the keep line spent with no sale, or at 3x spent with an 80% chance the true cost per sale is over 1.25x the line. Nothing judged in its first 3 days unless it hits the no-sale line.
 3. Call `meta_metric` with `metric=ad_returns` and `limit=50` for 7-day spend, sales and cost per sale per row.
 4. Call `ad_health_check` with `ads={"adset_id": "<id>"}` and `only=["switched_on","duplicates"]` for each ad set touched. It shows every copy that is on or off. A paused copy flagged "switch the ad on" is expected. Leave it off.
 5. Show the plan: each row, on or off, spend, sales, why. Add the ad set budget cut when most of it goes off. Proposals still waiting for a yes are listed, not done.
 6. For a test the person already agreed, stop-rule offs and the agreed switch-on count as approved. Anything else needs a yes.
-7. If your tools include `ad_change`, use it to switch off: call it with `action=propose` and the `items` to pause. Propose changes nothing in the account, so it can run before the yes. Show its list, then call `ad_change_apply` with the plan id and hash after the yes. It can switch back on only what Synthesis switched off, through `action=undo`.
+7. If your tools include `ad_change`, prefer it. Call it with `action=status` first. To switch off, call it with `action=propose` and the `items` to pause. Propose changes nothing in the account, so it can run before the yes. Show its list, then call `ad_change_apply` with the plan id and hash after the yes. It can switch back on only what Synthesis switched off, through `action=undo` with the `undo_id`. Anything else goes on in the browser.
 8. Otherwise use Ads Manager in the browser. Filter to the named campaign. Find each row by its ad id, not its name, because one video can run in many campaigns. Click its toggle. Check the ad set rows as well as the campaign, because a row can sit "Ads off" inside a live ad set.
 9. A budget cut goes through the budget cell's own Publish, never the global Review and publish.
 10. Leave copies off. Never delete anything.
