@@ -35,13 +35,14 @@ Steps:
 5. Read `books_tie`. If `checked` is true, give net sales here, the books' net revenue and the gap. If `ok` is false, say a channel or deduction is counted differently. Show the books' net income beside the net, never tied to it. If `checked` is false, say why.
 6. Read `stopped_channels`. Name each one with the date of its last sale. Never call it not connected.
 7. If Amazon is the largest channel and the month is still settling, call `amazon_metric` with `metric=pnl_waterfall` for the month before as well, and say which month is settled.
-8. Read `fixed_costs`. If none are entered, say net profit is before rent, salaries and software.
+8. Read `fixed_costs`. None entered: ask for them. Net profit drops by every dollar. Not given: say net profit is before rent, salaries and software.
+9. Stores and wholesale with sales but no product cost: ask what share of those sales it is. Show their profit with it, marked as your figure.
 
 Checks before answering:
 - If `gated` is true, there is no net to state. Give the reason.
 - A channel with sales and no profit is not in the net. Say how much it sold, so the gap is visible.
 - Only move ad spend to a channel through `channels_after_ads`. Never add a whole platform's spend to one channel.
-- A margin above 70% on any product channel almost always means a cost is missing. Say so beside it.
+- A margin above 70% on a product channel almost always means a missing cost. Say so beside it.
 - Use a closed month.
 
 Output:
@@ -59,6 +60,7 @@ Never:
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- Inputs only I know: fixed costs a month (rent, salaries, software); product cost for store and wholesale sales, as a share of them. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save fixed costs on the Dashboard, All channels, Fixed costs box. Nothing saves store and wholesale cost yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: money-whole-business-profit". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

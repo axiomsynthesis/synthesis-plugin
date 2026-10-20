@@ -27,7 +27,7 @@ Steps:
 1. Call `amazon_metric` with `metric=seasonality` and `shopify_metric` with `metric=seasonality` for each month's index against the average. Each uses all the history the brand has loaded, so say how many years that is.
 2. Call `metric_timeseries` with `metric_keys="revenue"` for the last 24 closed months, to check the pattern repeats each year.
 3. Call `amazon_metric` with `metric=days_of_cover` to see how much stock you hold going into the next peak.
-4. Set ramp dates: stock lead time plus a buffer before each peak, ads about six weeks before.
+4. Set ramp dates: stock lead time plus a buffer before each peak, ads about six weeks before. No lead time known: ask for it, with the sales a late order would miss at the peak.
 5. Save the plan with `export_xlsx`, `filename="seasonal-plan.xlsx"`.
 
 Checks before answering:
@@ -46,6 +46,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Inputs only I know: supplier lead time in days. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Nothing saves the lead time yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: growth-seasonal-plan". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

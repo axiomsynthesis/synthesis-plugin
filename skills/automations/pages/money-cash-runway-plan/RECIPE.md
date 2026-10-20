@@ -27,7 +27,7 @@ Synthesis tools to use:
 - `run_scenario scenario_type=inventory_bet`
 
 Steps:
-1. Call `working_capital` for today's cash, what you owe and what you are owed, and the runway figure.
+1. Call `working_capital` for today's cash, what you owe and what you are owed, and the runway figure. If it has no cash figure, ask for cash in the bank and the cash floor.
 2. Call `monthly_pnl` for the last three closed months to get the monthly burn or profit.
 3. Call `netsuite_metric` with `metric=ar_aging` and `metric=inventory_position` to see cash tied up in unpaid bills and stock.
 4. For the next stock order, take its units from `operator_inputs section=purchase_orders` and the landed cost per unit from `operator_inputs section=cogs`. If either is not entered, ask the person. Then call `run_scenario scenario_type=inventory_bet months=12 units=<units> unit_cost=<cost>`. If neither is known, leave out the stock-heavy case and say why.
@@ -50,6 +50,7 @@ Never:
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- Inputs only I know: cash in the bank; the lowest cash you will let the business hold. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save cash on the Costs (COGS) page, Cash box. Nothing saves the cash floor yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: money-cash-runway-plan". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

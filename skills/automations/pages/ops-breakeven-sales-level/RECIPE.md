@@ -34,7 +34,7 @@ Checks before answering:
 - Use closed months only for margin. An estimate month can carry no product cost and inflate the contribution rate.
 - The variable and fixed split is a judgement. List it so the person can correct it.
 - Ad spend that the founder treats as fixed should be moved. Ask.
-- If the ledger is not connected, say break-even needs the books.
+- If the ledger is not connected, ask for fixed costs a month in one plain question: break-even sales rise by each fixed dollar divided by the contribution rate. Use the Amazon contribution rate and say so.
 
 Output:
 - Four lines: break-even sales per month, current average sales, cushion in percent and dollars, and the cost line that moves break-even most.
@@ -48,6 +48,7 @@ Never:
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- Inputs only I know: fixed costs a month (rent, salaries, software). If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save fixed costs on the Dashboard, All channels, Fixed costs box. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-breakeven-sales-level". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

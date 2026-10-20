@@ -34,7 +34,7 @@ Steps:
 
 Checks before answering:
 - Use the measured margin, never the tool's default cost share.
-- Cash must be recent (within 7 days). Otherwise ask.
+- Cash must be recent (within 7 days). Otherwise ask. With no ledger, ask for fixed costs a month: without them survival is not tested.
 - If the ledger is not connected, run on Amazon profit only and say the company view needs the books.
 
 Output:
@@ -49,6 +49,7 @@ Never:
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- Inputs only I know: cash in the bank; fixed costs a month (rent, salaries, software). If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save cash on the Costs (COGS) page, Cash box and fixed costs on the Dashboard, All channels, Fixed costs box. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: ops-stress-test". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

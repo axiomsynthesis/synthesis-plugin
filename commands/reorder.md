@@ -32,15 +32,16 @@ Synthesis tools to use:
 
 Steps:
 1. Call `amazon_metric metric=stockout_forecast limit=200` for each product's `normal_pace_per_day`, `late_runs_out`, stock landing, and each upcoming sale in `events` with its `extra_units`. Read every page: call again with the next `result_page` the result names.
-2. Call `netsuite_metric metric=inventory_position limit=200` for each product's `lead_time_days`, `on_order` and stock by location. Use only its non-Amazon locations. Its Amazon location runs stale, so Amazon stock comes from step 1. If NetSuite is not connected, ask the person for lead times and open orders.
+2. Call `netsuite_metric metric=inventory_position limit=200` for each product's `lead_time_days`, `on_order` and stock by location. Use only its non-Amazon locations. Its Amazon location runs stale, so Amazon stock comes from step 1. If NetSuite is not connected, ask for open orders.
 3. Call `amazon_metric metric=closed_shipments limit=10`. The time to move stock into Amazon is `arrival_times` US `received_90pct_p90`.
 4. Call `amazon_metric metric=velocity_momentum weeks=8 limit=200`. A product whose last two weeks sell under a fifth of its first two, while in stock, is winding down.
 5. Call `operator_inputs` with `section=all` for unit costs and any purchase orders entered there. Never take lead times from it. It has none.
-6. For each product: units to order = `normal_pace_per_day` times (lead time + transfer time + 90 days of cover) + `extra_units` of every sale in that window, minus Amazon stock, stock landing, your own warehouse stock and units on order. Order-by date = `late_runs_out` minus lead time minus transfer time minus 7 days.
-7. Use `export_xlsx` with `filename=reorder-plan.xlsx`: a reorder tab and a PO draft tab.
+6. A product still missing its lead time, or your own warehouse stock: ask in one plain question. Say the dollars: each week of lead time adds a week of sales to the order.
+7. For each product: units to order = `normal_pace_per_day` times (lead time + transfer time + 90 days of cover) + `extra_units` of every sale in that window, minus Amazon stock, stock landing, your own warehouse stock and units on order. Order-by date = `late_runs_out` minus lead time minus transfer time minus 7 days.
+8. Use `export_xlsx` with `filename=reorder-plan.xlsx`: a reorder tab and a PO draft tab.
 
 Checks before answering:
-- A product with no lead time is flagged, never given a made-up one.
+- A product with no lead time, after asking, is flagged, never given a made-up one.
 - If the stock read fails, stop and say so.
 - Count stock at Amazon, at your own warehouse and already on order before ordering more.
 - Never size from trailing sales speed or days of cover. They count sale spikes as normal sales.
@@ -59,6 +60,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Inputs only I know: supplier lead time in days; units at your own warehouse or 3PL. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Nothing saves the lead time or own warehouse stock yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: inventory-reorder-plan-and-po-draft". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

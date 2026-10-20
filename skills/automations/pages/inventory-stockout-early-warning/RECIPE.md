@@ -28,7 +28,7 @@ Steps:
 1. Call `amazon_metric` with `metric=stockout_forecast` and `limit=50` for each product's run-out dates and any gap before stock on its way lands. Read every page: call again with the next `result_page` the result names. Products come soonest first. Keep reading until the dates pass today plus the longest restock time.
 2. Call `amazon_metric` with `metric=velocity_momentum` and `weeks=8` to catch products selling faster than usual, and products winding down: last two weeks under a fifth of the first two, while in stock.
 3. Call `amazon_metric metric=closed_shipments limit=10`. The transfer time is `arrival_times` US `received_90pct_p90`. Call `netsuite_metric metric=inventory_position limit=200` for `lead_time_days`, the production lead time. It lists your own product codes, so match each to the Amazon product by name.
-4. Keep a product when `late_runs_out` is before today plus its restock time plus 7 days, or falls inside a known sale window in `events`. Restock time is the transfer time, or the production lead time when the person says your own warehouse has none. Skip winding-down products. List them once a week, on Monday, not daily.
+4. Keep a product when `late_runs_out` is before today plus its restock time plus 7 days, or falls inside a known sale window in `events`. Restock time is the transfer time, or the lead time when your own warehouse has none. Neither known: ask. Skip winding-down products. List them once a week, on Monday, not daily.
 5. Size each alert as units lost times `price_recent`. Units lost is `gap_lost_units`, or for a product that runs out for good, `normal_pace_per_day` times the days until a restock could land. Drop alerts under $200.
 6. Name each product from the result's `asin_names`. Call `find_product` only for a code missing from `asin_names`.
 
@@ -40,7 +40,7 @@ Checks before answering:
 - If the forecast says no booked deals are entered, say a booked Lightning Deal or Deal of the Day is not in the dates.
 - Judge each product on its own. Never average across products.
 - Alerts are sized in sales, not profit. Say so. Profit per unit is not in this check yet.
-- This cannot see how much stock sits at your own warehouse per product. If no NetSuite is connected or no transfer time is measured, say the restock time is assumed at 30 days.
+- No restock time known or given: never assume one. Give the run-out date and say the restock-by date needs the lead time.
 - There is no discontinued flag to read yet. A product only out of stock is not winding down.
 
 Output:
@@ -54,6 +54,7 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
+- Inputs only I know: supplier lead time in days; units at your own warehouse or 3PL. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Nothing saves the lead time or own warehouse stock yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: inventory-stockout-early-warning". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.

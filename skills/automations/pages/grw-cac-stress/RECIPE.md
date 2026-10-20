@@ -18,12 +18,13 @@ What to give me: How the business holds up if customer costs jump, and the first
 
 Synthesis tools to use:
 - `cost_rules for=grw-cac-stress`
+- `operator_inputs section=cash`
 - `strategy_framework framework=stress_test`
 - `mer month=<YYYY-MM>`
 - `new_customers_dtc month=<YYYY-MM>`
 
 Steps:
-1. Ask for cash on hand and product cost share if not known.
+1. Call `operator_inputs section=cash` for cash on hand. Ask for cash, fixed costs a month and product cost share if not known.
 2. Compute the base cost per new customer from spend and `new_customers_dtc`.
 3. Run `strategy_framework framework=stress_test base_revenue=<one month> base_cac=<value> new_customers_per_month=<value> base_cogs_pct=<value> monthly_operating_costs=<value> cash_on_hand=<value>`. Without new_customers_per_month the cost-per-customer shock is per customer only; without operating costs there is no monthly profit or months of cash.
 4. Name the shock that hurts most and the first lever.
@@ -42,6 +43,7 @@ Never:
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- Inputs only I know: cash in the bank; fixed costs a month (rent, salaries, software). If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save cash on the Costs (COGS) page, Cash box and fixed costs on the Dashboard, All channels, Fixed costs box. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: grw-cac-stress". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
