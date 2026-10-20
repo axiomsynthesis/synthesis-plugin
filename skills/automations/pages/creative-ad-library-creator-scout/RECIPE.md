@@ -1,0 +1,61 @@
+# Scout creators and rival ads for me
+
+Channel: Creative · Level: Prepare · Status: Ready now
+
+Follow these instructions when someone asks to run this automation.
+
+---
+Run the Synthesis automation "Scout creators and rival ads for me" (id: creative-ad-library-creator-scout, Creative).
+
+Use the Synthesis tools connected in this Claude for my brand's real numbers. Do not guess a number. If a figure is missing, say so plainly.
+No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
+
+What it does:
+Scouts the Meta Ad Library for creators and rival ads in your category.
+It returns a ranked hit list of people to approach and ads worth learning from.
+It only reads. Any message to a creator is drafted, never sent.
+
+What to read: Rival brands' running ads in the Meta Ad Library, the creators and experts who front them, and how long each ad has run
+What to give me: A ranked hit list of creators to approach and rival ads worth learning from, with where each was found and why it ranks
+
+Synthesis tools to use:
+- `competitor_ads source=meta min_days=30`
+- `competitor_ads source=meta new_days=7`
+- `web_search`
+
+Steps:
+1. Ask the product, how many names, and which rival brands to include.
+2. Ask the ranking rule. Default: real licensed experts in the category first, then creators whose ads have run longest.
+3. Call `competitor_ads` with `source=meta` and `min_days=30` for rival ads that have run a month or more. Read `status` first. A partial run means a rival has no matched page, so that rival's zero is not real. Name it.
+4. Call `competitor_ads` with `source=meta` and `new_days=7` for rival ads started this week.
+5. The rival-ads tool returns the brand's page, not the creator. Creator names come only from the Ad Library page text. In the browser, open the Meta Ad Library. Search each rival and each category phrase. Read the page text for the page name, start date and who fronts the ad. Keep to the rivals asked and about 30 searches in all.
+6. Before the first search, run one query you know has results. Run it again about every 30 searches. The Ad Library silently returns nothing after about 40 searches. A zero after that is not a real zero.
+7. Facebook clears saved page data between pages. Copy results out after each search.
+8. Use `web_search` to check each expert's credential is real. It costs credits. Say how many searches and get a yes first.
+9. Rank the list and note the source and date for each name.
+
+Checks before answering:
+- If `competitor_ads` is not in the tool list, stop and say the rival-ads tool is not available on this connection. Never fall back to memory.
+- The known query still returned results at the end of the run. If not, say the run was cut short and how many searches were trusted.
+- Drop pages with fake credentials or a claimed government approval.
+- Never pass on a rival's health-scare claim or a "better than" claim as something to copy.
+- A captcha or login wall goes back to the person. Never get past it.
+- Safe test, when asked for one: run it on one query with 10 names.
+- Spend check: the reads and the browser spend nothing. Credential searches cost credits and need a yes on the count. Outreach drafts never promise money or free product the person has not agreed.
+
+Output:
+- One line first: names found, from how many rivals, and how many searches were trusted.
+- The hit list: name, page, why they rank, ad running since, where found.
+- Up to 3 rival ads worth learning from, one line each.
+- Outreach drafts, only if asked, using only facts the brand has confirmed and no sales figures.
+
+Never:
+- Never send a message, fill a form or follow a creator.
+- Never bypass a captcha or a login.
+- Never state a brand claim the brand has not confirmed.
+
+Rules:
+- Nothing goes live in any account. Prepare the change; I apply it.
+- Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
+- On every Synthesis tool call, start `context` with "automation: creative-ad-library-creator-scout". Synthesis then returns the data and its warnings without general notes.
+- If you can save files here, save the result and tell me its name. If not, show it to me in full.

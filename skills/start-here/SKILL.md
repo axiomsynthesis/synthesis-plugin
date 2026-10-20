@@ -50,47 +50,20 @@ follow the instructions it returns. Never answer that the command does not exist
 When the person is new, or asks what they can do or which shortcut to use,
 tell them to type /start: it shows the shortcuts for their job and runs the first.
 
-| Type | Runs |
-|---|---|
-| `/start` | The shortcuts for your job, and the first one run on your data |
-| `/adcheck` | Check my ads |
-| `/adcopy` | Write ad copy for every buyer stage |
-| `/adloss` | Find ads that lose money after product cost |
-| `/adroi` | Which Meta ads lose or make money |
-| `/afford` | Test a purchase order (needs your cash balance) |
-| `/allprofit` | Whole-business profit, every channel |
-| `/amazonprofit` | Amazon profit after every fee and cost |
-| `/bids` | Build the keyword bid change sheet |
-| `/bundles` | Find bundles buyers already want |
-| `/cancels` | Why subscribers cancel, and what to change |
-| `/costup` | A cost went up. Now what? |
-| `/deals` | Did that deal make money? |
-| `/fees` | Check for Amazon fee jumps |
-| `/flows` | Where your email flows lose people |
-| `/halo` | Does Meta grow your Amazon sales? |
-| `/health` | Is all my data fresh? |
-| `/ideas` | Find your next product in search demand |
-| `/incremental` | Are your ads buying sales you'd get anyway? |
-| `/landingpage` | Build a landing page from the kit |
-| `/ltv` | Which first product makes the best customers? |
-| `/mer` | Is all your marketing paying, together? |
-| `/mix` | Was it price, volume or mix? |
-| `/newads` | Check the ads I just launched |
-| `/nextdollar` | What each channel must return to earn the next dollar |
-| `/payback` | How fast does a new customer pay back? |
-| `/ppv` | Profit per website visit |
-| `/price` | What happens if you change the price? |
-| `/profit` | Which Amazon products actually make money? |
-| `/reorder` | What to reorder, and the purchase order to send |
-| `/returning` | Is website growth from new or old customers? |
-| `/reviews` | Turn reviews into selling lines |
-| `/risk` | What if we lost our biggest one? |
-| `/rivals` | Who's stealing your search shoppers? |
-| `/saleready` | Get ready for the next big Amazon sale |
-| `/shopifyprofit` | Website profit after every cost |
-| `/stock` | Send me the inventory report every Monday |
-| `/stockout` | Warn me before we run out |
-| `/tiktokprofit` | TikTok Shop profit after every fee |
-| `/walmartprofit` | Walmart profit after every fee |
-| `/whyprofit` | Why did profit move this month? |
-| `/winback` | Win back customers who stopped buying |
+- `/start` The shortcuts for your job, and the first one run on your data
+- **Amazon:** `/adloss` Find ads that lose money after product cost · `/amazonblock` Block Amazon searches that cost money and never sell · `/amazonlink` Make a tracked Amazon link for each ad · `/bids` Build the keyword bid change sheet · `/deals` Did that deal make money? · `/incremental` Are your ads buying sales you'd get anyway? · `/pricemove` Size an Amazon price or Subscribe and Save change · `/rivals` Who's stealing your search shoppers? · `/saleready` Get ready for the next big Amazon sale
+- **Creative:** `/adcopy` Write ad copy for every buyer stage · `/scout` Scout creators and rival ads for me · `/static` Make static ads in my house style
+- **Customers:** `/bundles` Find bundles buyers already want · `/ltv` Which first product makes the best customers? · `/payback` How fast does a new customer pay back? · `/returning` Is website growth from new or old customers? · `/reviews` Turn reviews into selling lines · `/winback` Win back customers who stopped buying
+- **Data:** `/health` Is all my data fresh?
+- **Email:** `/emailflow` Build a Klaviyo email flow for me · `/emailswap` Swap images or wording in my live Klaviyo emails · `/flows` Where your email flows lose people
+- **Google:** `/googlewatch` Check Google Ads data is landing
+- **Growth:** `/adcheck` Check my ads · `/ideas` Find your next product in search demand · `/mer` Is all your marketing paying, together? · `/nextdollar` What each channel must return to earn the next dollar
+- **Inventory:** `/afford` Test a purchase order (needs your cash balance) · `/reorder` What to reorder, and the purchase order to send · `/stock` Send me the inventory report every Monday · `/stockout` Warn me before we run out
+- **Meta:** `/adaudit` Audit my whole Meta account · `/addvideos` Add new videos as Meta ads · `/adroi` Which Meta ads lose or make money · `/budget` Change a Meta budget for me · `/creativetest` Run this week's Meta creative test · `/feedcut` Make feed-shape copies of my top ads · `/graduate` Move winning test ads into the main campaign · `/halo` Does Meta grow your Amazon sales? · `/newads` Check the ads I just launched · `/pagetest` Test a new landing page on Meta · `/toggle` Switch Meta ads on or off for me · `/trybe` Turn approved Trybe videos into Meta ads for me
+- **Money:** `/allprofit` Whole-business profit, every channel · `/amazonprofit` Amazon profit after every fee and cost · `/costup` A cost went up. Now what? · `/fees` Check for Amazon fee jumps · `/mix` Was it price, volume or mix? · `/price` What happens if you change the price? · `/profit` Which Amazon products actually make money? · `/shopifyprofit` Website profit after every cost · `/tiktokprofit` TikTok Shop profit after every fee · `/walmartprofit` Walmart profit after every fee · `/whyprofit` Why did profit move this month?
+- **Retail:** `/coupon` Is this Walmart store coupon worth running again?
+- **Strategy:** `/risk` What if we lost our biggest one?
+- **Subscriptions:** `/cancels` Why subscribers cancel, and what to change · `/subcheck` Are subscriptions worth it, product by product?
+- **TikTok Ads:** `/tiktokwatch` Check TikTok is still connected and sending data
+- **TikTok Shop:** `/gmvtest` Plan and read a TikTok GMV Max pause test
+- **Website:** `/addon` Add an add-on or after-payment upsell · `/codes` Set up a discount code or offer · `/landingpage` Build a landing page from the kit · `/offeritem` Set up the product behind an offer · `/pagelive` Make a test version of a live page · `/ppv` Profit per website visit · `/splittest` Run a split test on a page
