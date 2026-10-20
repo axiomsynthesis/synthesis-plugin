@@ -294,16 +294,46 @@ def _print_update_notice(check: tuple[threading.Thread, list, float] | None) -> 
 
 
 def main() -> int:
+    # Before the update check starts: it writes into ~/.synthesis too, and the
+    # welcome reads that folder to tell a returning customer from a new one.
+    try:
+        import _welcome                     # lazy: an import error here is rule 1 too
+        welcome = _welcome if _welcome.due() else None
+    except Exception:                       # noqa: BLE001 — rule 1
+        welcome = None
     try:
         check = _start_update_check()
     except Exception:                       # noqa: BLE001 — never at the cost of the session
         check = None
+    if welcome is None:
+        _session_context(check)
+        return 0
+    # First session on this computer. The welcome needs the JSON form of hook
+    # output (plain stdout never reaches the screen), so the usual context is
+    # collected and carried as additionalContext beside it.
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        _session_context(check)
+    print(json.dumps({
+        "systemMessage": welcome.SCREEN,
+        "hookSpecificOutput": {
+            "hookEventName": "SessionStart",
+            "additionalContext": buf.getvalue() + "\n" + welcome.GUIDE,
+        },
+    }))
+    sys.stdout.flush()
+    welcome.mark_shown()
+    return 0
+
+
+def _session_context(check) -> None:
     _print_voice()
     print(PREFER_PLUGIN)
     print()
     _brand_state()
     _print_update_notice(check)
-    return 0
 
 
 def _brand_state() -> int:

@@ -7,6 +7,21 @@ Once installed, Claude answers questions about your business from your actual
 warehouse instead of guessing — and it reads those numbers the way an operator
 who knows your category would, not the way a platform dashboard presents them.
 
+## Start here
+
+1. Sign in: in Claude Code, type `/mcp`, press Enter twice, and sign in with
+   your Synthesis key.
+2. Type `/start` and say what you do, like "I run the ads". It picks the
+   shortcuts for your job and runs the first one on your numbers.
+3. Ask "What needs my attention this week?" to see your biggest problem.
+
+Try first: `/health` (data that needs attention), `/whyprofit` (why profit
+moved), `/stockout` (products about to run out), `/fees` (Amazon fee
+overcharges) and `/deep` with a question (a fully checked deep answer).
+Automations worth opening: `/reorder`, `/adloss` and `/winback`. Type `/go` to
+list every other one, and `/setup` to check your connection. Claude shows
+these steps the first time it opens, and `/start` brings them back.
+
 ## Install
 
 Add Synthesis from Claude's plugin directory. Then sign in: in Claude Code, type
@@ -75,15 +90,6 @@ made.
   kept out of anything we use to improve Synthesis for all customers, as
   Google's terms require.
 - Otherwise: nothing.
-
-## Shortcuts
-
-Type `/` and a shortcut name to run a ready-made job on your brand's real
-numbers: `/fees` checks for Amazon fee overcharges, `/stockout` warns before a
-product runs out. Add words after the name, like `/fees last three months`.
-`/setup` checks your connection and turns on automatic updates. `/deep` and a
-question gives a deep answer on your own Claude plan: helpers work at once, a
-skeptic pulls every number again, and the answer is checked before you see it.
 
 ## What you get
 
