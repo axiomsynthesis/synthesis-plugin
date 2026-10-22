@@ -34,7 +34,7 @@ first if this computer does not have it, and it also installs `synthesis-design`
 design skills for landing pages, banners, design systems and UI:
 
 ```
-command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash; export PATH="$HOME/.local/bin:$PATH"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude mcp login plugin:synthesis:synthesis
+command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash; export PATH="$HOME/.local/bin:$PATH"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && plutil -replace extraKnownMarketplaces.axiom-synthesis.autoUpdate -bool YES ~/.claude/settings.json && claude mcp login plugin:synthesis:synthesis
 ```
 
 If you installed with that line, tell Claude "Turn on auto-update for the
