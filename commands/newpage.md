@@ -17,9 +17,7 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Runs the whole new-page job, from the page it must beat to the keep or kill call.
-Reasons come from what buyers complain about and what shoppers search. Claims come only from the approved list.
-Each stage uses an existing shortcut's steps, and the page is revised in rounds before any test spends.
+Runs the whole new-page job, from the page it must beat to the keep or kill call. Reasons come from buyers' complaints and shoppers' searches, claims only from the approved list, and the page is revised in rounds before any test spends.
 
 What to read: Your best current page, your reviews, what shoppers search for, your approved claims, creator videos, pack costs and cart prices, your proven Meta ads
 What to give me: A five-reasons page built from your reviews and searches and revised over several versions, every claim and price proved, then tested on Meta in its own campaign after your yes, and called keep, kill or next version
@@ -27,8 +25,10 @@ What to give me: A five-reasons page built from your reviews and searches and re
 Synthesis tools to use:
 - `cost_rules for=website-new-page-start-to-finish`
 - `recall_decisions`
+- `brand_brain action=moves`
 - `ga4_metric metric=landing_pages days=28`
 - `meta_metric metric=ad_destinations days=28`
+- `web_fetch`
 - `amazon_metric metric=review_voice limit=20`
 - `amazon_metric metric=search_query_performance scope=nonbranded grain=month`
 - `brand_facts`
@@ -38,38 +38,38 @@ Synthesis tools to use:
 - `log_decision kind=campaign`
 
 Steps:
-1. Call `recall_decisions` and pick up any earlier run for this product. Ask in one message: the product, the page it must beat, the daily test budget (ask, default $100) and days (ask, default 10).
-2. The bar. Call `ga4_metric` with `metric=landing_pages` and `days=28`, and `meta_metric` with `metric=ad_destinations` and `days=28`. Name the page to beat, its sales per visitor and its Meta cost per sale.
-3. Reviews, the /reviews job. Call `amazon_metric` with `metric=review_voice` and `sentiment=negative`, then `sentiment=positive`. Top 5 complaints and top 5 praises, with mention counts and one real quote each. No marketplace: ask for the site's reviews.
-4. Angle, the /ideas read. Call `amazon_metric` with `metric=search_query_performance`, `scope=nonbranded` and `grain=month`. Lead with the most searched pain that matches a complaint, not the brand's favourite feature.
-5. Draft five reasons. Default headline "5 reasons to switch to" the product. Each reason answers one top complaint head-on, proved by a real number or a dated review. Claims only from `brand_facts`. Buy button after reasons 1 and 4. Order: offer bar, hero with buy box, proof, reasons, reviews and videos, FAQ, final buy box, sticky phone bar.
-6. Videos. For every creator video on the page, watch it through or ask for its script, and list every on-screen and spoken claim. A claim not in `brand_facts` cuts the video. If no one checked a video, say so.
-7. Build, the /landingpage job. Call `get_skill` with `name=/landingpage` and follow its offer maths, hidden-theme build and price check. For a version of a live page use `name=/pagelive`. Never edit the page being beaten.
-8. Prices. Cart price must equal page price for every pack, with and without each add-on. Call `amazon_metric` with `metric=buybox_watch`: show any pack sold cheaper on the marketplace. Call `first_order_contribution_margin` per pack with `price`, `cogs`, `misc` and `cac` at today's Meta cost per sale.
-9. Run the Rounds. Each round that changes the page makes a new version. Show the preview, versions and test plan. Wait for a yes to the page and to budget times days in dollars.
+1. Call `recall_decisions` for an earlier run, and `brand_brain` with `action=moves` and `since` 30 days ago for tests on its pages. Daily test budget and days come from saved decisions. Ask once: product, page to beat, and budget or days not saved (default $100 a day, 10 days, this run only).
+2. The bar. Call `ga4_metric` with `metric=landing_pages` and `days=28`, and `meta_metric` with `metric=ad_destinations` and `days=28`. Name the page to beat, its sales per visitor and its Meta cost per sale. Read it with `web_fetch`: its format, every pack price, default pack, guarantee and gifts. If it is already the format you planned, say so and test its default pack or offer instead.
+3. Reviews, the /reviews job. Call `amazon_metric` with `metric=review_voice` and `sentiment=negative`, then `sentiment=positive`. Top 5 complaints and praises, with counts and one real quote each. No marketplace: ask for site reviews.
+4. Angle, the /ideas read. Call `amazon_metric` with `metric=search_query_performance`, `scope=nonbranded`, `grain=month`, `periods=1`, `top=40` and `min_volume=5000`, and read every result page until none is left. Lead with the most searched pain matching a complaint.
+5. Draft five reasons. Default headline "5 reasons to switch to" the product. Each answers a top complaint, proved by a real number or dated review. Claims only from `brand_facts`, never one another fact marks open or disputed: search it with `query=clinical` and `query=open` first. Buy button after reasons 1 and 4. Order: offer bar, hero with buy box, proof, reasons, reviews and videos, FAQ, final buy box, sticky phone bar.
+6. Videos. For every creator video, watch it or ask for its script, and list every on-screen and spoken claim. A claim not in `brand_facts` cuts the video. Say which videos no one checked.
+7. Build, the /landingpage job. Call `get_skill` with `name=/landingpage` and follow it. For a version of a live page use `name=/pagelive`. Never edit the page being beaten.
+8. Prices. Read every pack's page price with `web_fetch` on the live page, then check the cart against it in the browser, with and without each add-on. Call `amazon_metric` with `metric=buybox_watch`: show any pack sold cheaper on the marketplace. Call `first_order_contribution_margin` per pack with `price`, `cogs` (one unit's cost times units in the pack), `misc` and `cac` at today's Meta cost per sale.
+9. Run the Rounds. Each round that changes the page makes a new version. Show preview, versions and test plan. Wait for a yes to the page and to the total dollars.
 10. Test, the /pagetest job. Call `get_skill` with `name=/pagetest` and follow it: own campaign, the same top ads as the page being beaten.
-11. First look day 3 or 4: stop only a disaster, like twice the order value spent with no sale. Call at about $700 to $1,000 spent with `get_skill` and `name=/testread`. Keep, kill or next version. Call `log_decision` with `kind=campaign`, the page, the call, `measure` and `made_on`.
+11. First look day 3 or 4: stop only a disaster, like twice the order value spent with no sale. Call at $700 to $1,000 spent with `get_skill` and `name=/testread`: keep, kill or next version. Call `log_decision` with `kind=campaign`, the page, the call, `measure` and `made_on`.
 
 Checks before answering:
-- Safe test run: when asked to test the shortcut, build only on the hidden preview theme and leave the Meta test built but off.
-- A claim said in a creator video is our claim. No health claim without proof, no rival names, no fear claims.
-- A crossed-out price must be a real earlier price. A gift or pack with no cost: ask, never assume.
-- Never test on the page being beaten or its template. Never run an on-site split on the same page during the Meta test.
-- A small test campaign catches disasters, not close calls. One live brand's same page cost twice as much per sale in a small campaign as in its main one.
-- Read closed days only. Today's sales are still coming in.
+- Safe test run: build only on the hidden preview theme and leave the Meta test built but off.
+- A claim in a creator video is our claim. No unproven health claim, rival names or fear claims.
+- A crossed-out price must be a real earlier price. A gift or pack with no cost: ask.
+- Never test on the page being beaten or its template, or run an on-site split on it during the Meta test.
+- A small test campaign catches disasters, not close calls: on one live brand the same page cost twice as much per sale there.
+- Closed days only. If the test window crosses a big sale (Prime days, Black Friday), move it or label those days.
 
 Rounds (relook before you answer):
 1. **Complaint coverage.** Re-read `review_voice` with `sentiment=negative`. Fails when: one of the top 3 complaints by mentions has no reason answering it. Fix: rewrite or swap a reason.
-2. **Claim audit.** Every line, caption and video line against `brand_facts`. Fails when: one claim has no matching fact. Fix: cut the line or the video.
-3. **Angle.** Re-read the searches. Fails when: a search tied to a top complaint has 3 times the volume of the one the headline leads with. Fix: lead with that pain, prove second.
-4. **Phone first screen.** Preview 360 wide. Fails when: price, default pack and buy button are not all visible before scrolling, or the page scrolls sideways. Most phone buyers never pass the top box.
-5. **Money and prices.** Re-run the cart check and margins. Fails when: a cart price differs from the page by a cent, or the default pack keeps less than today's Meta cost per sale. Fix: change the price or default pack, or stop.
+2. **Claim audit.** Every line, caption and video line against `brand_facts`. Fails when: a claim has no matching fact, or a fact marks it open. Fix: cut the line or video.
+3. **Angle.** Re-read the searches. Fails when: a search tied to a top complaint has 3 times the volume of the one the headline leads with. Fix: lead with that pain. If not every result page was read, write "not checked", never a pass.
+4. **Phone first screen.** Preview 360 wide. Fails when: price, default pack and buy button are not all visible before scrolling, or the page scrolls sideways. No browser or screenshot: write "not checked", never a pass.
+5. **Money and prices.** Re-run the cart check and margins. Fails when: a cart price differs from the page by a cent, a pack costs more than on the marketplace with no stated reason, or the default pack keeps less than today's Meta cost per sale. Fix: test the default pack before a new page, or stop.
 6. **Argue for the old page.** Read the page being beaten beside the new one. Fails when: the old page has a proof, guarantee or offer the new one dropped. Fix: put it back.
 
 Output:
 - First line: version number, angle, product, the page it must beat.
 - Five reasons, one line each with the complaint it answers. Prices proved, one line per pack.
-- The test: campaign, budget, end date, first look and call dates. Under 25 lines.
+- The test: campaign, budget, end, first look and call dates. What was not checked. Under 25 lines.
 
 Never:
 - Never put a claim on the page, or in a video on it, that is not in `brand_facts`.

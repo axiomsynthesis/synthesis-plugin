@@ -25,26 +25,29 @@ What to give me: What each landing page keeps per order after product, warehouse
 
 Synthesis tools to use:
 - `cost_rules for=website-page-profit-after-ads`
+- `recall_decisions`
+- `meta_metric metric=ad_returns`
 - `meta_metric metric=ad_destinations days=7`
 - `ga4_metric metric=landing_pages days=7`
-- `shopify_metric metric=top_products limit=20`
 - `shopify_metric metric=profit`
+- `shopify_metric metric=daily_revenue days=7`
+- `shopify_metric metric=order_tags months=1`
 - `operator_inputs section=cogs`
 - `first_order_contribution_margin`
-- `meta_metric metric=ad_returns`
 
 Steps:
-1. Ask in one message: which pages (default every page Meta spends on), the week (default the last 7 closed days), and the profit per visitor target (ask; $1.50 is only an example, never another brand's number).
-2. Call `meta_metric` with `metric=ad_destinations` and `days=7`. Group spend and sales by destination page, links stripped of tags. List ads with no page.
+1. Call `recall_decisions` for a saved profit per visitor target and keep line. Ask in one message: which pages (default every page Meta spends on), the week (default the last 7 closed days), and any target not saved. None given: grade against break-even, never another brand's number. Say if the week crosses a big sale (Prime days, Black Friday).
+2. Call `meta_metric` with `metric=ad_returns` for website spend and sales by ad set, then `metric=ad_destinations` with `days=7` for each ad's page. It lists the top 40 ads only, and ad returns can leave ad sets out: add both, and list ad sets found in only one and ads with no page. Group by page, links stripped of tags.
 3. Call `ga4_metric` with `metric=landing_pages` and `days=7` for visits per page. If not connected, use Shopify's sessions report and say so.
-4. Pack mix per page. No tool splits orders by landing page. Ask for Shopify's orders export with landing page. Without it, call `shopify_metric` with `metric=top_products` and `limit=20` for the store-wide mix and label it a stand-in.
+4. Pack mix per page. No tool splits orders by landing page. Ask for Shopify's orders export with landing page. Without it, call `shopify_metric` with `metric=profit` for this month: store profit before ads / store orders is the stand-in profit kept per order, labelled so. Never use top products for a week: it is all-time.
 5. Costs per pack. Call `operator_inputs` with `section=cogs`. Call `shopify_metric` with `metric=profit` for shipping and warehouse cost per order. If the warehouse charges per item, ask for its price list (pick fee per item, box, postage) and use it. Call `first_order_contribution_margin` per pack with `price`, `cogs`, `misc` for warehouse, postage and gifts, and `referral_fee_pct=2.9` for card fees.
-6. Per page: profit kept per order = each pack's share x its profit. Minus Meta cost per sale to that page = profit per order after ads. Times orders = dollars a week. Divided by visits = profit per visitor.
-7. The keep line per page is its profit kept per order. Call `meta_metric` with `metric=ad_returns` and list ads over it with their spend.
-8. Rank moves by dollars a week: cut ads over the keep line, lift order size (bigger default pack, add-on), change the default pack. Each move: dollars, low case, its assumption, and the test that proves it (/splittest or /pagetest).
+6. Per page: profit kept per order = each pack's share x its profit, or the stand-in. Minus Meta cost per sale to that page = profit per order after ads. Times orders = dollars a week. Divided by visits = profit per visitor.
+7. The keep line per page is its profit kept per order. If the ad returns read carries a different keep line, show both and say which this answer uses. List ads over it with their spend.
+8. Rank moves by dollars a week: switch off ads over the keep line (single ads, never an ad set that also holds an ad under it), lift order size (bigger default pack, add-on), change the default pack. Each move: dollars, low case, its assumption, and the test that proves it (/splittest or /pagetest).
 
 Checks before answering:
 - Meta counts sales it touched. If Meta's sales to a page exceed the store's orders from it, use the store's.
+- Fees the profit read marks not connected (card or payment fees): show profit kept per order with them as the low case.
 - A pack or gift with no cost: ask. Never fill one in.
 - A flat warehouse cost per order hides that bigger packs cost more to ship. Say which was used.
 - Repeat orders are not counted. Say a losing first order may still pay back later, and that this does not measure it.
@@ -52,10 +55,10 @@ Checks before answering:
 
 Rounds (relook before you answer):
 1. **Real costs.** Re-read each pack's cost lines. Fails when: a pack or gift has no cost, or a flat warehouse cost is used while the warehouse charges per item. Fix: ask, recompute.
-2. **Spend matched.** Fails when: under 90% of Meta website spend is matched to a page. Fix: list the unmatched ads and match by link.
+2. **Spend matched.** Fails when: under 90% of website spend in the ad returns read is matched to a page. Fix: list the unmatched ads and ad sets and match by link.
 3. **Second week.** Re-run on the week before. Fails when: a page flips between profit and loss after ads, or the top move changes. Fix: say it is not settled.
 4. **Stand-in mix.** Fails when: a page uses the store-wide mix and a move depends on that mix. Fix: say so and ask for the export.
-5. **Meta over-count.** Fails when: Meta's sales to a page are over the store's orders from it. Fix: use store orders, so cost per sale rises.
+5. **Meta over-count.** Call `shopify_metric` with `metric=daily_revenue` for the week and `metric=order_tags` for renewals. Fails when: Meta's website sales exceed the store's orders less subscription renewals and email-credited orders. Fix: scale every page's Meta orders down by that ratio, so cost per sale rises.
 6. **Low case.** Fails when: a move's take rate or lift has no source, or it loses money in its low case. Fix: drop it or mark it a test.
 
 Output:

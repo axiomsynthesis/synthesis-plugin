@@ -26,7 +26,8 @@ What to give me: Keep running, call the winner, or stop, judged on profit per vi
 Synthesis tools to use:
 - `cost_rules for=website-test-readout`
 - `recall_decisions`
-- `meta_metric metric=campaign_performance`
+- `brand_brain action=moves`
+- `meta_metric metric=ad_destinations`
 - `shopify_metric metric=order_tags months=1`
 - `operator_inputs section=cogs`
 - `first_order_contribution_margin`
@@ -35,13 +36,13 @@ Synthesis tools to use:
 - `log_decision kind=other`
 
 Steps:
-1. Call `recall_decisions` and find the test: the change, the control, start and read dates, the agreed metric. If none, ask: the test type (on-page split, Meta page test or offer), dates and counts per side.
-2. Counts per side. On-page split: visitors, orders, sales and add-on take per side from the split-test app. Meta page test: call `meta_metric` with `metric=campaign_performance` for spend, sales and cost per sale of the test and control campaigns. Offer test: orders taking the offer and order size.
-3. Untagged orders. Call `shopify_metric` with `metric=order_tags` and `months=1`. Express-pay buys from the buy box often carry no test tag. Assign them by landing page and time, or say the share left out.
+1. Call `recall_decisions` and `brand_brain` with `action=moves` and `since` 60 days ago to find the test: the change, the control, start and read dates, the agreed metric. A campaign named for a page or split is a test. If none is clear, ask: the test type (on-page split, Meta page test or offer), dates and counts per side.
+2. Counts per side. On-page split: visitors, orders, sales and add-on take per side from the split-test app. Meta page test: call `meta_metric` with `metric=ad_destinations` and `days` equal to the test's age, and list the test's ads and the control's ads one by one on those same days, then sum spend and purchases per side. It lists the top 40 ads only: say how many of each side's ads it showed, and ask for the rest from Ads Manager. Never use lifetime campaign totals to compare a test with its control. Offer test: orders taking the offer and order size.
+3. Untagged orders. Call `shopify_metric` with `metric=order_tags` and `months=1`. Express-pay buys often carry no test tag. Assign them by landing page and time. If no tag names the test or page, write "untagged share unknown".
 4. Costs. Call `operator_inputs` with `section=cogs`. Every pack and gift needs a cost. A gift with no cost makes its side look richer. Call `first_order_contribution_margin` per pack with `price`, `cogs` and `misc` for shipping, packing and the gift.
 5. Profit per visitor per side = orders x profit per order / visitors. For a Meta page test, profit per order minus cost per sale.
 6. Odds. Call `run_bayesian` with `alpha=1`, `beta=1`, `successes` = orders and `trials` = visitors for each side. Give the chance B beats A and the likely range.
-7. Settled? Full weeks, read date reached, visitors a side at least 16 x p x (1 - p) / d squared. Meta page test: about $700 to $1,000 spent per side and about 10 days. Exclude today.
+7. Settled? Full weeks, read date reached, visitors a side at least 16 x p x (1 - p) / d squared. Meta page test: visitors are ad link clicks, not store visits, so say so; about $700 to $1,000 spent per side and about 10 days. Exclude today. If the window crosses a big sale (Prime days, Black Friday), leave those days out or label them.
 8. The call. Name the number that would flip it. Call `measurable_test` with the claim, metric, `check_date` and `direction`. Save with `log_decision` with `kind=other`, `measure` and `made_on`.
 
 Checks before answering:
@@ -50,22 +51,23 @@ Checks before answering:
 - A small test campaign catches disasters, not close calls. Under a 30% gap in cost per sale is not proven.
 - "What removes a decision wins, what adds one loses" is a rule to check, never the verdict. Say which side removes a decision and whether the data agrees.
 - Name any overlap: another test on the same buy box, a price change, a sale day, a budget change mid-test.
+- If the control's page, offer or budget changed during the test (the move log from step 1), name the date and read only the days before it.
 
 Rounds (relook before you answer):
 1. **Profit, not buy rate.** Re-compute with gift costs and add-on take. Fails when: the side ahead on buy rate is behind on profit per visitor. Fix: call on profit.
-2. **Halves.** Split the test window into two halves by date. Fails when: the leader in the first half trails in the second. Fix: keep running.
-3. **Untagged orders.** Fails when: untagged orders are over 10% of orders, or would flip the leader if all went to the trailing side. Fix: assign them or extend.
-4. **Cannibalised add-on.** Fails when: the paid add-on take falls by a third or more on the gift side. Fix: subtract the lost add-on profit and re-rank.
+2. **Halves.** Split the test window into two halves by date. Fails when: the leader in the first half trails in the second, or the halves do not cover the same ads. Fix: keep running, or say the halves cannot be compared.
+3. **Untagged orders.** Fails when: untagged orders are over 10% of orders, or would flip the leader if all went to the trailing side. Fix: assign them or extend. Share unknown: write "not checked", never a pass.
+4. **Cannibalised add-on.** Fails when: the paid add-on take falls by a third or more on the gift side. Fix: subtract the lost add-on profit and re-rank. No add-on take per side: write "not checked".
 5. **Argue the loser.** Fails when: the top of the losing side's likely range beats the winner's middle. Fix: call it not settled and give the visitors still needed.
 
 Output:
 - First line: keep running, call the winner, or stop, and the number that would flip it.
 - Table: side, visitors, orders, buy rate, order size, profit per order, profit per visitor.
-- Chance B beats A, settled or not, and what was left out.
+- Chance B beats A, settled or not, what was left out and what was not checked.
 
 Never:
 - Never call a winner on buy rate alone.
-- Never call before the read date unless a disaster stop fires.
+- Never call before the read date unless a disaster stop fires on same-days figures covering every ad of both sides.
 - Never end a test or roll out a winner here. That is the split-test or page-test shortcut, after a yes.
 
 Rules:

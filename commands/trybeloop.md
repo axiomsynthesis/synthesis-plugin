@@ -28,23 +28,24 @@ What to give me: One morning list: winners moved into the winners ad set, losers
 Synthesis tools to use:
 - `cost_rules for=do-meta-creator-video-loop`
 - `recall_decisions`
-- `meta_metric metric=ad_returns limit=50`
+- `brand_brain action=moves`
+- `meta_metric metric=ad_returns limit=200`
 - `trybe_creator_program view=performance days=30`
 - `ad_health_check`
 - `log_decision kind=campaign`
 
 Steps:
-1. Call `recall_decisions`. Find this job's moves from the last 7 days and any line starting "STANDING YES". Judge yesterday's moves: worked, did not, or too soon.
-2. Call `meta_metric` with `metric=ad_returns` and `limit=50`, every `result_page`. Creator ads carry the creator id in their name, such as trybe=<id>. Keep line: the brand's own. If none, ask. Default: $21.
-3. The rules, overridable per brand:
-   - Move up: 4 or more sales at or under the keep line. Follow "Move winning test ads into the main campaign" into the winners ad set, same post. Never on fewer than 4 sales.
-   - Switch off: spent 2x the keep line with no sale. Default $42.
-   - Close: a test ad set 7 days after it started.
-   - Build: newly approved videos into new test ad sets at $50 a day each, at most 3 sets live. Default ceiling $150 a day.
-4. Call `ad_health_check` with `ads={"campaign_id": "<test campaign>"}` and `only=["switched_on","schedule_budget"]` for live sets, budgets and end dates. Count live test sets.
+1. Call `recall_decisions` and `brand_brain` with `action=moves`. Find this job's moves from the last 7 days, any "STANDING YES" line, and the newest saved keep line, per-set budget, set count and daily ceiling. Judge yesterday's moves: worked, did not, or too soon. If the owner says a standing yes exists but none is logged, ask once to log it; apply nothing until it is.
+2. Call `meta_metric` with `metric=ad_returns` and `limit=200`, every `result_page`. Read the `adsets` list once from page 1. If `ads_total` is above the rows returned, say how many ads were not read. Creator ads carry the creator id in their name, such as trybe=<id>.
+3. The rules, with the owner's saved limits. Missing: ask once; defaults $21 keep line, $50 a set, 3 sets, $150 a day, for this run only, and say so.
+   - Move up: 4 or more sales at or under the keep line, not most of them in the last 3 days (else "next morning"). Follow "Move winning test ads into the main campaign" into the winners ad set, same post.
+   - Switch off: an ad that spent 2x the keep line with no sale. Switch off ads, never an ad set that holds a winner.
+   - Close: a test ad set 7 days after it started, only after its winners moved up.
+   - Build: newly approved videos into new test ad sets at the per-set budget, within the set count and ceiling.
+4. For each test ad set from step 2, call `ad_health_check` with `ads={"adset_id": "<id>"}` and `only=["switched_on","schedule_budget"]` for budgets and end dates. A campaign-wide check times out. Count live test sets.
 5. Call `trybe_creator_program` with `view=performance` and `days=30` for program totals. The approved list comes from the program's own Submissions screen.
-6. Read each new video's script and watch it. Sort it by the product it shows. A video for one product goes only to that product's page. Unclear or two products: hold.
-7. Show ONE numbered list: moves up, switch-offs with daily spend saved, closes, new sets with budget and new daily total. End with "Reply yes, or yes except 2".
+6. Read each new video's script on the creator program and watch it. No browser: list the videos as "held: watch first" and build none. Sort each by the product it shows. A video for one product goes only to that product's page. Unclear or two products: hold.
+7. Show ONE numbered list, move-ups before closes: moves up, switch-offs with daily spend saved, closes, new sets with budget and new daily total. End with "Reply yes, or yes except 2".
 8. On yes: if your tools include `ad_change`, call `ad_change` with `action=status`. Switch-offs go through `ad_change` with `action=propose`. Show the plan, then call `ad_change_apply` with its plan id and hash. Else follow "Switch Meta ads on or off for me". Builds follow "Turn approved Trybe videos into Meta ads for me". Keep the creator id in every ad name and link.
 9. Read every changed ad back with `ad_health_check` and `ads={"ad_ids": ["<id>"]}`.
 10. Call `log_decision` per move with `kind=campaign`, `made_on` today and the measure. Tomorrow's run judges it.
@@ -54,19 +55,21 @@ Checks before answering:
 - The standing yes covers switch-offs and closes only. New sets ask, unless the owner logged a standing yes for them with the per-set budget and set count.
 - On a scheduled run with no standing yes, apply nothing. Send the list.
 - A Meta read error is a failure, not zero sales.
-- Never above 3 live test sets or the approved daily ceiling.
+- Never above the saved set count or daily ceiling.
+- This daily loop judges on the 7-day keep line. Say once that 28-day and last-year reads do not apply.
 
 Rounds (relook before you answer):
 1. **Settled sales.** Re-read each move-up and switch-off on closed days only. Fails when: a switch-off ad has a sale yesterday or a move-up falls under 4 sales. Fix: hold it a day.
 2. **Starvation.** Check spend reached yesterday's new ads. Fails when: a new set or moved winner shows $0 or under 10% of its budget after a full day. Fix: flag it, do not count it as tested.
-3. **Product match.** Re-check each new ad's page with `ad_health_check` and `only=["right_product","creator_tag"]`. Fails when: a video lands on another product's page or lost its creator id. Fix: hold it.
-4. **Spend ceiling.** Add up live test sets after today's plan. Fails when: over 3 sets or over the daily ceiling. Fix: build fewer, oldest videos first.
+3. **Product match.** Re-check each new ad set with `ad_health_check`, `ads={"adset_id": "<id>"}` and `only=["right_product","creator_tag"]`. Fails when: a video lands on another product's page or lost its creator id. "Unknown" with the product in the ad name counts as named. Fix: hold it.
+4. **Spend ceiling.** Add up live test sets after today's plan. Fails when: over the set count or the daily ceiling, or a set's budget is over the per-set budget. Fix: build none. List the newest sets over the cap to pause, each with its budget, and ask.
 5. **Argue the losing case.** For each switch-off, ask if it is too early. Fails when: it spent under 2x the keep line, or under 3 days live. Fix: keep it on.
+6. **Winner inside a close.** Fails when: a set to close holds an ad at or under the keep line that is not moved up. Fix: move it up first, then close.
 
 Output:
 - One line first: moved up, switched off, closed, built, and the new daily spend.
 - The numbered list, then one row per change read back.
-- Videos held and why. Live test sets out of 3.
+- Videos held and why. Live test sets against the saved set count. "Not checked:" ads not read.
 
 Never:
 - Never put a video in another product's ad set or page.

@@ -27,13 +27,14 @@ What to give me: Ad sets and ads losing money, ads ready for more budget, and wh
 Synthesis tools to use:
 - `cost_rules for=meta-ad-returns`
 - `meta_metric metric=ad_returns`
-- `meta_metric metric=creative_action_breakdown days=7`
+- `meta_metric metric=creative_action_breakdown days=7 limit=100`
 
 Steps:
-1. Call `meta_metric` with `metric=ad_returns` and `limit=50`.
+1. Call `meta_metric` with `metric=ad_returns` and `limit=50`. The `adsets` list repeats on every page: read it once from page 1, and later pages only for `ads`.
 2. If it returns status error, stop: say the Meta read failed and to try again later. Never report it as no sales.
 3. For each winner, the move is to raise its own ad set budget by about 20%. Do not copy it into a big ad set, because a copy there competes with every ad and can get almost no spend. If its ad set is losing as a whole, move the ad into a small ad set of its own instead.
-4. For each losing ad, call `meta_metric` with `metric=creative_action_breakdown`, `ad_id` set to that ad and `days=7`. Divide purchase value by purchases for its order value.
+4. Call `meta_metric` with `metric=creative_action_breakdown`, `days=7` and `limit=100` once, with no ad_id. Order value = purchase value over purchases for each ad named. One call, never one per ad.
+5. The move is per ad: switch off the losing ads, never an ad set that holds a winning or fine ad.
 
 Checks before answering:
 - Use the verdicts as the server decided them. "Too early" is not losing.
@@ -45,17 +46,20 @@ Checks before answering:
 - Ad sets switched off during the window are not in the totals, even if they spent. Say the totals cover live ad sets only.
 - The order value comes from the synced table, which runs a day behind the live read. Say so. Ad sets get no order value here. Say that plainly.
 - If the result says status ok, it is a full answer, even if it also carries a gated or no-data stamp.
+- Each row names the keep line it was judged on. If rows use different lines, say which.
+- If the 7 days hold a sale day (Prime, Black Friday), label it. This read covers 3 and 7 days only: list 28 days and last year under "not checked", never borrow account-wide weekly numbers.
 
 Rounds (relook before you answer):
 1. **Second window.** Put each verdict's 7-day figures beside its own 3-day columns, `last3_spend` and `last3_sales`. Fails when: a winner or fine row pays over 1.5x its keep line a sale in the last 3 days, or a loser sold at or under the line in them. Fix: mark it "turning", hold its move and say which window the call rests on.
-2. **Argue the losing case.** For each ad ready for more budget, write the case against it: how many sales, how many days live, and its share of its ad set's spend. Fails when: it rests on fewer than 4 sales, or most of its sales came in the last 3 days of a 7-day read. Fix: move it to watch.
-3. **Profit, not cost per sale.** Set each named ad's cost per sale against its order value from step 4. Fails when: the cost per sale is over half the order value (the house default; the brand's own profit kept per order overrides it). Fix: say it loses money on the first order even if the verdict says fine.
+2. **Argue the losing case.** For each ad ready for more budget, write the case against it: how many sales, how many days live, and its share of its ad set's spend. Fails when: it rests on fewer than 4 sales, most of its sales came in the last 3 days, or its ad set is under 3 days live. Fix: move it to watch. Apply the same age test to every loser: under 3 days live is too early.
+3. **Profit, not cost per sale.** Set each named ad's cost per sale against its order value from step 4. Fails when: the cost per sale is over half the order value (house default; the brand's saved profit kept per order overrides it). If the keep line itself is over half the average order, say once the keep line is loose and judge against the keep line. Fix: say it loses money on the first order.
 4. **Starved, not judged.** Read every ad set's spend in the result. Fails when: one ad set takes over half of all spend while a newer ad set spent under $5 in 3 days. Fix: list the newer one as starved, not losing.
-5. **Ties to the total.** Add up the ad set spend. Fails when: it differs from the total spend by more than 5%, or ad sets were left out as Amazon-bound and the answer does not count them. Fix: state the gap and the count. Amazon-bound ads are judged by the Meta-to-Amazon keep and cut shortcut, not here.
+5. **Ties to the total.** Add up the ad set spend and set it beside the website ads' spend in step 4. Fails when: they differ by more than 5%. Ads in paused campaigns that spent in the window usually explain it. Fix: name them with their cost per sale, and count Amazon-bound ad sets left out.
+6. **Ad inside the ad set.** For each losing ad set, list its ads. Fails when: an ad inside it is winning or fine. Fix: switch off only the losing ads, never the ad set.
 
 Output:
 - One line first: spend, sales and cost per sale over 7 days, against the keep line.
-- Losing: each ad set or ad, its spend, sales, the line it crossed and its order value, with one move.
+- Losing: each ad, its ad set, spend, sales, the line it crossed and its order value, with one move.
 - Ready for more budget: each ad with its cost per sale, sales and the budget move from step 3.
 - Watch: one line.
 - Under 15 lines in total.

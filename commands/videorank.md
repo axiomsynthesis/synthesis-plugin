@@ -1,5 +1,5 @@
 ---
-description: "Rank my videos by cost per Amazon order and rebuild the best for the website: Every Amazon-bound video ranked by Meta dollars per Amazon order, and a build plan to rebuild the top ones as website sales ads, each sent only to its own product's page"
+description: "Rank my videos by cost per Amazon order and rebuild the best for the website: Every Amazon-bound video ranked by Meta dollars per Amazon order, which are already running as website ads, and a build plan to rebuild the rest of the best as website sales ads, each sent only to its own product's page"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -18,50 +18,52 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 
 What it does:
 Finds the videos that sell best on Amazon and plans to reuse them for website sales.
-It ranks every Amazon-bound video by Meta dollars spent per Amazon order over 14 days, and checks the order holds on 7 days.
-An ad cannot be moved from an Amazon traffic campaign to a website sales campaign. The plan rebuilds each winner as a new ad instead.
+It reads the same source, spend and weeks as "Meta to Amazon read" and "Which Meta ads for Amazon to keep, cut or move up", so the three agree on one ad.
+An ad cannot be moved from an Amazon traffic campaign to a website sales campaign. The plan rebuilds each winner as a new ad.
 
-What to read: Meta spend and Amazon Attribution orders for every Amazon-bound video over the last two closed weeks, each video's product and hook rate, and the brand's website ads with their pages and keep line
-What to give me: Every Amazon-bound video ranked by Meta dollars per Amazon order, and a build plan to rebuild the top ones as website sales ads, each sent only to its own product's page
+What to read: Meta spend and Amazon Attribution orders for every Amazon-bound video over the last settled weeks, each video's product, hook rate and Amazon profit per order, and the website ads already running with their pages and keep line
+What to give me: Every Amazon-bound video ranked by Meta dollars per Amazon order, which are already running as website ads, and a build plan to rebuild the rest of the best as website sales ads, each sent only to its own product's page
 
 Synthesis tools to use:
 - `cost_rules for=meta-video-rank-by-amazon-orders`
-- `meta_metric metric=amazon_ads period=weekly weeks=3`
-- `meta_metric metric=video_efficiency`
-- `meta_metric metric=ad_destinations days=14`
-- `meta_metric metric=ad_returns`
+- `meta_metric metric=amazon_ads period=weekly weeks=6`
+- `meta_metric metric=ad_destinations days=28`
+- `amazon_metric metric=daily_revenue`
+- `amazon_metric metric=contribution_by_asin months=3`
+- `meta_metric metric=creative_leaderboard limit=100`
+- `meta_metric metric=ad_returns limit=200`
+- `brand_brain action=moves`
 - `ad_health_check`
 
 Steps:
-1. Call `meta_metric` with `metric=amazon_ads`, `period=weekly` and `weeks=3`. The two newest closed weeks are the 14-day read, the newest alone is the 7-day read.
-2. If it says unavailable, no_linked_ads or error, stop and say why. Never rank from missing data.
-3. Group rows by video: strip audience prefixes and " - Copy" so copies of one video add up. Ads that share one Amazon link stay one row.
-4. Cost per Amazon order = Meta spend over Amazon orders, per video, on both windows. Rank on 14 days. Only rank videos with 10 or more orders on 14 days. List the rest as too few.
-5. Call `meta_metric` with `metric=video_efficiency` and `limit=50` for each top video's hook and hold rate.
-6. Call `meta_metric` with `metric=ad_destinations` and `days=14`. Find the product each top video shows and the website page for that product.
-7. Call `meta_metric` with `metric=ad_returns` and `limit=50` for the website keep line and the test ad set to build into.
-8. Plan the top 3 to 6 videos: video, product, website page, target ad set and daily budget. Default: the brand's test ad set at $50 a day. Rebuild as a new website sales ad with a 4:5 feed version. Website link and tags, no Amazon logo.
-9. Call `ad_health_check` with `ads={"ad_ids": ["<id>"]}` and `only=["right_product","creator_tag"]` on each original ad. Carry any creator tag into the new name.
+1. Call `meta_metric` with `metric=amazon_ads`, `period=weekly` and `weeks=6`. Read every `result_page`. If a week says rows kept N of M, say which videos may be missing. If it says no_linked_ads or error, stop. A `gated` stamp over real rows is wrong: use the rows.
+2. Call `meta_metric` with `metric=ad_destinations` and `days=28`. Take out the "not linked to Amazon" line and any ad whose destination is dtc or walmart.
+3. Call `amazon_metric` with `metric=daily_revenue` and `days=49`. A day over 1.5 times the median is a sale day (Prime, Black Friday). Rank on the 4 newest settled weeks: ended 14 or more days ago, no sale day. The newest settled week is the 7-day check. The 2 newest weeks show as still settling only.
+4. Group rows by video: strip audience prefixes and " - Copy" so copies add up. Cost per Amazon order = Meta spend over Amazon orders on both windows. Rank only videos with 10 or more orders; list the rest as too few.
+5. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3` for profit per Amazon order, plus the 10% referral bonus when the brand gets it. A video above that cost per order loses money on Amazon.
+6. Call `meta_metric` with `metric=creative_leaderboard` and `limit=100` for each top video's 3-second hook rate. Missing: say "hook rate not measured".
+7. Already on the website: call `meta_metric` with `metric=ad_returns` and `limit=200`, read the ad set list once from page 1, and `brand_brain` with `action=moves`. A website ad from the same creator and video is "already running" with its cost per website sale. Never plan it again.
+8. Plan the next 3 to 6 not yet running: video, product, page, ad set and daily budget. Budget from saved decisions; else ask once, default $50 a day for this run only. New 4:5 feed version, website link, no Amazon logo.
+9. Call `ad_health_check` with `ads={"ad_ids": ["<id>"]}` and `only=["right_product","creator_tag"]` on each original. Carry any creator tag into the new name.
 
 Checks before answering:
-- A video sells one product. A video for one product goes only to that product's page. A video showing two products is held.
-- Amazon orders are not website orders. A video cheap per Amazon order is a guess for the website. Say the new ads are a test, judged by the website keep line.
-- Never stop the Amazon original to make room. It keeps running unless the person says otherwise.
-- Amazon keeps crediting orders for 14 days after a click. Say when the newest week has not settled.
+- A video for one product goes only to that product's page. Two products: hold.
+- A video cheap per Amazon order is a guess for the website. The new ads are a test, judged by the website keep line.
+- Never stop the Amazon original to make room.
 
 Rounds (relook before you answer):
-1. **Second window.** Re-rank on the 7-day week alone. Fails when: a top-3 video on 14 days falls out of the top 10 on 7 days. Fix: drop it from the plan, name it as fading.
-2. **Still settling.** Fails when: the newest week has not settled and a top video's rank rests on it alone. Fix: rank on the older week and say so.
-3. **Product match.** Watch each planned video against its page. Fails when: a video shows a different product than its target page, or ad_health_check flags right_product. Fix: change the page or hold it.
-4. **Hook check.** Fails when: a planned video's hook rate is under half the account's median. It may sell on Amazon from a warm crowd only. Fix: move it below one with a stronger hook.
-5. **Argue the losing case.** For the top video, ask why it would fail on the website. Fails when: it leans on an Amazon badge, Amazon price or Amazon-only offer that the website page does not carry. Fix: hold it or plan a new cut.
-6. **Spend check.** Fails when: the new daily total is over what the person approved. Fix: cut the plan to fit.
+1. **Second window.** Fails when: a top-3 video on 28 days falls out of the top 10 on the settled week. Fix: drop it from the plan, name it as fading.
+2. **Already running.** Fails when: a planned video matches a live website ad by creator and video name in step 7. Fix: move it to "already running".
+3. **Profit per order.** Fails when: a planned video's cost per Amazon order is over the profit per order from step 5. Fix: say it loses money on Amazon; plan it only as a website test.
+4. **Product match.** Fails when: ad_health_check flags right_product, or the video's name names another product than its page. Unknown: say "watch it first". Fix: change the page or hold.
+5. **Hook check.** Fails when: a planned video's hook rate is under half the account median. Not measured: the round cannot run; say so and hold any video whose two windows disagree. Fix: move it below a stronger one.
+6. **Spend check.** Fails when: the new daily total is over the saved or approved amount. Fix: cut the plan to fit.
 
 Output:
-- One line first: videos ranked, the top cost per Amazon order, and how many go into the plan.
-- The ranking: video, product, 14-day and 7-day cost per order, orders, hook rate.
-- The build plan: one row per new ad with page, ad set and budget.
-- Videos held, and why.
+- One line first: videos ranked, the top cost per Amazon order, how many already run on the website, how many go into the plan.
+- The ranking: video, product, 28-day and 7-day cost per order, profit per order, orders, hook rate.
+- Already running on the website, with cost per website sale. Then the build plan, one row per new ad.
+- Videos held and why. "Not checked:" videos the tool cut off, hook rates not measured.
 
 Never:
 - Never build, pause or change an ad. A person or "Add new videos as Meta ads" does that.

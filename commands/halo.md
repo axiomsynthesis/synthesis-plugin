@@ -28,35 +28,36 @@ Synthesis tools to use:
 - `amazon_metric metric=search_query_trend`
 - `amazon_metric metric=attribution_sources`
 - `amazon_metric metric=offamazon_share`
-- `amazon_metric metric=daily_revenue`
+- `query_series metric=net_revenue grain=week`
 - `amazon_metric metric=contribution_by_asin months=3`
 - `amazon_metric metric=geo_penetration months=3 limit=51`
 - `meta_metric metric=creative_geo`
 
 Steps:
-1. Call `meta_metric` with `metric=weekly_trend` and `weeks=26` for weekly Meta spend.
-2. Call `amazon_metric` with `metric=search_query_trend`, `grain=week` and `periods=26`, with no keyword. Read `branded_series.query_volume` for weekly branded searches. Read every page of the result. A keyword returns one row per search with no weekly branded total.
-3. Call `amazon_metric` with `metric=daily_revenue` and `days=180`, rolled up to weeks, for Amazon sales.
+1. Call `meta_metric` with `metric=weekly_trend` and `weeks=60` for weekly Meta spend. Read `accounts`: if an ad account was disconnected inside the window, say the "before" spend may be too low, and by up to that account's last full weeks.
+2. Call `amazon_metric` with `metric=search_query_trend`, `grain=week` and `periods=26`, with no keyword. Read `branded_series.query_volume` for weekly branded searches. Read every page. A keyword returns no weekly branded total.
+3. Call `query_series` with `metric=net_revenue`, `grain=week`, `start` 60 weeks back and `end` the last closed Sunday, for Amazon sales. Never end mid-week: the last week comes back short with no warning. Compare a week only with a full week.
 4. Call `amazon_metric` with `metric=attribution_sources` and `days=90` for sales Amazon tracked back to Meta links.
 5. Call `amazon_metric` with `metric=offamazon_share` and `days=90` for how much of Amazon is driven from outside Amazon.
-6. Fit the trend in Amazon sales over the 8 or more weeks before Meta spend rose, and project it forward. Count only sales above that line, with a one to two week lag. Then compare weeks of high and low spend the same way, for a low and a high figure for sales added per $1K.
-7. Call `amazon_metric metric=contribution_by_asin months=3` for the margin of the products the ads point to. Turn added sales into added profit. A lift that earns less profit than the $1K it cost is a loss, even if it is positive. Work out the break-even: the extra Amazon orders a day the spend needs to pay for itself, so the reader can see the bar.
-8. Propose a state holdout. Call `amazon_metric metric=geo_penetration months=3 limit=51`. Pick about 20% of states matched on Amazon sales and customers. Switch Meta off there for 4 to 6 weeks, then compare Amazon sales by state against the rest.
+6. Fit the trend in Amazon sales over the 8 or more weeks before Meta spend rose. Project it forward only if flat or rising; if falling, the baseline is the same weeks last year. Count sales above it, with a one to two week lag. Compare high and low spend weeks the same way, for a low and high figure per $1K.
+7. Call `amazon_metric metric=contribution_by_asin months=3` for the margin of the products the ads point to. Turn added sales into added profit. A lift earning less profit than the $1K it cost is a loss. Work out the break-even: the extra Amazon orders a day the spend needs to pay for itself.
+8. Propose a state holdout. Call `amazon_metric metric=geo_penetration months=3 limit=51`. Pick about 20% of states from the middle of the size ranking, not the top 5, each with a matched control state on Amazon sales. Switch Meta off there for 4 to 6 weeks, ending at least 4 days before Black Friday or any planned deal.
 
 Checks before answering:
-- Deal weeks and holidays move both lines at once. Take them out before comparing.
+- Deal weeks and holidays move both lines at once. Take them out before comparing. If Prime Day fell in a different month last year, leave the 4 weeks after each Prime Day out of the year-ago comparison.
 - Fewer than about 12 weeks of spend changes is too little. Say low confidence.
 - Tracked Meta links undercount the lift. Never treat them as the whole answer.
 - If any series is empty, say which one. Never treat a failed read as no lift.
 - Amazon sales credited to Meta links can include creator and agency links that share the same publisher. Say when one week's credited sales are far above what its Meta spend could buy, and leave it out.
 - There is no model here with controls or a confidence range. The range from step 6 is a by-eye read. Always say low confidence until the state test runs.
 - If a product has no cost entered, its margin is blank. Give the lift in sales only for it and say why.
+- Run find_contradictions only if an earlier conclusion was about Meta and Amazon: it matches on product names and returns unrelated ones.
 
 Rounds (relook before you answer):
-1. **Pre-trend.** Re-read Amazon sales for the 8 weeks before the spend rise from step 3. Fails when: sales were already climbing fast enough to explain half or more of the lift. Fix: count only sales above the projected trend and cut the range.
+1. **Pre-trend.** Re-read Amazon sales for the 8 weeks before the spend rise from step 3. Fails when: sales were already climbing fast enough to explain half or more of the lift, or were falling. Fix: if climbing, count only sales above the trend. If falling, never project the fall forward: use the same weeks last year as the baseline and say so.
 2. **Break-even bar.** Fails when: the high end of the range adds less Amazon profit per $1K than $1K, or fewer extra orders a day than the break-even from step 7. Fix: the headline says the lift does not pay yet, whatever its size.
 3. **Second window, sale days out.** Drop deal and holiday weeks and re-run step 6 on the last 13 weeks only. Fails when: the low or high figure moves by more than half, or flips sign. Fix: say low confidence and give the wider range.
-4. **Dose by state.** Call `meta_metric` with `metric=creative_geo`, `grain=region`, `days=90` and `limit=500`, and add spend up by state. Set it beside Amazon sales growth by state from `geo_penetration`. Fails when: the heaviest-spend third of states did not grow faster than the lightest third after their own trend. Fix: say the state read does not back the lift.
+4. **Dose by state.** Call `meta_metric` with `metric=creative_geo`, `grain=region`, `days=90` and `limit=200` (its most), read every page and add Amazon-bound spend up by state. Set it beside Amazon sales growth by state: `geo_penetration` months=1 against months=5 minus months=4, two months, not a trend. Fails when: the heaviest-spend third of states did not grow faster than the lightest third. Fix: say the state read does not back the lift. If the sums cannot be made, say "not checked" and why.
 5. **Argue the other side.** Write the strongest case that the lift is bigger (tracked links only count clicks, and sales campaigns reach the best buyers) and that it is smaller (sales were rising anyway, creator links share the same tag). Fails when: either case rests on a number this run did not read. Fix: read it, or list it as not checked. Only the state test settles it.
 
 Output:

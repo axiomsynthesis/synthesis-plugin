@@ -1,5 +1,5 @@
 ---
-description: "Which Meta ads for Amazon to keep, cut or move up: Keep, cut and move-up lists for Amazon-bound Meta ads, each ad with its spend, return, orders and the dollars a week at stake, judged by the brand's own ad rules"
+description: "Which Meta ads for Amazon to keep, cut or move up: Keep, trim, cut and move-up lists for Amazon-bound Meta ads, each ad with its spend, return, orders and the dollars a week at stake, judged against each product's break-even"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -18,55 +18,58 @@ No Synthesis tools yet? Search your tools for "synthesis"; that waits for one st
 
 What it does:
 Judges every Meta ad that sends shoppers to Amazon by Amazon's own orders, not Meta's.
-Meta cannot see Amazon sales, so it joins Amazon Attribution to Meta spend per ad.
-Then it applies the brand's ad rules and hands back keep, cut and move-up lists with the dollars at stake.
+It reads the same source, spend, weeks and bar as "Meta to Amazon read" and "Rank my videos by cost per Amazon order", so all three give one ad the same call.
 Changes go through "Switch Meta ads on or off for me" and "Change a Meta budget for me".
 
-What to read: Meta spend for every ad that sends shoppers to Amazon, the Amazon orders and sales Amazon Attribution credits to each, over the last two closed weeks, each product's Amazon margin and each ad's campaign and daily budget
-What to give me: Keep, cut and move-up lists for Amazon-bound Meta ads, each ad with its spend, return, orders and the dollars a week at stake, judged by the brand's own ad rules
+What to read: Meta spend for every ad that sends shoppers to Amazon, the Amazon orders and sales Amazon Attribution credits to each, over the last settled weeks, each ad's destination, each product's Amazon margin and each ad's campaign and daily budget
+What to give me: Keep, trim, cut and move-up lists for Amazon-bound Meta ads, each ad with its spend, return, orders and the dollars a week at stake, judged against each product's break-even
 
 Synthesis tools to use:
 - `cost_rules for=meta-amazon-keep-cut-promote`
-- `meta_metric metric=amazon_ads period=weekly weeks=3`
-- `meta_metric metric=ad_daily_trend days=14`
+- `meta_metric metric=amazon_ads period=weekly weeks=6`
+- `meta_metric metric=ad_destinations days=28`
 - `amazon_metric metric=contribution_by_asin months=3`
+- `amazon_metric metric=daily_revenue`
+- `brand_brain action=moves`
+- `meta_metric metric=ad_daily_trend days=14`
 - `ad_health_check`
 
 Steps:
-1. Call `meta_metric` with `metric=amazon_ads`, `period=weekly` and `weeks=3`. The newest closed week is the 7-day read. The two newest together are the 14-day read. Return is Amazon sales over Meta spend.
-2. If it says unavailable, no_linked_ads or error, stop and say why. Never treat it as zero orders. If linked spend is under 80%, say so first.
-3. Ask, in one message, what only the owner knows. The return bar for each product family. Default: 1.5 for one family, 1.2 for a higher-margin one. Any sale days in these weeks. Which campaigns an outside agency runs. The agency or influencer bill for the period.
-4. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`. The break-even return for a product is 1 over its margin share after Amazon fees.
-5. Call `ad_health_check` with `ads={"ad_ids": ["<id>"]}` and `only=["schedule_budget","switched_on"]` for each ad you would cut or move up. Read its campaign, daily budget and switches.
-6. Sort each ad as a test (first ran in the last 28 days) or scaling. Apply the default rules, each one overridable by the owner:
-   - Test ad: cut at $150 spent with no Amazon order. Cap test ads at $75 a day.
-   - Move up at $300 spent with the 14-day and 7-day returns both at or above the bar, and 10 or more orders.
-   - Scaling ad: cut when the return is under 1.0 after $500 spent, on both windows.
-   - The two windows must agree. If they do not, hold.
-   - Leave out any day in the last 2 days, and any week with a big sale day in it.
-7. For each cut, call `meta_metric` with `metric=ad_daily_trend`, `ad_id=<id>` and `days=14`. An ad whose spend and return are both climbing is ramping. Hold it.
-8. Dollars at stake: for a cut, its weekly spend minus the Amazon profit it brings. For a move up, the profit at its return on the extra budget.
+1. Call `meta_metric` with `metric=amazon_ads`, `period=weekly` and `weeks=6`. Read every `result_page`. If a week says rows kept N of M, say what share of spend was shown. Return is Amazon sales over Meta spend.
+2. If it says no_linked_ads or error, or its rows are empty, stop and say why. A `gated` stamp over rows that carry spend, sales and orders is wrong: use the rows and say so.
+3. Call `meta_metric` with `metric=ad_destinations` and `days=28` (top 40 ads only). Take out the "not linked to Amazon" line and any ad whose destination is dtc or walmart.
+4. Call `amazon_metric` with `metric=daily_revenue` and `days=49`. A day over 1.5 times the median is a sale day (Prime, Black Friday). Settled weeks ended 14 or more days ago with no sale day. 7-day read: the newest settled week. 28-day read: the 4 newest. The 2 newest weeks are "still settling" only.
+5. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3`. Each family's bar is its break-even: 1 over its margin share, plus the 10% referral bonus when the brand gets it. Never a flat number.
+6. Read saved answers in `recall_decisions`; ask once only for what is missing: which campaigns an outside agency runs, and its bill. Say a default holds for this run only.
+7. Call `brand_brain` with `action=moves` for ads already switched off, cut or moved up. Call `ad_health_check` with `ads={"ad_ids": ["<id>"]}` and `only=["schedule_budget","switched_on"]` for each ad you would cut, trim or move up. An ad already off is "already off", no action.
+8. The rules, same as /metaamazon, each overridable by the owner:
+   - Test ad (first ran in 28 days): cut at $150 with no Amazon order; under 3 days live is too early.
+   - Move up: at or above the bar on both windows, $300+ spent, 10+ orders.
+   - Trim: 1.0 or more but under the bar on both windows. Lower its ad set budget by the share under the bar.
+   - Cut: under 1.0 after $500 spent on both windows. Windows disagree: hold.
+9. For each cut, call `meta_metric` with `metric=ad_daily_trend`, `ad_id=<id>` and `days=14`. Spend and return both climbing: hold as ramping.
+10. Dollars at stake: for a cut or trim, its weekly spend minus the Amazon profit it brings.
 
 Checks before answering:
-- Agency or influencer bills are their own cost line. Never add them to Meta spend or hide them in the return.
-- Savings are real only if the budget comes down when ads go off. Otherwise Meta spends the same money on the other ads. Say so on every cut.
-- Campaigns an outside agency runs go in their own list. The owner decides.
-- Ads that share one Amazon link are one row. Never split their sales.
-- Amazon keeps crediting orders for 14 days after a click. Say when the newest week has not settled.
+- Agency or influencer bills are their own cost line, never in Meta spend or the return.
+- Savings are real only if the budget comes down. Say so on every cut.
+- Agency campaigns go in their own list. The owner decides.
+- Ads that share one Amazon link are one row.
 
 Rounds (relook before you answer):
-1. **Second window.** Re-read every cut and move-up on the 7-day week alone. Fails when: an ad's 7-day return sits on the other side of the bar from its 14-day return. Fix: move it to hold.
-2. **Still settling.** Re-read the unsettled week with the 2-day lag removed. Fails when: an ad cut for no order has an order inside the last 2 days, or its return rises past the bar. Fix: hold it a week.
-3. **Bar vs margin.** Check each family's bar against step 4. Fails when: a bar is under that family's break-even return, so a kept ad loses money. Fix: raise the bar and re-sort.
+1. **Second window.** Fails when: an ad's 7-day return sits on the other side of the bar from its 28-day return. Fix: hold.
+2. **Still settling.** Fails when: a cut or move-up rests on the 2 newest weeks. Fix: judge on settled weeks only.
+3. **Bar vs margin.** Fails when: an owner's or saved bar is under that family's break-even from step 5. Fix: raise it and re-sort.
 4. **Order count.** Fails when: a move-up rests on fewer than 10 orders. Fix: back to keep.
-5. **Argue the losing case.** For the biggest cut, make the case to keep it from the daily trend. Fails when: spend rose in the last 7 days and return rose with it. Fix: hold as ramping.
-6. **Money adds up.** Fails when: the cut savings exceed the spend those ads had, or the budget is not lowered. Fix: say no money is saved yet.
+5. **Argue the losing case.** For the biggest cut, make the case to keep it. Fails when: spend rose in the last 7 days and the newest week's return is above the week before. The daily trend has no Amazon return. Fix: hold as ramping.
+6. **Money adds up.** Fails when: the cut savings exceed those ads' spend, or the budget is not lowered. Fix: say no money is saved yet.
 
 Output:
-- One line first: 14-day spend, Amazon sales and return, and the dollars a week at stake.
+- One line first: 28-day spend, Amazon sales and return, the bar, and the dollars a week at stake.
 - Cut: each ad, spend, orders, return on both windows, the rule, and the budget to lower.
-- Move up: each ad, return on both windows, orders, and the suggested budget, never over $75 a day for a test.
-- Keep, hold and agency lists: one line each.
+- Trim: each ad set, the share under the bar and the new budget.
+- Move up: each ad as a copy into its own ad set at a stated daily budget. One ad inside a shared budget cannot be budgeted.
+- Keep, hold, already off and agency lists: one line each.
 
 Never:
 - Never change, pause or raise an ad. A person does that.
