@@ -29,6 +29,7 @@ Synthesis tools to use:
 - `web_fetch`
 - `meta_metric metric=ad_returns`
 - `meta_metric metric=ad_destinations`
+- `meta_metric metric=creative_action_breakdown days=7`
 - `ad_health_check`
 - `log_decision kind=campaign`
 
@@ -47,6 +48,7 @@ Steps:
 12. Switch on only once the page is live and the person said yes to the page and the dollar figure. Then do not ask again.
 13. Read back: call `ad_health_check` with `ads={"campaign_id": "<new id>"}`. Every ad on, every link the new page with tags, end date set, only the picked ads left.
 14. Call `log_decision` with `kind=campaign`, `measure`, `made_on`, the page, budget, end date and readout dates: first look about day 4, decision about day 10.
+15. Readout, house defaults the brand can override: at the first look, switch off only a disaster, cost per sale over 2x the control's on the same days after $300 spent. Call it at about $700 to $1,000 spent, against the control on the same days, never against the control's history.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, build the full copy and leave it off. Read it back and leave it off for the person to delete.
@@ -55,6 +57,13 @@ Checks before answering:
 - If the page already runs an on-site split test, say so. Meta traffic will be split by it.
 - If the structure differs from the proven campaign, say so before publishing.
 - Small tests can be twice off on luck. They catch disasters, not small wins.
+
+Rounds (relook before you answer):
+1. **Price match.** Before the yes, add every pack on the page to the cart. Fails when: any cart price differs from the page price, or the same pack sells for less on a marketplace. Fix: stop, or say the gap and get a yes on it.
+2. **Only the page differs.** Read the test campaign back beside the control. Fails when: ads, audience, placements, goal or attribution differ. Fix: correct it before it spends.
+3. **First look, day 3 or 4.** Fails when: cost per sale is over 2x the control's on the same days after $300 spent. Fix: propose switching it off.
+4. **Is the gap real.** At the call, count sales on each side. Fails when: either side has fewer than 20 sales, or the gap is under 25%. Fix: call it a tie; small tests catch disasters, not close calls.
+5. **Why it won or lost.** Call `meta_metric` with `metric=creative_action_breakdown`, `ad_id` and `days=7` for each test ad and its control twin. Fails when: cost per click differs by more than 30%. Fix: say the gap comes from what Meta charges to show it, not from the page, and compare sales per 100 page views instead.
 
 Output:
 - One line: live or off, campaign name, daily budget, end date.
@@ -69,6 +78,10 @@ Never:
 Rules:
 - This one makes the change for me, in my own browser where I am already signed in (Claude in Chrome or another browser tool). Before changing anything, show me the exact change in one list: every object by name, every budget, price, link and date. Wait for my clear yes. Then change only what I approved. Never delete, never buy, never raise spend or a price beyond what I approved, and decline every platform suggestion that would. If a platform's safety check stops a step, quote my approval once and stop if it still refuses. When it is done, read every changed object back and tell me what is live, what is off and anything that differs from the plan. If no browser tool is available here, give me the exact click-by-click steps instead.
 - Before step 1, call cost_rules. If it returns questions, ask them in one message as written (dollars, choices, what skip does) and save each answer with set_cost_rule. On a scheduled run, use the defaults and list the questions at the end. End the answer with its used_line.
+- This job is worked in rounds; the first pass is never the answer. First call recall_decisions and look for an earlier run of this job: if one exists, start from where it ended, not from zero. After the Steps, run every round in Rounds in order. Each round re-reads the data it needs, says what it found wrong and fixes the draft. Log one line per round: what changed and why, or 'no change' if its check passed. Never invent a change. Stop mid-way only for a choice only I can make. Show the final draft, then the round log, then 2 or 3 next rounds I could ask for. Treat my feedback as a new round: re-run every check it touches, and never quietly undo an earlier fix. At the end, save where this run stopped with log_decision so the next run picks it up.
+- Read every number that drives the call in layers and over several windows, never one. Layers, where they apply: volume (orders, sales), then profit after every cost, then return on the money spent against break-even, then what a customer is worth later on profit. Windows by how fast the number moves: fast ones (clicks, buy rate, cost per sale) over the last 7 closed days and the 7 before; sales, spend and return over 28 days, never under 4 weeks; slow ones (repeat, lifetime value, share) over 90 days to 12 months, comparing only customers of the same age. Set each against the same weeks last year, not last week. Closed days only; a young cohort is unfinished, not low. Before calling a change, rule out a deal, a stock-out or a part month. Show one small grid: each key number by window, with return on spend. When windows disagree, say so plainly: a fall in a slow number outranks a wobble in a fast one, a trend needs 4 steady weeks, and mixed signals mean no clear signal yet, not a verdict.
+- Before trusting a number, compare it the way an expert would. Against itself: its own usual level and the same weeks last year. Against its peers: the other products, ads, pages or channels doing the same job, ranked side by side. Against the line that matters: break-even and any goal the brand set. An outside benchmark only shows room to grow, never a grade. Against a control: a holdout, the page being beaten, or a past natural test such as a pause or a stock-out. Break every move into its parts (price times units times mix, or rate times count) and name the part that moved. Look at the spread, not just the average: the top and bottom few, and how much rides on one item. Size each finding in dollars a month. Name the number that would flip the call.
+- Go deeper with the tools built for it, picking the ones this job needs and saying which you ran and which you skipped. Start from the map: brand_brain with action=what_matters, then action=links_here on the thing at hand to find what it is tied to, and action=explain_link to check a link was tested and is not chance. Incrementality: attribution_lenses to set what the platform claims beside what was likely extra, plus any past pause, stock-out or spend jump as a natural test; never treat a platform's own credit as extra sales. Models: media_response_model or diminishing_returns for what the next dollar returns; run_monte_carlo for a range of outcomes, never one point; run_bayesian when the sample is small; explain_metric_move for why a number moved; backtest_rule to check the call would have held in the brand's own past. List what is working and what is breaking, both sides. Check find_contradictions against earlier conclusions. Close every recommendation with measurable_test: the number, the date and the line that says it worked.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-page-test". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
