@@ -255,3 +255,66 @@ def _session_read_google(transcript_path: str) -> bool:
                         str(b.get("name") or ""), b.get("input")):
                     return True
     return False
+
+
+# ── The answer-memory pass (2026-10-21) ──────────────────────────────────────
+# Each signed-in Synthesis result carries PASS_FIELD, a pass signed by the server
+# that names the person and brand the call was signed in as. capture_turn.py sends
+# the newest one with the answer, and that is how the session's secret gets tied to
+# them (the server's mcp_capture_key, "The pass"). It used to ride INTO each call
+# through a PreToolUse hook, which Anthropic's plugin directory holds for review.
+#
+# Read only as a TOP-LEVEL key of a result from a Synthesis tool. Text a Synthesis
+# tool merely passed along (a fetched web page, another vendor's output) sits inside
+# a JSON string, where its quotes are escaped, so it can never read as that key.
+PASS_FIELD = "answer_memory_pass"
+PASS_PREFIX = "syncap_pass."
+_PASS_RE = re.compile(r'(?<!\\)"' + PASS_FIELD + r'"\s*:\s*"(' + re.escape(PASS_PREFIX)
+                      + r'[A-Za-z0-9_\-.]{20,2000})"')
+
+
+def _result_texts(block: dict) -> list[str]:
+    content = block.get("content")
+    if isinstance(content, str):
+        return [content]
+    if isinstance(content, list):
+        return [str(c.get("text") or "") for c in content
+                if isinstance(c, dict) and c.get("type") == "text"]
+    return []
+
+
+def _pass_in(text: str) -> str:
+    try:
+        parsed = json.loads(text)
+    except ValueError:
+        parsed = None
+    if isinstance(parsed, dict):
+        value = parsed.get(PASS_FIELD)
+        return value if isinstance(value, str) and value.startswith(PASS_PREFIX) else ""
+    m = _PASS_RE.search(text)        # a result that is not one JSON object as a whole
+    return m.group(1) if m else ""
+
+
+def latest_pass(transcript_path: str) -> str:
+    """The newest answer-memory pass in this session's Synthesis results, or ""."""
+    if not transcript_path or not os.path.isfile(transcript_path):
+        return ""
+    try:
+        events = [ev for ev in _events(transcript_path) if not ev.get("isSidechain")]
+    except Exception:                                # noqa: BLE001 — never break the hook
+        return ""
+    ours = synthesis_prefixes(str(b.get("name") or "") for ev in events
+                              for b in _blocks(ev) if b.get("type") == "tool_use")
+    our_calls = {str(b.get("id") or "") for ev in events for b in _blocks(ev)
+                 if b.get("type") == "tool_use"
+                 and split_tool(str(b.get("name") or ""))[0] in ours}
+    found = ""
+    for ev in events:
+        for b in _blocks(ev):
+            if (b.get("type") == "tool_result" and not b.get("is_error")
+                    and str(b.get("tool_use_id") or "") in our_calls):
+                for text in _result_texts(b):
+                    value = _pass_in(text)
+                    if value:
+                        found = value
+    return found

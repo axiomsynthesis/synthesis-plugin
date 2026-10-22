@@ -6,15 +6,15 @@ no hook can read it. So the Stop hook had nothing to send an answer with, and fo
 30 days it sent none (measured 2026-10-06). This is the fix, in three steps:
 
   1. a random secret per session, written here, readable by this user only;
-  2. register_capture.py adds the secret's FINGERPRINT to each Synthesis call, which
-     is signed in, so the server ties the fingerprint to this person and brand;
+  2. each signed-in Synthesis result carries a pass from the server naming this person
+     and brand (_transcript.latest_pass);
   3. capture_turn.py, only on a turn that used Synthesis, sends the answer with the
-     secret itself as its bearer, to our pinned host and nowhere else.
+     secret itself as its bearer and the pass beside it, to our pinned host and nowhere
+     else. The server ties the secret's fingerprint to whoever the pass names.
 
 The secret never enters a tool call, the model's context or the transcript. The
 server side, and why the key can only ever save an answer, lives with the server.
 
-Shared by both hooks so the switch and the file layout cannot drift between them.
 Stdlib only, and nothing at module scope may raise (see session_start.py, rule 1).
 """
 from __future__ import annotations
@@ -92,32 +92,6 @@ def load_or_create(session_id: str) -> str:
 
 def fingerprint(secret: str) -> str:
     return hashlib.sha256(secret.encode("utf-8")).hexdigest()
-
-
-# The servers this session has shown to be Synthesis (see _transcript.DISTINCTIVE_TOOLS),
-# one tool-name prefix per line, beside the session's secret. Lets the PreToolUse hook
-# recognise an ordinary tool on the claude.ai connector without re-reading the transcript
-# on every call.
-def learned_servers(session_id: str) -> set[str]:
-    if not session_id:
-        return set()
-    try:
-        with open(_path(session_id) + ".servers", encoding="utf-8") as fh:
-            return {line.strip() for line in fh if line.strip().startswith("mcp__")}
-    except OSError:
-        return set()
-
-
-def learn_server(session_id: str, prefix: str) -> None:
-    if not session_id or not prefix.startswith("mcp__") or prefix in learned_servers(session_id):
-        return
-    try:
-        os.makedirs(_key_dir(), mode=0o700, exist_ok=True)
-        fd = os.open(_path(session_id) + ".servers", os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
-        with os.fdopen(fd, "a", encoding="utf-8") as fh:
-            fh.write(prefix + "\n")
-    except OSError:
-        pass
 
 
 def _prune() -> None:

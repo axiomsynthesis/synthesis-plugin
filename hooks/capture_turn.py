@@ -37,8 +37,8 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _pinned_url import DEFAULT_URL, resolve_url  # noqa: E402  (shared with session_start)
-from _transcript import read_turn  # noqa: E402
-from _capture_secret import load as _load_secret, switched_off  # noqa: E402
+from _transcript import latest_pass, read_turn  # noqa: E402
+from _capture_secret import load as _load_secret, load_or_create as _make_secret, switched_off  # noqa: E402
 
 # Tells the server this call came from the recorder, so it keeps the steps. A model
 # calling capture_turn itself sends no steps and is recorded as its own kind.
@@ -129,12 +129,12 @@ def _log_once(reason: str) -> None:
     _log(reason)
 
 
-def _token(session_id: str = "") -> tuple[str, str]:
+def _token(session_id: str = "", make: bool = False) -> tuple[str, str]:
     """(token, source). This session's answer-memory secret, else SSI_MCP_TOKEN.
 
     The secret (_capture_secret.py) is what nearly every customer has: it is made
-    on this machine and registered through their /mcp sign-in, and the server lets
-    it save an answer and nothing else. SSI_MCP_TOKEN is the older path for
+    on this machine, here, and tied to their /mcp sign-in by the pass sent with it
+    (_transcript.latest_pass), and the server lets it save an answer and nothing else. SSI_MCP_TOKEN is the older path for
     someone who exported their access key.
 
     This used to fall back to Claude Code's own credential store
@@ -145,7 +145,8 @@ def _token(session_id: str = "") -> tuple[str, str]:
     credential store" is the sentence that stops a security review. It is gone,
     and must stay gone.
     """
-    secret = _load_secret(session_id) if session_id else ""
+    # Made only when there is a pass to tie it to: a key nothing can bind is no key.
+    secret = ((_make_secret if make else _load_secret)(session_id)) if session_id else ""
     if secret:
         return secret, "capture_key"
     env = os.getenv("SSI_MCP_TOKEN", "").strip()
@@ -200,7 +201,9 @@ def _call(url: str, token: str, question: str, answer: str,
         url, data=body, method="POST",
         headers={"Content-Type": "application/json",
                  "Accept": "application/json, text/event-stream",
-                 "Authorization": f"Bearer {token}"},
+                 "Authorization": f"Bearer {token}",
+                 **({"X-Synthesis-Pass": str(turn["pass"])}
+                    if turn and turn.get("pass") else {})},
     )
     try:
         with urllib.request.urlopen(req, timeout=budget_s) as resp:
@@ -259,11 +262,11 @@ def main() -> int:
         return 0
 
     raw_session = str(payload.get("session_id") or "")
-    token, source = _token(raw_session)
+    pass_token = latest_pass(str(payload.get("transcript_path") or ""))
+    token, source = _token(raw_session, make=bool(pass_token))
     if not token:
-        _log("SKIPPED: no credential — this session has no answer-memory key (the "
-             "plugin adds one on the first Synthesis call) and SSI_MCP_TOKEN is not "
-             "set. The compounding loop is NOT running.")
+        _log("SKIPPED: no credential — this session has no answer-memory key and "
+             "SSI_MCP_TOKEN is not set. The compounding loop is NOT running.")
         return 0
 
     session_id = raw_session or "anon"
@@ -273,6 +276,8 @@ def main() -> int:
 
     turn = {"session_id": raw_session,
             "steps": steps, "steps_seen": seen, "session_read_google": read_google}
+    if source == "capture_key" and pass_token:
+        turn["pass"] = pass_token
 
     if _must_send_inline():
         ok, why = _call(url, token, question, answer, INLINE_TIMEOUT_S, turn=turn)

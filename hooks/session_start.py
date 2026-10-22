@@ -328,10 +328,27 @@ def main() -> int:
     return 0
 
 
+# The server used to learn that this session's answers save themselves from a value
+# the plugin added to each call, and stopped asking for capture_turn. No hook changes a
+# call any more (Anthropic's plugin directory holds a plugin that does), so the model
+# hears it here instead. Without it every answer is saved twice.
+ANSWERS_SAVE_THEMSELVES = (
+    "Answer memory: every answer that used Synthesis is saved for the brand "
+    "automatically when you finish. Never call capture_turn yourself, even when a "
+    "Synthesis result asks you to.")
+
+
 def _session_context(check) -> None:
     _print_voice()
     print(PREFER_PLUGIN)
     print()
+    try:
+        from _capture_secret import switched_off
+        if not switched_off():
+            print(ANSWERS_SAVE_THEMSELVES)
+            print()
+    except Exception:                       # noqa: BLE001 — rule 1
+        pass
     _brand_state()
     _print_update_notice(check)
 
