@@ -1,28 +1,32 @@
 ---
 name: ssi-invoke-deep-synthesis
 description: >
-  Load when your message contains the word "deep" in any spelling about a
-  business question ("@deepsynthesis", "deepsynthesis", "deep synthesis on why
-  repeat fell", "go deep on this", "deep dive into our ad spend"), or when a
-  deep run's status, result or error arrives, or you want the result of a deep
-  run started in another session. Starts the server's deep analysis with your
-  own words, waits for it patiently, reads the receipt honestly, and relays
-  the finished answer exactly as written.
+  Load when someone asks for the deep analysis that runs on the Synthesis
+  server, when a deep run's status, result or error arrives, or to collect a
+  deep run started in another session. In a chat with no /deep command, that is
+  any message with the word "deep" about a business question ("@deepsynthesis",
+  "deepsynthesis", "deep synthesis on why repeat fell", "go deep on this", "deep
+  dive into our ad spend"). In Claude Code with the Synthesis plugin, /deep runs
+  the deep answer on your own Claude instead, so there only a request for the
+  server-run version by name counts. Starts the server's deep analysis with your
+  own words, waits for it patiently, reads the receipt honestly, and relays the
+  finished answer exactly as written.
 ---
 
 # Invoke deep synthesis
 
 ## Open this page when
 
-- The message contains the word "deep" anywhere, in any form. That is an
-  instruction, however simple or table-shaped the question looks.
-- A deep run is already going and is being polled, or its result, error or restart
-  notice has just come back.
-- Someone asks to see the result of a deep run started in another session.
+- Someone asks for the server-run deep synthesis by name ("run deep synthesis on the
+  server"). In this plugin a request to go deep is answered by /deep, on this Claude:
+  if they asked without typing /deep, say in one line that typing /deep and the
+  question runs it here.
+- A server deep run is already going and is being polled, or its result, error or
+  restart notice has just come back.
+- Someone asks to see the result of a server deep run started in another session.
 
 Not this page: a message that only names the server, with no "deep" in it, and
-"deep" said about code or a file. If it is unclear whether a live run is wanted,
-ask in one line first.
+"deep" said about code or a file.
 
 ## Fetch the method before you answer
 

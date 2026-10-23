@@ -1,7 +1,7 @@
 ---
 name: start-here
 description: >-
-  Load first on any business question answered with Synthesis, and whenever a message says "deep". Picks how deep to go, grounds the answer in what this brand already knows, opens the Brand Brain map for what matters and what changed, runs a deep synthesis when asked, and files what was learned. Asked to make a dashboard, report, deck or page: open writing-it-up too.
+  Load first on any business question answered with Synthesis, and whenever a message says "deep". Picks how deep to go, grounds the answer in what this brand already knows, opens the Brand Brain map for what matters and what changed, sends a deep question to /deep, and files what was learned. Asked to make a dashboard, report, deck or page: open writing-it-up too.
 ---
 
 # Start here
@@ -14,13 +14,15 @@ question truly spans both. The paths are relative to this skill's folder.
 method from the server with `get_skill`. Make that call before you answer;
 the page alone is not the method.
 
+**A deep answer runs here, on this Claude, through `/deep`.** A message asking to go deep without the command gets one line: type `/deep` and the question. Open `pages/invoke-deep-synthesis/PAGE.md` only when the person asks for the server-run deep synthesis by name, or a server run's result arrives.
+
 **Asked to MAKE something** (a dashboard, report, deck, chart, spreadsheet, page or file)? Open the writing group now: `../writing-it-up/pages/exports-and-deliverables/PAGE.md`, and fetch its method. A bare "make me a dashboard" with no detail gets the default dashboard that page describes, built first. Do not answer with questions and nothing built; offer to adjust after it exists. Use the pages below as well for grounding. Call `brand_kit` before building: `source: agency` means work for the client to read wears the agency's look and "Prepared by" the agency, never the client's look.
 
 | Page | Open it when |
 |---|---|
 | `pages/synthesis-operating-protocol/PAGE.md` | On every real question about your business that Synthesis can answer, from "what was revenue last month" or "chart sales by week" to "should we expand", "why is repeat down" or "what is our biggest risk". |
 | `pages/synthesis-reasoning-method/PAGE.md` | For a strategic, why or should-we question ("should we cut ad spend", "why is revenue falling", "what's driving repeat down", "give me a strategy to scale this product", "what is our biggest constraint") once the operating… |
-| `pages/invoke-deep-synthesis/PAGE.md` | When your message contains the word "deep" in any spelling about a business question ("@deepsynthesis", "deepsynthesis", "deep synthesis on why repeat fell", "go deep on this", "deep dive into our ad spend"), or when a deep run's… |
+| `pages/invoke-deep-synthesis/PAGE.md` | When someone asks for the deep analysis that runs on the Synthesis server, when a deep run's status, result or error arrives, or to collect a deep run started in another session. |
 | `pages/ground-in-brand-knowledge/PAGE.md` | At the start of any analysis of your brand, when you mention a document, deck, file or spreadsheet ("what does our research say", "check the brief we uploaded"), before quoting a stored brand fact, when you say you added a file… |
 | `pages/brand-context-lenses/PAGE.md` | Before leaning on your brand's stored archetype, revenue stage, channel gravity, seasonality class, market posture or death-mode scores ("what kind of brand are we", "what should our repeat rate be", "are we Amazon-dependent",… |
 | `pages/write-back-conclusions/PAGE.md` | At the end of a substantive answer, when you attach a file, when a forward-looking number is stated ("we should hit 20% repeat by March"), when a stored fact about your brand turns out wrong, or when you commit to a decision or… |
