@@ -19,8 +19,8 @@ Try first: `/health` (data that needs attention), `/whyprofit` (why profit
 moved), `/stockout` (products about to run out), `/fees` (Amazon fee
 overcharges) and `/deep` with a question (a fully checked deep answer).
 Automations worth opening: `/reorder`, `/adloss` and `/winback`. Type `/go` to
-list every other one, and `/setup` to check your connection. Claude shows
-these steps the first time it opens, and `/start` brings them back.
+list every other one, and `/setup` to check your connection. `/start` brings
+these steps back.
 
 ## Install
 
@@ -29,66 +29,41 @@ Add Synthesis from Claude's plugin directory. Then sign in: in Claude Code, type
 Synthesis access key, which you make on the Connect your AI page. You see your
 brand and nothing else. You need a Synthesis account and a paid Claude plan.
 
-You can also install from a terminal with one line. It installs Claude Code
-first if this computer does not have it, and it also installs `synthesis-design`, a second plugin with
-design skills for landing pages, banners, design systems and UI:
+You can also install from a Mac terminal with one line. It installs Claude Code first if needed, and
+`synthesis-design`, a second plugin with design skills for landing pages, banners, design systems and UI:
 
 ```
 command -v claude >/dev/null 2>&1 || curl -fsSL https://claude.ai/install.sh | bash; export PATH="$HOME/.local/bin:$PATH"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json && claude plugin marketplace update axiom-synthesis && claude plugin install synthesis@axiom-synthesis && claude plugin install synthesis-design@axiom-synthesis && claude plugin update synthesis@axiom-synthesis && claude plugin update synthesis-design@axiom-synthesis && (plutil -replace extraKnownMarketplaces.axiom-synthesis.autoUpdate -bool YES ~/.claude/settings.json 2>/dev/null || echo "Updates are off. Ask Claude to turn on auto-update for Synthesis.") && claude mcp login plugin:synthesis:synthesis
 ```
 
-That line turns on updates too, so you get every new version. If it says
-updates are off, tell Claude "Turn on auto-update for the Synthesis plugin"
-once. Or update by hand:
+That line turns on updates too. If it says updates are off, tell Claude "Turn on auto-update for the
+Synthesis plugin" once. Or update by hand, then run `/reload-plugins` or start a new session:
 
 ```
 claude plugin marketplace update axiom-synthesis && claude plugin update synthesis@axiom-synthesis && claude plugin update synthesis-design@axiom-synthesis
 ```
 
-After an update, run `/reload-plugins` or start a new session.
+On Windows, paste this into PowerShell instead, then ask Claude to turn on auto-update:
+```
+if (-not (Get-Command claude -ErrorAction SilentlyContinue)) { irm https://claude.ai/install.ps1 | iex }; $env:Path = "$env:USERPROFILE\.local\bin;$env:Path"; claude plugin marketplace add https://synthesisintelligence.ai/cli/marketplace.json; claude plugin marketplace update axiom-synthesis; claude plugin install synthesis@axiom-synthesis; claude plugin install synthesis-design@axiom-synthesis; claude plugin update synthesis@axiom-synthesis; claude plugin update synthesis-design@axiom-synthesis; claude mcp login plugin:synthesis:synthesis
+```
 
 ## Set up
 
-Nothing else is needed once you have signed in through `/mcp`, or if Claude Code
+Nothing else is needed once you have signed in through `/mcp`, or if Claude
 already has the Synthesis connector from your claude.ai account.
 
-**Answer memory is on.** When Claude finishes an answer that used Synthesis,
-the plugin sends that answer, the question it answered, and the steps Claude
-took with Synthesis to get there. Your brand's memory then grows from what
-Claude concluded, not only from what it looked up. The steps are which
-Synthesis tools Claude used and what it asked each one. They never include
-what those tools sent back, or which other tools and servers you used. An
-answer that did not use Synthesis is never sent.
-
-Off on your machine: set `SSI_CAPTURE_DISABLED=1`. Off for the whole brand: an
-admin turns off Answer memory on its card in Settings. Nothing saved is deleted.
-
-**Access key** is optional. Enter it in the plugin's settings and your brand's
-state is fetched before your first prompt. Claude Code keeps it in your system's
-secure credential store; the plugin never opens Claude Code's own store.
+Answer memory is on. When Claude finishes an answer that used Synthesis, it
+saves that answer and the question it answered to your brand's memory, so the
+memory grows from what Claude concluded. An admin can turn it off for the
+whole brand on its card in Settings.
 
 ## What leaves your machine, and where it goes
 
-Only to `synthesisintelligence.ai`. The address is pinned in the plugin and
-cannot be redirected by an environment variable, a config file, or anything
-else on your machine — a request to any other host is refused before it is
-made.
-
-- At session start, only if you entered an access key: that key, to fetch your
-  brand's context.
-- With each Synthesis call Claude makes: a fingerprint of a random code the
-  plugin keeps on your machine, one per session. It ties that code to your
-  sign-in, so the plugin can save answers without ever holding your access
-  key. The code itself stays in `~/.synthesis/keys`, readable only by you. It
-  can save answers to your brand and nothing else, and it stops working six
-  hours after your last Synthesis call.
-- On each answer that used Synthesis: the answer, its question, and the
-  Synthesis steps behind it (which tools and what was asked, not what they
-  returned). Plus one yes or no: whether anything in this session read Google
-  data (Analytics, Ads, Search Console or Sheets). If it did, that answer is
-  kept out of anything we use to improve Synthesis for all customers, as
-  Google's terms require.
-- Otherwise: nothing.
+This plugin ships no scripts. It is written instructions for Claude and a
+connection to `https://synthesisintelligence.ai/mcp`. Everything it sends goes
+there, through that connection: the questions Claude asks Synthesis, and the
+answers Claude saves to your brand's memory.
 
 ## What you get
 

@@ -94,4 +94,4 @@ say so in the answer's last line.
 Give the person the checked answer. Under it, one line: which helpers ran, that every
 number was pulled twice, whether the reasoning check held or changed the call, and
 what the checks do not cover (the result lists it).
-The answer saves itself to the brand's memory when you finish; do not save it.
+Then save it to the brand's memory with `capture_turn`: the question and this answer.
