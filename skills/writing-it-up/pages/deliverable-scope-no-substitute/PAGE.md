@@ -44,7 +44,8 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`monthly_pnl` · `net_revenue` · `build_deck` · `data_freshness` · `warehouse_freshness` · `data_freshness_sweep` · `list_documents` · `search_files` · `list_files` · `read_file` · `declare_not_known` · `render_report` · `export_xlsx`
+`monthly_pnl` · `net_revenue` · `build_deck` · `data_freshness` · `data_freshness_sweep` · `list_documents` · `search_files` · `list_files` · `read_file` · `declare_not_known` · `render_report` · `export_xlsx`
+`warehouse_metric`, with `metric` set to: `freshness`
 `check_reasoning`, with `metric` set to: `comparable_basis`
 
 Names only. Do not guess an argument from this list — the method above
@@ -52,7 +53,7 @@ gives each call its shape.
 
 A line that says "with `metric` set to" is ONE tool: call it and pass
 the value. The method may name a read by its own name instead:
-`check_comparable_basis` means `check_reasoning` with `metric` set to `comparable_basis`.
+`warehouse_freshness` means `warehouse_metric` with `metric` set to `freshness`.
 
 ## When the method names another page
 

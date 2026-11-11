@@ -63,10 +63,9 @@ answer that did not use Synthesis is never sent.
 Off on your machine: set `SSI_CAPTURE_DISABLED=1`. Off for the whole brand: an
 admin turns off Answer memory on its card in Settings. Nothing saved is deleted.
 
-**`SSI_MCP_TOKEN`** is optional. Set it to your Synthesis access key and the
-brand's state is fetched before your first prompt, rather than by Claude on its
-first step. It is read from your environment and nowhere else: the plugin never
-opens Claude Code's own credential store.
+**Access key** is optional. Enter it in the plugin's settings and your brand's
+state is fetched before your first prompt. Claude Code keeps it in your system's
+secure credential store; the plugin never opens Claude Code's own store.
 
 ## What leaves your machine, and where it goes
 
@@ -75,7 +74,7 @@ cannot be redirected by an environment variable, a config file, or anything
 else on your machine — a request to any other host is refused before it is
 made.
 
-- At session start, only if you set `SSI_MCP_TOKEN`: that key, to fetch your
+- At session start, only if you entered an access key: that key, to fetch your
   brand's context.
 - With each Synthesis call Claude makes: a fingerprint of a random code the
   plugin keeps on your machine, one per session. It ties that code to your

@@ -40,7 +40,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`breakeven_roas` · `describe_schema` · `run_sql` · `propose_brand_fact` · `log_decision` · `register_prediction`
+`breakeven_roas` · `set_amazon_ad_goal` · `describe_schema` · `run_sql` · `propose_brand_fact` · `log_decision` · `register_prediction`
 `amazon_metric`, with `metric` set to: `ppc_keyword_roi` · `breakeven_acos_ltv` · `ppc_search_terms` · `ppc_match_type_coverage` · `ppc_keywords` · `ppc_keyword_bids` · `ppc_branded_split` · `ppc_spend_by_parent` · `ppc_profit_by_asin` · `ppc_halo` · `ppc_placements` · `ppc_budget_utilisation` · `ppc_organic_vs_paid` · `tacos` · `ppc_purchase_latency`
 
 Names only. Do not guess an argument from this list — the method above

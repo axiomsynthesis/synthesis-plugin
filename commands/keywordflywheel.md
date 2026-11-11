@@ -1,76 +1,62 @@
 ---
-description: "Keyword flywheel: what your ad spend really buys in organic rank: For each big search: the ad cost you see, the organic sales the ads really create, the true ad cost with both, and keep, raise, trim or cut, with one test to prove it"
+description: "Keyword flywheel: how much to spend on each search: For each big search: what Amazon credits per $1, the later sales the flywheel must bring to break even, what is measured so far (rank boost, repeat to date, projected long-term repeat), and raise, hold and test, or trim in steps, with the exact test"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
 
-# Keyword flywheel: what your ad spend really buys in organic rank
+# Keyword flywheel: how much to spend on each search
 
 Channel: Amazon · Level: Advise · Status: Ready now
 
 Follow these instructions when someone asks to run this automation.
 
 ---
-Run the Synthesis automation "Keyword flywheel: what your ad spend really buys in organic rank" (id: mkt-amazon-keyword-flywheel, Amazon).
+Run the Synthesis automation "Keyword flywheel: how much to spend on each search" (id: mkt-amazon-keyword-flywheel, Amazon).
 
 Use the Synthesis tools connected in this Claude for my brand's real numbers. Do not guess a number. If a figure is missing, say so plainly.
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Tests the rule that you sometimes lose on ads to win organic rank. Per big search, it sets ad spend beside organic share week by week: does spend build organic sales the ad report never shows, how sure, and the true ad cost.
+Answers the flywheel question per search. Start from Amazon's own count: the ad-report sales per $1 and ACoS. The first order keeps only the margin before ads, so the flywheel (rank boost on other searches, repeat buying, long-term repeat) must bring the rest later. The call compares what is needed with what is measured, each in dollars of later sales per $1 of Amazon-credited sales.
 
-What to read: Ad spend, clicks and orders per search by week, exact and phrase apart, beside the same weeks of Amazon's search report, daily organic rank and break-even
-What to give me: For each big search: the ad cost you see, the organic sales the ads really create, the true ad cost with both, and keep, raise, trim or cut, with one test to prove it
+What to read: Amazon's own ad-report sales and ACoS per search, the margin before ads, best-seller rank and other-search sales, repeat buying measured and projected to 12 and 24 months, and Amazon's search report as a check
+What to give me: For each big search: what Amazon credits per $1, the later sales the flywheel must bring to break even, what is measured so far (rank boost, repeat to date, projected long-term repeat), and raise, hold and test, or trim in steps, with the exact test
 
 Synthesis tools to use:
 - `cost_rules for=mkt-amazon-keyword-flywheel`
 - `brand_brain action=moves`
-- `amazon_metric metric=ppc_keyword_roi days=60 limit=25`
-- `amazon_metric metric=ppc_keyword_roi limit=25 start_date=<week-start> end_date=<week-end>`
-- `amazon_metric metric=search_query_trend keyword=<search> periods=26`
+- `amazon_metric metric=keyword_incrementality top=10`
 - `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=EXACT`
-- `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=PHRASE`
-- `amazon_metric metric=organic_rank days=60 limit=60`
-- `amazon_metric metric=search_term_gaps weeks=8 limit=30`
-- `amazon_metric metric=ppc_organic_vs_paid days=28 limit=15`
+- `amazon_metric metric=organic_rank days=60 search=<search>`
 - `breakeven_roas asin=<asin>`
 - `measurable_test`
 
 Steps:
-1. Call `brand_brain` with `action=moves` and `recall_decisions` for searches already pushed on purpose for rank, with their loss cap and end date.
-2. Call `amazon_metric metric=ppc_keyword_roi days=60 limit=25`. Keep the 8 to 10 plain searches with most spend and market data. Leave out your own name and product targets.
-3. Build the weekly panel. For each of the last 12 closed Sunday-to-Saturday weeks, call `amazon_metric metric=ppc_keyword_roi limit=25 start_date=<week-start> end_date=<week-end>`. Its search report columns are then that same week. Weeks under 30 days old still gain ad sales: mark them.
-4. For each kept search, call `amazon_metric metric=search_query_trend keyword=<search> periods=26`. Read only rows of exactly that wording; never add wordings. Take your clicks and purchases per week.
-5. Organic per week, all counted in clicks: your clicks in the search report minus ad clicks on that search, same week. Organic orders = organic clicks times your click-to-purchase rate there. Never subtract ad orders from search-report purchases: ad orders count 30 days and other searches, so they run higher.
-6. Call `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact` with `match_type=EXACT`, then `match_type=PHRASE`. Give each search's ad cost for exact and phrase apart, with current bids.
-7. Call `amazon_metric metric=organic_rank days=60 limit=60` for rank now, before and days checked.
-8. Spillover: call `amazon_metric metric=search_term_gaps weeks=8 limit=30` and step 4 rows sharing root words or product. Count the rise in your purchases on those with no ads.
-9. Flywheel test per search: spend in a week against organic clicks and share 1 to 4 weeks later. Across searches: did bigger spend rises bring bigger organic rises? Natural tests: weeks spend fell by half. Control: flat-spend searches. Under 8 weeks: `run_bayesian`.
-10. True ad cost = spend / (ad sales + organic sales the test supports). Organic sales count only when step 9 passed; else zero. Break-even per search from step 3, checked with `breakeven_roas asin=<asin>` for the main product.
+1. Call `brand_brain` with `action=moves` and `recall_decisions` for searches pushed on purpose for rank, with their loss cap and end date.
+2. Call `amazon_metric metric=keyword_incrementality top=10`. Lead with each row's `flywheel_call`: `sentence`, `needed_later_sales_per_dollar`, `measured_later_sales_per_dollar` and `measured_range_per_dollar`, the parts in `measured_parts_per_dollar` (rank boost, repeat to date, projected 12 and 24 months), `call` and `test`. Quote `repeat_projection_backtest` (error of the projection method on older products).
+3. Then `flywheel_call.how_sure`: the search report's lower count, as how sure, never as the headline. Add `cost_of_losing_share` for any trim.
+4. Call `amazon_metric metric=ppc_keyword_bids days=60 min_clicks=20 limit=80 shape=compact match_type=EXACT`. Keyword rows whose text equals the search give its exact bid; none means "n/a".
+5. For each search to trim or raise, call `amazon_metric metric=organic_rank days=60 search=<search>` for rank now and before.
+6. Check the main product's break-even with `breakeven_roas asin=<asin>`.
 
 Checks before answering:
-- An absent search in the search report is unmeasured, not zero. Shares there are already percentages.
-- Fewer than 28 days of rank readings: rank is a snapshot, not a lag test. Use search report share as the long series and say so.
-- A bid robot's spend drop is not a planned test. Say which.
+- Projected repeat is a PROJECTION: say so beside its number, with the backtest error.
+- Weeks marked `ad_group_allocated` are estimates: say so when they set a level.
+- Own-name searches are not read here.
 
 Rounds (relook before you answer):
-1. **Same basis.** Compare ad clicks with your search-report clicks for every search and week. Fails when: ad clicks exceed your clicks by over 10% in any week. Fix: organic is unmeasured there, never negative; say the wording differs or all traffic is paid.
-2. **Settled sales.** Fails when: a week under 30 days old sets a true ad cost. Fix: use settled weeks; show the newest as still landing.
-3. **Control group.** Re-read step 3 for flat-spend searches. Fails when: their organic share rose within 1 point of the spending searches. Fix: the market moved, not the ads. Set organic sales to zero.
-4. **Pause test.** Fails when: in a week spend fell by half, organic clicks held or rose. Fix: the ads were taking sales you had anyway. Move that search to cut, sized at the spend saved.
-5. **Sale weeks and stock-outs.** Fails when: a week driving the call holds a big sale or a week your purchases on the search fell near zero while views held. Fix: drop it and re-run step 9.
-6. **Adds up.** Call `amazon_metric metric=ppc_organic_vs_paid days=28 limit=15`. Fails when: organic sales credited to ads across searches exceed the family's organic sales growth over the same weeks. Fix: scale every credit down to fit and say so.
+1. **Amazon's count leads.** Fails when: a search's first line is the search report's lower count. Fix: lead with `flywheel_call.sentence`; the lower count goes in how sure.
+2. **No cut on a straddle.** Fails when: a trim or cut is said where `measured_range_per_dollar` reaches `needed_later_sales_per_dollar`. Fix: hold and test, with the row's `test`.
+3. **Line check.** Fails when: `breakeven_roas` differs from the row's `margin_before_ads_pct` by more than 5 points. Fix: use `breakeven_roas`, redo needed = 1 / (Amazon sales per $1 x margin) - 1 and say so.
+4. **Trim in steps.** Fails when: a trim cuts more than a third of a search's spend at once. Fix: step down a third, read total orders and rank after 3 weeks, then step again.
 
 Output:
-- Headline: dollars a month of ad spend that pays once organic is counted, and dollars that should be cut.
-- Per search, in this shape: "You're paying X% ad cost on <search> (exact X%, phrase X%), but it is creating Y% organic share (rank A→B, organic orders +N a week), which spills into <related searches, total share, sales>. True ad cost with the organic lift is Z% against break-even W%: keep, raise, trim or cut." Add how sure: strong, some or none, and the weeks behind it.
-- Rank investment: searches kept below break-even on purpose, each with a monthly loss cap, end date and stop rule: stop when organic share has not risen for 4 weeks.
-- Cut list: searches where ads take sales an already high organic rank wins, sized in dollars a month.
-- Bid list for the bid sheet or the search blocker: search, match type, current bid, new bid, reason.
-- One `measurable_test`: pause exact on one search where you rank in the top 3 for 2 weeks, beside a matched search left on. Measure your purchases on both in the search report.
+- Per search, exactly: "Amazon credits $X of sales per $1 here (ACoS Y%). Each $1 of those sales keeps Z¢ up front, so the flywheel must bring $N more later. Measured so far: $M (rank boost $a, repeat to date $b, projected long-term repeat $c, range …). Call: … Test: …" Then the how-sure line in plain words.
+- A table: search, spend a week, Amazon sales per $1, needed, measured (range), call.
+- Bid list for the bid sheet: search, match type, current bid, new bid, reason.
 
 Never:
-- Never treat ad-credited orders, or a link without the control and pause tests, as proof.
+- Never lead with "the search report says fewer sales", and never say "cut".
 - Never change bids or budgets. A person does that.
 
 Rules:
@@ -83,6 +69,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: mkt-amazon-keyword-flywheel". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: mkt-amazon-keyword-flywheel".
 
 ---
 

@@ -28,7 +28,7 @@ Synthesis tools to use:
 - `tiktok_metric metric=spend_trend months=2`
 - `tiktok_metric metric=shop_sales_trend months=1`
 - `data_freshness`
-- `ad_health_check only=tiktok_ads`
+- `ad_health_check only=[tiktok_ads]`
 
 Steps:
 1. Call `tiktok_metric` with `metric=coverage`. Read every ad account TikTok lists, which ones actually sync, and over what dates. Each account's `last_day` is its newest spend day. This is the real test that the connection works.
@@ -65,6 +65,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: watch-tiktok-connection". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: watch-tiktok-connection".
 
 ---
 

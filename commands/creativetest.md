@@ -1,5 +1,5 @@
 ---
-description: "Run this week's Meta creative test: One small ad set per new creative, built in your Ads Manager, with day 4 and day 7 calls on what to switch off and what to move up"
+description: "Run this week's Meta creative test: One small ad set per new creative, built for you and launched on your yes, with day 4 and day 7 calls on what to switch off and what to move up"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -21,7 +21,7 @@ Runs a weekly creative test: one ad set per new creative at a small budget.
 On day 4 it switches off the clear losers. On day 7 it moves winners into the main ad set and switches the test off.
 
 What to read: The new creatives, your proven ads' copy and link, each test ad's spend and sales by day
-What to give me: One small ad set per new creative, built in your Ads Manager, with day 4 and day 7 calls on what to switch off and what to move up
+What to give me: One small ad set per new creative, built for you and launched on your yes, with day 4 and day 7 calls on what to switch off and what to move up
 
 Synthesis tools to use:
 - `cost_rules for=do-meta-creative-test`
@@ -33,17 +33,18 @@ Synthesis tools to use:
 Steps:
 1. If last week's test has ad sets ending this week, read them out first. Then ask in one message: the creatives, the budget per ad set (ask; house default about $14 a day each, 7 to 10 creatives, about $100 a day in all, 7 days with an end date set), and the week start date, a Monday by default. Show the total: ad sets times budget times 7.
 2. Call `meta_metric` with `metric=ad_destinations`, `active_only=true` and `days=14` to pick a working website ad and its link. Call `ad_health_check` with `ads={"ad_ids": ["<that ad>"]}` for its link tags. No read returns ad text or headline, so copy them from that ad in Ads Manager.
-3. In Ads Manager, make one campaign named the way the person names tests (ask, default "Creative Test - week of <date> - Claude"). Name ads "TEST <kind> - <name> - Claude".
-4. Statics and videos go in separate ad sets. Meta's Creative testing button does not appear on new draft ad sets, so build by hand.
-5. Finish one single-ad ad set first. Then use the tree menu Quick duplicate on that ad set only. A copy of a bigger ad set copies all its ads, so delete down to one before publishing. Then swap media in the 3 Edit group slots, set the thumbnail to Manual and rename.
-6. Turn off AI enhancements, music, promo codes and email sign-up offers in each ad. No Amazon logo or stars on a website ad.
-7. Draft ads show no ids and cannot be filtered by ad set. Read an ad's id from its Action menu link.
-8. If the structure differs from what the person expected, say so before publishing.
-9. Publish only these rows. Never the global Review and publish. Decline any budget raise Meta offers, then re-read every ad set budget.
-10. Read back: call `ad_health_check` with `ads={"campaign_id": "<id>"}`. Every ad set on, one ad each, at the agreed budget, tags on, Meta's automatic changes off. Fix any fail before it spends. It cannot see promo codes or the email offer, so check those in the edit screen.
-11. Day 4: call `meta_metric` with `metric=ad_returns` for closed days. Do not judge from the read-back, which counts today. Switch off an ad set that spent past the no-sale line with no sale (house default about 2x the order value, $50 on a $25 order). Read the line as `no_sale_cap` from `ad_health_check`, and ask only if it is missing. To switch it off, use `ad_change` then `ad_change_apply` when this connection offers them. Otherwise use the browser.
-12. Day 7: an ad with 4 or more sales at or under the keep line moves up through do-meta-graduate-winners. If it is already copied into the main ad set, say so and do not copy it twice. Switch the rest of the test off.
-13. Call `log_decision` with `kind=campaign` at launch and at each readout.
+3. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Make the campaign with ads_create_campaign. Make one ad set per creative with ads_create_ad_set, copying the proven ad set by its source_adset_id and changing only the name, budget and end date. Upload new media with ads_creative_upload_media, then make one ad each with ads_create_ad, with the proven ad as source_ad_id and the new media in the creative, Meta's enhancements off. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+4. In Ads Manager, make one campaign named the way the person names tests (ask, default "Creative Test - week of <date> - Claude"). Name ads "TEST <kind> - <name> - Claude".
+5. Statics and videos go in separate ad sets. Meta's Creative testing button does not appear on new draft ad sets, so build by hand.
+6. Finish one single-ad ad set first. Then use the tree menu Quick duplicate on that ad set only. A copy of a bigger ad set copies all its ads, so delete down to one before publishing. Then swap media in the 3 Edit group slots, set the thumbnail to Manual and rename.
+7. Turn off AI enhancements, music, promo codes and email sign-up offers in each ad. No Amazon logo or stars on a website ad.
+8. Draft ads show no ids and cannot be filtered by ad set. Read an ad's id from its Action menu link.
+9. If the structure differs from what the person expected, say so before publishing.
+10. Publish only these rows. Never the global Review and publish. Decline any budget raise Meta offers, then re-read every ad set budget.
+11. Read back: call `ad_health_check` with `ads={"campaign_id": "<id>"}`. Every ad set on, one ad each, at the agreed budget, tags on, Meta's automatic changes off. Fix any fail before it spends. It cannot see promo codes or the email offer, so check those in the edit screen.
+12. Day 4: call `meta_metric` with `metric=ad_returns` for closed days. Do not judge from the read-back, which counts today. Switch off an ad set that spent past the no-sale line with no sale (house default about 2x the order value, $50 on a $25 order). Read the line as `no_sale_cap` from `ad_health_check`, and ask only if it is missing. To switch it off, use `ad_change` then `ad_change_apply` when this connection offers them. Otherwise use the browser.
+13. Day 7: an ad with 4 or more sales at or under the keep line moves up through do-meta-graduate-winners. If it is already copied into the main ad set, say so and do not copy it twice. Switch the rest of the test off.
+14. Call `log_decision` with `kind=campaign` at launch and at each readout.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, build one ad set and leave it off. Read it back.
@@ -78,6 +79,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-creative-test". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-meta-creative-test".
 
 ---
 

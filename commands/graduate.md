@@ -37,14 +37,15 @@ Steps:
 4. Look at the target set's earlier copies. If one has near zero spend, or the set is over the keep line, warn that new copies will likely starve.
 5. Call `ad_health_check` with `ads={"ad_ids": ["<winner id>"]}` to read each winner's ad set end date. If it ends within 2 days, raising in place is not an option. Copy instead.
 6. Ask in one message: which ads, the target ad set, and copy or raise in place. Raising the winner's own ad set about 20% often works better than a copy, and goes through the budget yes.
-7. To copy, use "Use existing post" with the original ad's post id, so likes and comments carry. Switch the post picker off the Partner Content tab first. A creator's post that is only a partner post may not show at all. Then use step 9.
-8. Existing-post ads drop the ad's tracking tags. Re-add the brand's tracking template on every copy. If you use Meta's Copy and paste instead, do both in one page session.
-9. Copies between campaigns with different goals or catalog setups are refused. Quick-duplicate an ad inside the target set and swap media instead. Meta refuses new copies of tall-only 9:16 videos under all placements, so use the existing post or a 4:5 version.
-10. Name copies with the original name plus " - Copy". Do not add a second " - Claude". Keep any creator tag such as trybe=<id> in the name and the link. An ad that sent people to Amazon gets the website page link and tags.
-11. Turn off Meta's standard enhancements, promo codes and any email sign-up offer on each copy. Keep the originals running unless the person says otherwise.
-12. Publish from the ad's own preview. Never the global Review and publish. Decline any budget raise Meta offers.
-13. Read back: call `ad_health_check` with `ads={"ad_ids": ["<new id>"]}`. Each copy on, in the target set, tags present. An existing-post copy hides its link from the data, so check the link by eye.
-14. Call `log_decision` with `kind=campaign`, `measure` and `made_on`: which ads moved, where, and a spend-share check in 2 days.
+7. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Copy each winner into the target ad set with ads_create_ad, using its existing post in the creative so likes carry, or the winner as source_ad_id, with the brand's tracking tags put back. A raise in place goes through `ad_change` with `change=budget` instead. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+8. To copy, use "Use existing post" with the original ad's post id, so likes and comments carry. Switch the post picker off the Partner Content tab first. A creator's post that is only a partner post may not show at all. Then use step 10.
+9. Existing-post ads drop the ad's tracking tags. Re-add the brand's tracking template on every copy. If you use Meta's Copy and paste instead, do both in one page session.
+10. Copies between campaigns with different goals or catalog setups are refused. Quick-duplicate an ad inside the target set and swap media instead. Meta refuses new copies of tall-only 9:16 videos under all placements, so use the existing post or a 4:5 version.
+11. Name copies with the original name plus " - Copy". Do not add a second " - Claude". Keep any creator tag such as trybe=<id> in the name and the link. An ad that sent people to Amazon gets the website page link and tags.
+12. Turn off Meta's standard enhancements, promo codes and any email sign-up offer on each copy. Keep the originals running unless the person says otherwise.
+13. Publish from the ad's own preview. Never the global Review and publish. Decline any budget raise Meta offers.
+14. Read back: call `ad_health_check` with `ads={"ad_ids": ["<new id>"]}`. Each copy on, in the target set, tags present. An existing-post copy hides its link from the data, so check the link by eye.
+15. Call `log_decision` with `kind=campaign`, `measure` and `made_on`: which ads moved, where, and a spend-share check in 2 days.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, copy one winner into an ad set that is off, publish it off and read back its post id and tags. Leave it off.
@@ -79,6 +80,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-graduate-winners". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-meta-graduate-winners".
 
 ---
 

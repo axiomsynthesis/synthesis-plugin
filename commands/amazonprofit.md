@@ -41,7 +41,7 @@ Checks before answering:
 - The net must equal the Profit page. If `profit_page_tie` shows any drift, say so first and do not state a profit.
 - Sales are before discounts. Discounts and refunds are their own lines below. Never take them off twice.
 - A month still settling has an estimate, not a result. Say "estimate" and give its range.
-- Some deductions Amazon labels only "Others". Where the brand has ruled them display-ad bills, the page moves them into advertising, sometimes into the month the ads ran. Name the month and the dollars moved, and say that month's profit was restated. If what is left unlabelled is over 2% of sales, say to check it.
+- Some deductions Amazon labels only "Others". Where the brand has ruled them display-ad bills and its books hold the bills, each bill counts as advertising in the month the ads ran and Amazon's later deduction is a payment, never a second cost. Name the month and the dollars, and say that month's profit was restated. If what is left unlabelled is over 2% of sales, say to check it.
 - Shipping buyers paid is a memo line, not profit.
 - Read which outside costs the page counts from its own lines. Meta ads sent to Amazon, an outside agency, and anything a line does not show are not counted, so profit reads high. Say which.
 - If ad spend coverage says a day or an ad type is missing, profit is overstated. Say so.
@@ -77,6 +77,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: money-amazon-profit-every-fee". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: money-amazon-profit-every-fee".
 
 ---
 

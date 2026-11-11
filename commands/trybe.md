@@ -36,16 +36,17 @@ Steps:
 3. Call `trybe_creator_program` with `view=performance` and `days=30` for program totals. It lists no videos. The approved list comes from Trybe, Submissions.
 4. In the browser, open Trybe, Submissions. Open each video and read its script. Watch it and sort it by the product it shows. A video for a product with no ad set yet is held.
 5. Show the plan: each video, its product, its target ad set, and every new ad set's budget. Wait for the yes on new budgets.
-6. In Build Ads, select the videos. Leave about 400 ms between row clicks. The header box selects every row.
-7. Configure: copy the existing ad set for that product. A copy keeps the old end date and every ad in it, so set the end date now and delete down to the new videos. Identity: the brand's own page. Name template: keep trybe=<id> in every ad name, because the creator is paid by it. End each name "- Claude".
-8. Copy: the house text and headline. Landing page: the product's page. Ask the link tags. Keep trybe=<id> in the link too. Default: utm_source=facebook, utm_medium=paid_social, utm_campaign={{campaign.name}}, utm_content={{ad.name}}.
-9. Give each video a 4:5 feed version. Turn the Shop destination off. Choose Launch as Paused. Each build takes about 30 seconds. Clicks are ignored while one says "Setting up".
-10. In Ads Manager, check every copied end date reads the agreed date before publishing. A missed one stops spend with no error.
-11. Publish each ad from its own preview. Batch review wrongly flags tall videos as Stories only.
-12. Keep the Meta tab in front while it works. Hidden tabs slow down.
-13. Switch on only the new ads. Paused copies already in the ad set stay off. Check every ad set row, not just the campaign. A batch can arrive with an ad set "Ads off".
-14. Call `ad_health_check` with `ads={"adset_id": "<new ad set>"}` and find each new ad by its trybe=<id>. It checks links, tags, switches, end dates and shape. Trybe's own ad count is not proof an ad ran.
-15. Call `log_decision` with `kind=campaign`, the ads built, and the date to judge them.
+6. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Copy the product's ad set with ads_create_ad_set and its source_adset_id, with the agreed end date. For each approved video with a download link, upload it with ads_creative_upload_media and make the ad with ads_create_ad, keeping trybe=<id> in the name and the link. A video with no download link goes through Trybe's Build Ads below. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+7. In Build Ads, select the videos. Leave about 400 ms between row clicks. The header box selects every row.
+8. Configure: copy the existing ad set for that product. A copy keeps the old end date and every ad in it, so set the end date now and delete down to the new videos. Identity: the brand's own page. Name template: keep trybe=<id> in every ad name, because the creator is paid by it. End each name "- Claude".
+9. Copy: the house text and headline. Landing page: the product's page. Ask the link tags. Keep trybe=<id> in the link too. Default: utm_source=facebook, utm_medium=paid_social, utm_campaign={{campaign.name}}, utm_content={{ad.name}}.
+10. Give each video a 4:5 feed version. Turn the Shop destination off. Choose Launch as Paused. Each build takes about 30 seconds. Clicks are ignored while one says "Setting up".
+11. In Ads Manager, check every copied end date reads the agreed date before publishing. A missed one stops spend with no error.
+12. Publish each ad from its own preview. Batch review wrongly flags tall videos as Stories only.
+13. Keep the Meta tab in front while it works. Hidden tabs slow down.
+14. Switch on only the new ads. Paused copies already in the ad set stay off. Check every ad set row, not just the campaign. A batch can arrive with an ad set "Ads off".
+15. Call `ad_health_check` with `ads={"adset_id": "<new ad set>"}` and find each new ad by its trybe=<id>. It checks links, tags, switches, end dates and shape. Trybe's own ad count is not proof an ad ran.
+16. Call `log_decision` with `kind=campaign`, the ads built, and the date to judge them.
 
 Checks before answering:
 - Every approved video is either built in the right product's ad set or listed as held, with why.
@@ -81,6 +82,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-trybe-build-creator-ads". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-trybe-build-creator-ads".
 
 ---
 

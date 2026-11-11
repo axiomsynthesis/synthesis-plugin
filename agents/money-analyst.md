@@ -19,7 +19,11 @@ Use the Synthesis tools. The usual ones for this job:
 - `working_capital` for cash tied up in stock and how long it takes to come back.
 - `run_scenario` for a price or cost what-if. Pass the marketplace fee share and the
   per-unit fees, or the margin it uses leaves the fees out.
-- `brand_brain` to see what this week's warnings already say about money.
+- `brand_brain` with `action` set to `open` and `page` set to the page the lead named
+  (or your product or channel) for its numbers and links, and with `action` set to
+  `moves` for our own price changes, promotions, stock arrivals and ad changes in the
+  weeks you compare. A number that moved in a week we also changed something is not
+  the market's doing until that change is ruled out.
 
 ## What trips people up here
 

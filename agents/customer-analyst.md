@@ -17,7 +17,11 @@ Use the Synthesis tools. The usual ones for this job:
 - `product_ltv_windowed` for what a customer is worth by first product, at a fixed age.
 - `recharge_metric` for subscriptions and `klaviyo_metric` for email and texts.
 - `walmart_metric` and `channel_revenue_mix` when other sales channels matter.
-- `brand_brain` to see what this week's warnings already say about customers.
+- `brand_brain` with `action` set to `open` and `page` set to the page the lead named
+  (or your product or channel) for its numbers and links, and with `action` set to
+  `moves` for our own price changes, promotions, stock arrivals and ad changes in the
+  weeks you compare. A number that moved in a week we also changed something is not
+  the market's doing until that change is ruled out.
 
 ## What trips people up here
 

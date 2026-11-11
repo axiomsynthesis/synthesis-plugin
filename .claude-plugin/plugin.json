@@ -12,5 +12,15 @@
   "supportUrl": "https://synthesisintelligence.ai/support",
   "repository": "https://github.com/axiomsynthesis/synthesis-plugin",
   "documentationUrl": "https://synthesisintelligence.ai/integrations",
-  "termsOfServiceUrl": "https://synthesisintelligence.ai/terms-of-service"
+  "termsOfServiceUrl": "https://synthesisintelligence.ai/terms-of-service",
+  "userConfig": {
+    "access_key": {
+      "type": "string",
+      "title": "Synthesis access key (optional)",
+      "description": "Leave this blank. You sign in to Synthesis with /mcp. Only set it if Synthesis support asks you to.",
+      "sensitive": true
+    }
+  },
+  "version": "1.0.200",
+  "icon": "./.claude-plugin/icon.png"
 }

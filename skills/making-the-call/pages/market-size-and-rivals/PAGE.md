@@ -47,8 +47,8 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`size_market` · `estimate_market_share` · `market_posture` · `classify_competitor_move` · `classify_moat` · `private_label_threat` · `win_loss_analysis` · `valuation_and_exit_readiness`
-`strategy_framework`, with `framework` set to: `hhi`
+`size_market` · `estimate_market_share` · `market_posture` · `classify_moat` · `private_label_threat` · `win_loss_analysis` · `valuation_and_exit_readiness`
+`strategy_framework`, with `framework` set to: `hhi` · `classify_competitor_move`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

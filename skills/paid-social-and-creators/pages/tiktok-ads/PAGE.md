@@ -39,10 +39,15 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`tiktok_metric` · `warehouse_freshness` · `describe_schema` · `run_sql`
+`tiktok_metric` · `describe_schema` · `run_sql`
+`warehouse_metric`, with `metric` set to: `freshness`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `metric` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`warehouse_freshness` means `warehouse_metric` with `metric` set to `freshness`.
 
 ## When the method names another page
 

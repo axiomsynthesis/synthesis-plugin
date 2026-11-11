@@ -18,7 +18,7 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Every morning, checks which products are about to run out and when, counting upcoming Amazon sales, booked deals and stock already on its way. It only speaks up when something is at risk.
+Every morning, checks which products are about to run out and when, counting expected sales, booked deals and stock on its way. It only speaks up when something is at risk.
 
 What to read: FBA stock, stock on its way, upcoming Amazon sales and booked deals, sales speed
 What to give me: A morning heads-up only when a product must be restocked now, with the restock-by date and the sales at risk
@@ -60,10 +60,11 @@ Never:
 
 Rules:
 - Nothing goes live in any account. Prepare the change; I apply it.
-- Inputs only I know: supplier lead time in days; units at your own warehouse or 3PL. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Nothing saves the lead time or own warehouse stock yet: say it was used for this run only. On a scheduled run, name what is missing instead.
+- Inputs only I know: supplier lead time in days; units at your own warehouse or 3PL. If the tools lack one, ask me ONE plain question for it, all in one message: why it matters and about how many dollars it moves. Use my answer for this run. Never invent one. If I do not know, say what the answer leaves out. Then tell me to save the lead time on the Costs (COGS) page, Lead times & rivals tab. Nothing saves own warehouse stock yet: say it was used for this run only. On a scheduled run, name what is missing instead.
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: inventory-stockout-early-warning". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: inventory-stockout-early-warning".
 - This is meant to repeat (every morning at 7am). Run it once now. If you can set up a repeating task here, do it. If not, tell me how to run this again each time it is due.
 
 ---

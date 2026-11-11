@@ -1,10 +1,12 @@
 ---
 name: ssi-creative
 description: >
-  Load when asked which ad hooks or angles are making money, what ads to make
-  next, for new ad concepts built on what already sells, or for the full
+  Load when asked which ad hooks, creatives, storylines or offers are working,
+  which ads stop the scroll, warm people up or close the sale, what ads to make
+  next, for new ad concepts built on what already works, or for the full
   Synthesis Creative run ("which hooks are working", "what should our next five
-  ads be", "give me concepts that double down on our winners", "/creative").
+  ads be", "which ads fill carts", "give me concepts that double down on our
+  winners", "/creative").
   Synthesis Creative is a paid add-on: a locked tool answers with an upgrade.
 ---
 

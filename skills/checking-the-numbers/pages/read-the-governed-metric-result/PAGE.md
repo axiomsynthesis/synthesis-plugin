@@ -44,8 +44,9 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`net_revenue` · `query_series` · `amazon_metric` · `data_freshness` · `warehouse_tables` · `tiktok_metric` · `cruva_metric`
+`net_revenue` · `query_series` · `amazon_metric` · `data_freshness` · `tiktok_metric` · `cruva_metric`
 `check_reasoning`, with `metric` set to: `comparable_basis`
+`warehouse_metric`, with `metric` set to: `tables`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

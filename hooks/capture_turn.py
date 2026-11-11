@@ -130,12 +130,12 @@ def _log_once(reason: str) -> None:
 
 
 def _token(session_id: str = "", make: bool = False) -> tuple[str, str]:
-    """(token, source). This session's answer-memory secret, else SSI_MCP_TOKEN.
+    """(token, source). This session's answer-memory secret, else the access key option.
 
     The secret (_capture_secret.py) is what nearly every customer has: it is made
     on this machine, here, and tied to their /mcp sign-in by the pass sent with it
-    (_transcript.latest_pass), and the server lets it save an answer and nothing else. SSI_MCP_TOKEN is the older path for
-    someone who exported their access key.
+    (_transcript.latest_pass), and the server lets it save an answer and nothing else. The access key option (_access_key.py) is the
+    older path for someone who gave Claude Code their access key.
 
     This used to fall back to Claude Code's own credential store
     (~/.claude/.credentials.json) and pick our entry out by serverUrl. It was
@@ -149,7 +149,8 @@ def _token(session_id: str = "", make: bool = False) -> tuple[str, str]:
     secret = ((_make_secret if make else _load_secret)(session_id)) if session_id else ""
     if secret:
         return secret, "capture_key"
-    env = os.getenv("SSI_MCP_TOKEN", "").strip()
+    from _access_key import access_key
+    env = access_key()
     return (env, "env") if env else ("", "none")
 
 
@@ -266,7 +267,7 @@ def main() -> int:
     token, source = _token(raw_session, make=bool(pass_token))
     if not token:
         _log("SKIPPED: no credential — this session has no answer-memory key and "
-             "SSI_MCP_TOKEN is not set. The compounding loop is NOT running.")
+             "no access key is set. The compounding loop is NOT running.")
         return 0
 
     session_id = raw_session or "anon"

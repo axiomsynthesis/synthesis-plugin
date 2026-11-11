@@ -25,6 +25,7 @@ What to give me: What buyers love and complain about, written as FAQ answers, li
 Synthesis tools to use:
 - `find_product`
 - `amazon_metric metric=review_voice`
+- `amazon_metric metric=full_reviews`
 - `review_themes`
 - `amazon_metric metric=rating_watch`
 - `amazon_metric metric=search_competitors grain=week`
@@ -35,7 +36,7 @@ Synthesis tools to use:
 Steps:
 1. Use `find_product` to pick your top products and their IDs.
 2. Call `amazon_metric` with `metric=review_voice`, each `asin` and `limit=200` for the review text. Run it once per product family, and check a second product. It already returns topic counts, praise or complaint, quotes and a themes block.
-3. Use `review_themes` only if raw review text with star ratings is available. The quotes from step 2 carry no ratings, so it adds nothing to them.
+3. Call `amazon_metric` with `metric=full_reviews`, each `asin` and `limit=200` for full review bodies with stars and dates. Use them for the buyer's own wording and for complaints the topics miss; pass them to `review_themes`. Say stored vs the product's total and the dates covered. If it says never pulled, say so and go on with step 2.
 4. Call `amazon_metric` with `metric=rating_watch` and `days=90` to see whether any theme moved the star rating.
 5. Call `amazon_metric` with `metric=search_competitors` and `grain=week` to name the two rivals that contest most of your searches. Call `competitor_review_voice` with each rival's `asin` and `limit=40`. Mark each theme as ours only, shared with rivals, or a rival weakness. A shared complaint is a category problem, not your fault.
 6. Write FAQ answers, bullets and ad angles from the top themes. Ad angles come first from rival weaknesses you do not share.
@@ -48,6 +49,7 @@ Checks before answering:
 - The review read covers a small part of all reviews, and few carry a star rating. Say how many it read. It cannot rank complaints by their effect on the rating yet, because Amazon's topic score is the same for praise and complaint. Rank by count only, and say so.
 - Rival reviews exist only for products on your rival watch list. If a rival returns nothing, say so.
 - Rival reviews are Amazon's featured few, not a sample. Use their words, never their counts or shares.
+- Full review text is helpful-first and often one page of a product's reviews. Use its words; size a theme by the topic count from step 2, never by full-text counts.
 
 Rounds (relook before you answer):
 1. **Count behind each line.** Re-read the theme table. Fails when: any FAQ, bullet, reason or angle traces to under 3 reviews. Fix: cut it or merge it into a bigger theme.
@@ -78,6 +80,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: customers-review-mining". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: customers-review-mining".
 
 ---
 

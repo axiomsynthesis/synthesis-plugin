@@ -41,10 +41,15 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`data_freshness` · `warehouse_freshness` · `warehouse_tables` · `warehouse_row_counts` · `data_freshness_sweep` · `warehouse_table_preview` · `search_files` · `search_file_content` · `list_files` · `read_file` · `declare_not_known`
+`data_freshness` · `data_freshness_sweep` · `search_files` · `search_file_content` · `list_files` · `read_file` · `declare_not_known`
+`warehouse_metric`, with `metric` set to: `freshness` · `tables` · `row_counts` · `table_preview`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.
+
+A line that says "with `metric` set to" is ONE tool: call it and pass
+the value. The method may name a read by its own name instead:
+`warehouse_freshness` means `warehouse_metric` with `metric` set to `freshness`.
 
 ## When the method names another page
 

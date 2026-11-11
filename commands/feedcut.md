@@ -36,14 +36,15 @@ Steps:
 2. For each top ad, call `meta_metric` with `metric=creative_by_placement`, `ad_id` and `days=7`. Skip any ad that already spends most of its money on Feeds.
 3. Ask in one message: which ads (ask, default the top 2 first, then up to 6), the target ad set, its daily budget if new, and a yes to download the source videos. A creator video that exists only as a partner post may have no file to download. Then ask for the file.
 4. Crop each video to 4:5 with any video tool you can run here. Pick the crop per video so the captions stay inside it. A center crop trims about 15% top and bottom. Show the person a frame from each crop first. If no video tool exists, ask for 4:5 exports.
-5. Keep each file under 10 MB, the browser upload limit. Re-encode first rather than stop.
-6. In Ads Manager, duplicate the source ad into the target ad set. Remove media, Add video, pick the 4:5 file, Crop. Then use Vertical "Replace" to put the original 9:16 back for Stories and Reels.
-7. Do not use the "up to 10 media" route with placement exclusions. It fails at publish.
-8. Per-placement files have run in a campaign with ad set budgets. If publish refuses them, use a campaign with a campaign budget.
-9. Set the thumbnail to Manual in every group. Name each copy "<ad> - feed 4:5 - Claude". Keep any creator tag such as trybe=<id>. Add the brand's tracking tags, since duplicate and swap drops them. Turn off enhance CTA, inline comments, standard enhancements, AI enhancements, music, promo codes and email sign-up offers.
-10. Publish from each ad's own preview. Review and publish re-ticks every draft, so untick held drafts if you must use it. Decline any budget raise Meta offers, then re-read the budget.
-11. Read back: call `ad_health_check` with `ads={"adset_id": "<id>"}`. Each copy on, video fits each placement, link and tags right, Meta's changes off.
-12. Call `log_decision` with `kind=campaign`, `measure` and `made_on`. After 3 days, call `meta_metric` with `metric=creative_by_placement` and `ad_id` for each copy. If under half its spend is on Feeds, say the test failed to test feed shape.
+5. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Upload each 4:5 file with ads_creative_upload_media. Make each copy in the target ad set with ads_create_ad, the source ad as source_ad_id and a creative that shows the 4:5 file in feeds and the original 9:16 in Stories and Reels, with the brand's tracking tags. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+6. Keep each file under 10 MB, the browser upload limit. Re-encode first rather than stop.
+7. In Ads Manager, duplicate the source ad into the target ad set. Remove media, Add video, pick the 4:5 file, Crop. Then use Vertical "Replace" to put the original 9:16 back for Stories and Reels.
+8. Do not use the "up to 10 media" route with placement exclusions. It fails at publish.
+9. Per-placement files have run in a campaign with ad set budgets. If publish refuses them, use a campaign with a campaign budget.
+10. Set the thumbnail to Manual in every group. Name each copy "<ad> - feed 4:5 - Claude". Keep any creator tag such as trybe=<id>. Add the brand's tracking tags, since duplicate and swap drops them. Turn off enhance CTA, inline comments, standard enhancements, AI enhancements, music, promo codes and email sign-up offers.
+11. Publish from each ad's own preview. Review and publish re-ticks every draft, so untick held drafts if you must use it. Decline any budget raise Meta offers, then re-read the budget.
+12. Read back: call `ad_health_check` with `ads={"adset_id": "<id>"}`. Each copy on, video fits each placement, link and tags right, Meta's changes off.
+13. Call `log_decision` with `kind=campaign`, `measure` and `made_on`. After 3 days, call `meta_metric` with `metric=creative_by_placement` and `ad_id` for each copy. If under half its spend is on Feeds, say the test failed to test feed shape.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, build one copy named "<ad> - feed 4:5 - Claude TEST" in an ad set that is off, publish it off and read it back. Leave it off.
@@ -77,6 +78,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-feed-cut". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-meta-feed-cut".
 
 ---
 

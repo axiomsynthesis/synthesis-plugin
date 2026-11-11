@@ -12,8 +12,9 @@ description: >
 
 ## Open this page when
 
-- A `listing_score` or `compare_listings` result shows a short title, fewer than five bullets,
-  a thin description, and you want the replacement text.
+- A `listing_score` result shows searches, buyer reasons or worries the copy misses, or a
+  `compare_listings` result shows a short title, few bullets or a thin description, and you
+  want the replacement text.
 - You are asked to "write", "rewrite", "tighten" or "improve" a title, bullets or description.
 - You want your listing as complete as a competitor's, with the same rubric on both sides.
 

@@ -292,9 +292,9 @@ def self_update(serve: str, now: float | None = None) -> bool:
     cli = claude_cli()
     if not cli:
         return False
-    import shlex
     import subprocess
-    script = " ; ".join(" ".join(shlex.quote(a) for a in (cli,) + args) for args in _UPDATE_ARGS)
+    import sys
+    runner = os.path.join(os.path.dirname(os.path.abspath(__file__)), "self_update.py")
     try:
         path = _self_update_path()
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -302,7 +302,7 @@ def self_update(serve: str, now: float | None = None) -> bool:
         with open(path, "w", encoding="utf-8") as fh:
             json.dump({"served": serve, "started_at": now, "cli": cli}, fh)
         log = open(os.path.join(os.path.dirname(path), "self_update.log"), "a", encoding="utf-8")
-        subprocess.Popen(["/bin/sh", "-c", script], stdin=subprocess.DEVNULL, stdout=log,
+        subprocess.Popen([sys.executable, runner, cli], stdin=subprocess.DEVNULL, stdout=log,
                          stderr=log, start_new_session=True, close_fds=True)
         return True
     except Exception:                       # noqa: BLE001 — rule 1: fall back to the notice

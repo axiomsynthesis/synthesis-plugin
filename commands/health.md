@@ -29,13 +29,13 @@ Synthesis tools to use:
 - `query_series metric=orders grain=day`
 - `query_series metric=net_revenue grain=day`
 - `shopify_metric metric=daily_revenue days=28`
-- `warehouse_freshness`
+- `warehouse_metric metric=freshness`
 
 Steps:
-1. Call `data_freshness` for the newest data date of each connected source, the website payments feed, and `last_night_jobs`, what each scheduled task did last night. Note any result that says complete=false or lists skipped checks.
+1. Call `data_freshness` for the newest data date of each connected source, the website payments feed, `last_night_jobs`, what each scheduled task did last night, and `amazon_payouts`. Note any result that says complete=false or lists skipped checks.
 2. Call `data_freshness_sweep` with `stale_days=3` for every built table, judged on its newest data date.
 3. Volume check for yesterday, the last closed day. For Amazon call `query_series` with `metric=orders`, `grain="day"` and a start 29 days back, then again with `metric=net_revenue`. For the website call `shopify_metric` with `metric=daily_revenue` and `days=28`. Compare yesterday's orders and revenue with the median of the same weekday over the 4 weeks before. Flag a drop of more than 30%.
-4. Only if the brand has a direct database connection, call `warehouse_freshness` for the last sync of each mirrored table and any error on the last run. If it says not configured, leave it out of the answer.
+4. Only if the brand has a direct database connection, call `warehouse_metric` with `metric=freshness` for the last sync of each mirrored table and any error on the last run. If it says not configured, leave it out of the answer.
 5. Merge all lists by source, one line per source. For each problem, say which kinds of answers read it, such as win-back lists, profit or ad returns, and since when. Rank by that channel's revenue over the last 28 days from step 3, biggest first.
 6. Give each problem its fix: reconnect, wait for a delayed sync, or tell us.
 
@@ -45,6 +45,7 @@ Checks before answering:
 - FROZEN_SOURCE means a table was rebuilt but the data inside stopped. FROZEN_SOURCE, EMPTY and ERROR are problems. NOT_CONNECTED is not. Weekly and monthly tables get longer limits.
 - Sources in the sweep's `errors` or `sources_unchecked` were not read. Never count them as healthy.
 - If the website payments feed says it never landed, say the Profit page has no card fees for that store yet.
+- `amazon_payouts` problem=true is a problem even if all tables are fresh: lead with its headline.
 - The website daily read ends on its newest day held. If that day is not yesterday, the website is behind. Report it as late, not as a quiet day.
 - A drop over 30% on yesterday is "possibly a partial day", not "broken". Same-day data keeps arriving for a day or more.
 - A source with no sales for days may just be quiet. Check its newest record before calling it broken. A status of `quiet` has already been checked against the source.
@@ -68,6 +69,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: data-health-check". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: data-health-check".
 - This is meant to repeat (every weekday 7am). Run it once now. If you can set up a repeating task here, do it. If not, tell me how to run this again each time it is due.
 
 ---

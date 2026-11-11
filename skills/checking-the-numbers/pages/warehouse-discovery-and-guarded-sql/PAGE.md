@@ -42,7 +42,8 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`find_product` · `query_series` · `gateway_repeat` · `product_ltv_windowed` · `net_revenue` · `net_revenue_dtc` · `meta_metric` · `warehouse_tables` · `warehouse_row_counts` · `warehouse_freshness` · `warehouse_table_preview` · `data_freshness` · `data_freshness_sweep` · `walmart_metric` · `declare_not_known`
+`find_product` · `query_series` · `gateway_repeat` · `product_ltv_windowed` · `net_revenue` · `net_revenue_dtc` · `meta_metric` · `data_freshness` · `data_freshness_sweep` · `walmart_metric` · `declare_not_known`
+`warehouse_metric`, with `metric` set to: `tables` · `row_counts` · `freshness` · `table_preview`
 `check_reasoning`, with `metric` set to: `comparable_basis`
 
 Names only. Do not guess an argument from this list — the method above
@@ -50,7 +51,7 @@ gives each call its shape.
 
 A line that says "with `metric` set to" is ONE tool: call it and pass
 the value. The method may name a read by its own name instead:
-`check_comparable_basis` means `check_reasoning` with `metric` set to `comparable_basis`.
+`warehouse_tables` means `warehouse_metric` with `metric` set to `tables`.
 
 ## When the method names another page
 

@@ -35,15 +35,16 @@ Steps:
 3. Call `meta_metric` with `metric=ad_returns` and read every page with `result_page`. If one ad takes over half the target set's 7-day spend, warn that new ads will likely starve. Offer a separate ad set, which needs its own budget yes.
 4. Call `meta_metric` with `metric=ad_destinations`, passing only `days` and `active_only`. It has no ad set filter, so pick a working website ad in the target set by its ad set name. Skip any ad whose type is SHARE: it is an existing post and its media cannot be swapped.
 5. Call `ad_health_check` with `ads={"ad_ids": ["<that ad>"]}` to read its tags and Meta's switches. Read its text and headline in Ads Manager. If it carries no utm tags, copy the tags from an ad that does, or use source facebook, medium paid_social, and campaign, content and term set to the campaign, ad and ad set names.
-6. Browser uploads stop at 10 MB. Shrink bigger files first, to about 8.5 MB at 720x1280. Use any video tool you can run here, else ask for a smaller export. Never stop at the limit.
-7. In Ads Manager, quick-duplicate the working ad inside the target ad set. Remove media, Add media, Add video, upload. Wait until it no longer says Processing.
-8. Swap the file into all 3 placement groups and crop. Set the thumbnail to Manual in every group before publish. A fresh upload left on automatic is switched off by Meta with an "Image Not Found" error.
-9. Name each ad after its file plus " - site - Claude". Keep any creator tag such as trybe=<id> in the name and in the link, or the creator is not paid. The first rename after a page load often fails, so re-check it.
-10. Turn off AI creative enhancements, standard enhancements, Add music, promo codes and any email sign-up offer. Meta turns some back on after a media swap, so re-check them. No Amazon logo or stars on a website ad.
-11. Publish from the ad's own preview, not the global Review and publish. The first Publish click sometimes does not take. If Meta asks to raise the budget, decline.
-12. An ad copied from an Amazon-traffic campaign cannot be pasted into a sales ad set. Rebuild it by duplicate and swap instead.
-13. Read back: call `ad_health_check` with `ads={"adset_id": "<id>"}` and read every page. Each new ad must be on, carry the right video, link and tags. Promo codes and the email offer read unknown there, so check them by eye.
-14. Next day, call `meta_metric` with `metric=ad_returns` and flag any new ad still at $0 spend.
+6. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Upload each file with ads_creative_upload_media; the browser's 10 MB limit does not apply, Meta's own limit does. Make each ad in the target ad set with ads_create_ad, the working ad as source_ad_id and the new video in the creative with a manual thumbnail, Meta's enhancements off. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+7. Browser uploads stop at 10 MB. Shrink bigger files first, to about 8.5 MB at 720x1280. Use any video tool you can run here, else ask for a smaller export. Never stop at the limit.
+8. In Ads Manager, quick-duplicate the working ad inside the target ad set. Remove media, Add media, Add video, upload. Wait until it no longer says Processing.
+9. Swap the file into all 3 placement groups and crop. Set the thumbnail to Manual in every group before publish. A fresh upload left on automatic is switched off by Meta with an "Image Not Found" error.
+10. Name each ad after its file plus " - site - Claude". Keep any creator tag such as trybe=<id> in the name and in the link, or the creator is not paid. The first rename after a page load often fails, so re-check it.
+11. Turn off AI creative enhancements, standard enhancements, Add music, promo codes and any email sign-up offer. Meta turns some back on after a media swap, so re-check them. No Amazon logo or stars on a website ad.
+12. Publish from the ad's own preview, not the global Review and publish. The first Publish click sometimes does not take. If Meta asks to raise the budget, decline.
+13. An ad copied from an Amazon-traffic campaign cannot be pasted into a sales ad set. Rebuild it by duplicate and swap instead.
+14. Read back: call `ad_health_check` with `ads={"adset_id": "<id>"}` and read every page. Each new ad must be on, carry the right video, link and tags. Promo codes and the email offer read unknown there, so check them by eye.
+15. Next day, call `meta_metric` with `metric=ad_returns` and flag any new ad still at $0 spend.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, add one file as "TEST upload check - site - Claude" in an ad set that is off, publish it off and read it back. Leave it off.
@@ -77,6 +78,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-add-videos". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-meta-add-videos".
 
 ---
 

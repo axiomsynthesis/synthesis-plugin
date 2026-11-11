@@ -1,5 +1,5 @@
 ---
-description: "Test a new landing page on Meta: A Meta test for one landing page, built in your Ads Manager, switched on after your yes, with every link and budget read back"
+description: "Test a new landing page on Meta: A Meta test for one landing page, built for you, switched on after your yes, with every link and budget read back"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -22,7 +22,7 @@ It copies your proven campaign, puts the same top ads in one ad set and points e
 It switches on after your yes, then reads every link, budget and switch back.
 
 What to read: Your proven Meta campaign, your top ads by recent cost per sale, the new page
-What to give me: A Meta test for one landing page, built in your Ads Manager, switched on after your yes, with every link and budget read back
+What to give me: A Meta test for one landing page, built for you, switched on after your yes, with every link and budget read back
 
 Synthesis tools to use:
 - `cost_rules for=do-meta-page-test`
@@ -38,17 +38,18 @@ Steps:
 2. Call `web_fetch` on the page link. Stop if it does not open, shows the wrong product, or its price differs from the store price (ask if you cannot read it). Stop if it is the page your control campaign already links to: then the test has no difference to measure.
 3. Call `meta_metric` with `metric=ad_returns`. The result comes in pages and is ordered by verdict, not cost per sale. Read every page with `result_page`, keep only the control ad set's rows and sort them yourself. Reuse those ads, so the page is the only difference.
 4. Call `meta_metric` with `metric=ad_destinations`. An ad whose type is SHARE is an existing post. Its link and media cannot be changed, so rebuild it as a new ad. Its likes will not carry.
-5. In Ads Manager, duplicate the proven campaign with Advantage+ recommendations unticked. Keep goal, pixel, audience, placements and attribution. Check the ad set goal did not switch to Messages. The copy carries every ad in the set, so delete all but the picked ads first.
-6. Name it the way the person names tests (ask, default "Test N - <page> page - Claude"). Everything you build ends in "- Claude".
-7. Edit each ad's Website URL one at a time, never bulk edit. Use the page link plus the tags from an ad that the ad check shows carrying them. If none does, use source facebook, medium paid_social, and campaign, content and term set to the campaign, ad and ad set names.
-8. In each ad, untick "Personalize buyer journey" and "Show existing reactions". Turn off Shop destination, promo codes, any email sign-up offer and Meta's standard enhancements. No Amazon logo or stars on a website ad.
-9. Set the ad set budget and end date. One campaign per page, never an on-site split.
-10. Publish by ticking only the new campaign's rows. Never use the global Review and publish, it re-ticks every draft. If "Publish draft items?" appears, choose Close.
-11. Meta often raises the budget on publish. Decline, then re-read the ad set budget and any campaign budget and set them back.
-12. Switch on only once the page is live and the person said yes to the page and the dollar figure. Then do not ask again.
-13. Read back: call `ad_health_check` with `ads={"campaign_id": "<new id>"}`. Every ad on, every link the new page with tags, end date set, only the picked ads left.
-14. Call `log_decision` with `kind=campaign`, `measure`, `made_on`, the page, budget, end date and readout dates: first look about day 4, decision about day 10.
-15. Readout, house defaults the brand can override: at the first look, switch off only a disaster, cost per sale over 2x the control's on the same days after $300 spent. Call it at about $700 to $1,000 spent, against the control on the same days, never against the control's history.
+5. If your tools include `ad_change` and it offers `change=meta_tool`, build this through it and skip the Ads Manager steps below. First call `ad_change` with `action=meta_catalog` and `names` set to the Meta tools named here, and follow their argument rules: budgets are in cents. Make the campaign with ads_create_campaign, copy the control ad set with ads_create_ad_set and its source_adset_id, then one ad per picked ad with ads_create_ad, the original as source_ad_id and the new page link with tags. Create every new campaign, ad set and ad paused. Show the person the whole build, then propose one launch with the Meta tool ads_activate_entity and every new id in object_ids: that launch is the spend yes, held to the brand's spending rules. Apply each proposal with `ad_change_apply` only after the yes, then go to the read-back step.
+6. In Ads Manager, duplicate the proven campaign with Advantage+ recommendations unticked. Keep goal, pixel, audience, placements and attribution. Check the ad set goal did not switch to Messages. The copy carries every ad in the set, so delete all but the picked ads first.
+7. Name it the way the person names tests (ask, default "Test N - <page> page - Claude"). Everything you build ends in "- Claude".
+8. Edit each ad's Website URL one at a time, never bulk edit. Use the page link plus the tags from an ad that the ad check shows carrying them. If none does, use source facebook, medium paid_social, and campaign, content and term set to the campaign, ad and ad set names.
+9. In each ad, untick "Personalize buyer journey" and "Show existing reactions". Turn off Shop destination, promo codes, any email sign-up offer and Meta's standard enhancements. No Amazon logo or stars on a website ad.
+10. Set the ad set budget and end date. One campaign per page, never an on-site split.
+11. Publish by ticking only the new campaign's rows. Never use the global Review and publish, it re-ticks every draft. If "Publish draft items?" appears, choose Close.
+12. Meta often raises the budget on publish. Decline, then re-read the ad set budget and any campaign budget and set them back.
+13. Switch on only once the page is live and the person said yes to the page and the dollar figure. Then do not ask again.
+14. Read back: call `ad_health_check` with `ads={"campaign_id": "<new id>"}`. Every ad on, every link the new page with tags, end date set, only the picked ads left.
+15. Call `log_decision` with `kind=campaign`, `measure`, `made_on`, the page, budget, end date and readout dates: first look about day 4, decision about day 10.
+16. Readout, house defaults the brand can override: at the first look, switch off only a disaster, cost per sale over 2x the control's on the same days after $300 spent. Call it at about $700 to $1,000 spent, against the control on the same days, never against the control's history.
 
 Checks before answering:
 - Safe test run: when asked to test the shortcut, build the full copy and leave it off. Read it back and leave it off for the person to delete.
@@ -85,6 +86,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: do-meta-page-test". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: do-meta-page-test".
 
 ---
 

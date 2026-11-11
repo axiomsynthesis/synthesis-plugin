@@ -1,5 +1,5 @@
 ---
-description: "Score and rewrite a product page to sell more: Your products ranked by money at stake, a 0-100 score for each page in 6 parts, a full rewrite inside your approved claims, a before and after score, and the searches to watch"
+description: "Score and rewrite a product page to sell more: Your products ranked by money at stake, a 0-100 score for each page in 6 parts, a rewrite that sells inside your approved claims, the lines that need your approval, and an Amazon A/B test to prove it"
 argument-hint: "[anything to add for this run]"
 disable-model-invocation: true
 ---
@@ -17,12 +17,11 @@ Use the Synthesis tools connected in this Claude for my brand's real numbers. Do
 No Synthesis tools yet? Search your tools for "synthesis"; that waits for one still connecting. Still none: never say this does not exist, say "Synthesis is still loading in this chat. Wait a minute, then open a new chat and try again."
 
 What it does:
-Finds the products where a better page makes the most money, then scores each page 0-100 in six parts and rewrites it.
-It builds on how Amazon's search and its shopping assistant now read a page: the jobs, people, places and worries behind a search, not just keywords.
-It uses your own sales, searches, reviews and approved claims. It replaces the old one-product rewrite. For keywords across the whole catalog use /go add the searches your listings miss; for the A+ designer brief use /go write the A+ content brief; for whether ads on a search build organic rank use /keywordflywheel.
+Finds the products where a better page makes the most money, scores each page 0-100 in six parts, and rewrites it to sell, not to score.
+It reads the jobs, people and worries behind a search, as Amazon's search and shopping assistant now do. For keywords across the catalog use /go add the searches your listings miss; for the A+ brief use /go write the A+ content brief.
 
 What to read: Profit per product, your real searches and share, reviews, rivals on the same searches, approved claims
-What to give me: Your products ranked by money at stake, a 0-100 score for each page in 6 parts, a full rewrite inside your approved claims, a before and after score, and the searches to watch
+What to give me: Your products ranked by money at stake, a 0-100 score for each page in 6 parts, a rewrite that sells inside your approved claims, the lines that need your approval, and an Amazon A/B test to prove it
 
 Synthesis tools to use:
 - `cost_rules for=amazon-listing-optimizer`
@@ -30,8 +29,9 @@ Synthesis tools to use:
 - `amazon_metric metric=keyword_opportunities`
 - `amazon_metric metric=search_term_gaps`
 - `amazon_metric metric=search_competitors grain=week`
-- `amazon_metric metric=listing_details`
+- `amazon_metric metric=listing_score`
 - `amazon_metric metric=review_voice`
+- `amazon_metric metric=full_reviews`
 - `competitor_review_voice`
 - `winning_hooks read_new=false`
 - `amazon_metric metric=shelf_position`
@@ -40,43 +40,45 @@ Synthesis tools to use:
 - `brand_kit`
 - `amazon_metric metric=organic_rank`
 - `brand_brain action=moves`
+- `propose_brand_fact`
 - `measurable_test`
 
 Steps:
-1. Triage. Check `brand_brain` with `action=moves` for a page change already being read. Call `amazon_metric` with `metric=contribution_by_asin` and `months=3` for sales and profit after ads per product. For the top 5 by profit, call `amazon_metric` with `metric=keyword_opportunities`, the `asin` and `top=10`: rank by profit times the purchase share gap on its real searches. Skip a product low on stock or off the Buy Box: the page is not its problem.
-2. Read the page. Call `amazon_metric` with `metric=listing_details` and the `asin`. If Amazon refuses (no Product Listing permission), use the title shown on your own row in step 5 and ask me to paste bullets, description and backend fields, or to upload my category listing file. Only with my yes, one `scrape_amazon_product` call. Call `amazon_metric` with `metric=shelf_position` and the `asin` for price, rating and review count. Say which parts were read, pasted or not seen.
-3. Buyer language. Call `amazon_metric` with `metric=review_voice`, the `asin` and `limit=200`; `competitor_review_voice` with `limit=60`; `winning_hooks` with `read_new=false` for ad comments.
-4. Score 0-100, six parts, each with sub-scores and its evidence: Search cover 25 (each real search weighted by purchases, plus `amazon_metric` `metric=search_term_gaps` `kind=NOT_SURFACING`; is its word in title, bullets or backend); Buyer-reason cover 20 (15 kinds: job, other uses, outcome, product type, what it replaces, occupation, who uses it, who buys, time, place, body part, activity, used with, goal, interests; 5 or fewer is keyword-era); Questions answered 20 (top 5 worries and questions, each answered with a fact); Backend fields 10 (list the blank ones); Images and trust 15 (7 images incl. lifestyle and chart, video, A+, rating 4.0 or more, reviews, stock; look at the images I share or the page, never guess them); Claims 10.
-5. Rivals. Call `amazon_metric` with `metric=search_competitors`, `grain=week` and `term=` each of the top 3 searches: the 3 rivals that win them and what their titles cover that ours does not.
-6. Rewrite inside `brand_facts` and `brand_kit`: title, item highlights, 5 bullets (benefit, proof, question answered), description, backend terms (no word already in front copy, under 249 bytes), backend field values, A+ module outline, the 7 image slots. Re-score it.
-7. Measure. Call `amazon_metric` with `metric=organic_rank` for the top searches now. Then `measurable_test`: organic spot, purchase share and buy rate (`metric=conversion_funnel`) at 14 and 28 days after I apply it; Amazon can take days to index.
+1. Triage. `brand_brain` with `action=moves` for a page change already being read. `amazon_metric` with `metric=contribution_by_asin` and `months=3`; for the top 5 by profit, `metric=keyword_opportunities` with the `asin` and `top=10`: rank by profit times purchase share gap. Skip a product low on stock or off the Buy Box.
+2. Score the live page: `metric=listing_score` with the `asin`. That is the before score, never one you work out. If Amazon refuses, ask me to paste the page or upload my category listing file and pass it as `listing`; one `scrape_amazon_product` only with my yes. `metric=shelf_position` for price. Say which parts were read, pasted or not seen and the A+ read. A live title over 75 characters: "Amazon will rewrite this; review it in Review Listing Changes within 14 days".
+3. Why people buy. `metric=review_voice` with `limit=200`, `metric=full_reviews` with the `asin`, `competitor_review_voice` with `limit=60`, `winning_hooks` with `read_new=false`. Name the #1 reason people buy: the top search by purchases plus the most-praised review theme. `brand_kit` for the voice.
+4. Rivals. `metric=search_competitors` with `grain=week` and `term=` each top 3 search: who wins and what their titles cover that ours does not.
+5. Write to sell, inside `brand_facts`. Title of 75 or fewer: product type, top search, #1 reason. Item highlights of 125 or fewer. 5 bullets of 255 or fewer, the #1 reason first; each header a benefit in buyer words, never a review-theme or worry name; then the proof. Answer each worry with its true upside ("rich paste, a pea-size is enough"), never by conceding it. Keep every strong live line unless a rule forbids it: a line no saved fact backs stays, marked "needs your approval", and on my yes `propose_brand_fact` saves it. Backend: new words only, no misspellings (Amazon matches those). Then description, field values, A+ outline, 7 image slots.
+6. Score the draft: `metric=listing_score`, the `asin`, the draft as `listing` with `rival_brands` and the live page as `live_copy` inside it. Fix each `policy.blocking_failed` and each `copy_checks` warning; score again. The draft was written to the score, so the score is not proof it sells.
+7. Test it. Brand-registered: give the exact Manage Your Experiments test (Brands > Manage Experiments): one of title, bullets or main image, live vs draft, 8-10 weeks, winner on units sold per unique visitor, and the read date. Otherwise `measurable_test`: organic spot (`metric=organic_rank`), purchase share and buy rate (`metric=conversion_funnel`) 14 and 28 days after I apply it.
 
 Checks before answering:
-- Never score a part you did not read. Mark it "not seen" and score the rest out of what was read.
-- Search shares are already percents. Weekly search data cannot be added into months.
+- Never score a part you did not read; mark it "not seen".
+- Search shares are already percents. Weekly search data is never added into months.
 - A rival's name is never a keyword or a backend term.
+- Full review text: its words, never its counts.
 - Say whether the read window holds a big sale event.
 
 Rounds (relook before you answer):
-1. **Claims.** Check each claim with `brand_facts`. Fails when: a line states a result, a health benefit or a number no saved fact backs, or treats or prevents a condition. Fix: cut it, keep the feeling.
-2. **Top searches.** Fails when: any of the top 10 searches by purchases is in neither the new copy nor a written "skipped because". Fix: place it or say why.
+1. **Claims.** Check each claim with `brand_facts`. Fails when: a line states a result, a health benefit or a number no saved fact backs and is not marked "needs your approval", or treats or prevents a condition. Fix: mark it, or cut a rule-breaker.
+2. **Top searches.** Fails when: any of the top 10 searches by purchases is in neither the copy nor a written "skipped because". Fix: place it or say why.
 3. **Real buyer words.** Fails when: a buyer reason used has no review, comment or search behind it. Fix: cut it.
-4. **Type first.** Fails when: the first 80 characters of the title do not say what the product is, or the title repeats a word 3 times. Fix: rewrite the opening.
-5. **Backend limits.** Fails when: backend terms pass 249 bytes or repeat a front-copy word. Fix: cut the lowest-purchase words first.
-6. **Nothing lost.** Fails when: a search where we hold purchase share above our average loses its word. Fix: put it back.
-7. **Argue for the old page.** Fails when: the old page beats the new on a search with more purchases than the one it gains. Fix: keep the old line there.
+4. **Amazon rules.** Fails when: `policy.blocking_failed` is not empty, or backend terms repeat a front-copy word. Fix: fix each; cut lowest-purchase words first.
+5. **Nothing lost.** Fails when: a search where we hold purchase share above our average loses its word. Fix: put it back.
+6. **Read it as a shopper.** Fails when: `copy_checks` holds a warning, a header is a label, a bullet opens with a caveat, or a live benefit is gone with no rule named and no approval question. Fix: rewrite that line.
+7. **Argue for the old page.** Fails when: the old page wins a search with more purchases than the new one gains, or sells the #1 reason harder. Fix: keep the old line.
 
 Output:
 - One line first: the product, its score now and after, and the money at stake a month.
 - Triage table: product, profit a month, share gap, score.
-- Score card: six parts, sub-scores, the evidence, and what was not seen.
-- Before and after, field by field, with why; backend byte count.
-- Rivals: who wins the top searches and what they cover that we do not.
-- The test: searches, numbers to read, dates.
+- Score card: six parts, the evidence, what was not seen.
+- Before and after, field by field, with why; counts; `policy`; `copy_checks`.
+- Needs your approval: each exact line and why.
+- Rivals; the test and its read date.
 - A person applies it in Seller Central or with their own Claude.
 
 Never:
-- Never change the page, an ad or any account. A person applies it.
+- Never change the page, an experiment, an ad or any account. A person applies it.
 - Never invent a search volume, review, claim or blank field.
 - Never copy a rival's wording.
 - No `scrape_amazon_product`, `compare_to_shelf` or `keyword_rank_tracker` without my yes: each read is paid.
@@ -91,6 +93,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: amazon-listing-optimizer". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: amazon-listing-optimizer".
 
 ---
 

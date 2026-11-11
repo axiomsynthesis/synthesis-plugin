@@ -43,8 +43,9 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`warehouse_tables` · `data_freshness` · `warehouse_freshness` · `warehouse_row_counts` · `amazon_metric` · `shopify_metric` · `query_series` · `gsheets_metric` · `meta_metric` · `propose_brand_fact` · `record_contradiction`
+`data_freshness` · `amazon_metric` · `shopify_metric` · `query_series` · `gsheets_metric` · `meta_metric` · `propose_brand_fact` · `record_contradiction`
 `check_reasoning`, with `metric` set to: `comparable_basis`
+`warehouse_metric`, with `metric` set to: `tables` · `freshness` · `row_counts`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

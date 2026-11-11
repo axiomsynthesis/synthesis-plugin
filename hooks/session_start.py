@@ -338,9 +338,23 @@ ANSWERS_SAVE_THEMSELVES = (
     "Synthesis result asks you to.")
 
 
+# 2026-11-03: in 10 real app sessions none of the server's instructions arrived and
+# none searched the automations (0 of 8). This text is what every session does see.
+# A byte copy of the server's own copy of this rule; a test pins the two.
+AUTOMATIONS_FIRST = (
+    "Synthesis automations: before building an answer to a request for a plan, list, "
+    "check, report or decision, search your tools for `get_skill` if it is not loaded, "
+    "call it with `question` set to the person's words, and act on the first match by "
+    "its `what_to_do`. A message that starts with a slash word or /go: call get_skill "
+    "with that word. A result carrying `_automation_next_step`: follow its `what_to_do`. "
+    "Skip this for one number or a definition.")
+
+
 def _session_context(check) -> None:
     _print_voice()
     print(PREFER_PLUGIN)
+    print()
+    print(AUTOMATIONS_FIRST)
     print()
     try:
         from _capture_secret import switched_off
@@ -354,9 +368,10 @@ def _session_context(check) -> None:
 
 
 def _brand_state() -> int:
-    token = os.getenv("SSI_MCP_TOKEN", "").strip()
+    from _access_key import access_key
+    token = access_key()
     if not token:
-        # Most customers never set the env key: the install page signs them in
+        # Most customers never set the access key: the install page signs them in
         # through /mcp, and that sign-in lives in Claude Code, not here. Saying
         # nothing left every one of them starting blind (measured live
         # 2026-10-02). So hand the job to the model, which DOES hold the

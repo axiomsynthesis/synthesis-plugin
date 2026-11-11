@@ -44,7 +44,7 @@ Steps:
 4. Angle, the /ideas read. Call `amazon_metric` with `metric=search_query_performance`, `scope=nonbranded`, `grain=month`, `periods=1`, `top=40` and `min_volume=5000`, and read every result page until none is left. Lead with the most searched pain matching a complaint.
 5. Draft five reasons. Default headline "5 reasons to switch to" the product. Each answers a top complaint, proved by a real number or dated review. Claims only from `brand_facts`, never one another fact marks open or disputed: search it with `query=clinical` and `query=open` first. Buy button after reasons 1 and 4. Order: offer bar, hero with buy box, proof, reasons, reviews and videos, FAQ, final buy box, sticky phone bar.
 6. Videos. For every creator video, watch it or ask for its script, and list every on-screen and spoken claim. A claim not in `brand_facts` cuts the video. Say which videos no one checked.
-7. Build, the /landingpage job. Call `get_skill` with `name=/landingpage` and follow it. For a version of a live page use `name=/pagelive`. Never edit the page being beaten.
+7. Build, the /buildlandingpage job. Call `get_skill` with `name=/buildlandingpage` and follow it. For a version of a live page use `name=/pagelive`. Never edit the page being beaten.
 8. Prices. Read every pack's page price with `web_fetch` on the live page, then check the cart against it in the browser, with and without each add-on. Call `amazon_metric` with `metric=buybox_watch`: show any pack sold cheaper on the marketplace. Call `first_order_contribution_margin` per pack with `price`, `cogs` (one unit's cost times units in the pack), `misc` and `cac` at today's Meta cost per sale.
 9. Run the Rounds. Each round that changes the page makes a new version. Show preview, versions and test plan. Wait for a yes to the page and to the total dollars.
 10. Test, the /pagetest job. Call `get_skill` with `name=/pagetest` and follow it: own campaign, the same top ads as the page being beaten.
@@ -86,6 +86,7 @@ Rules:
 - Keep the answer short and follow the Output section above. Open with one headline line (the dollars, or a yes/no verdict). End with one move and what to measure and when, then one line naming what this run did not check. Keep each number's warning beside it. No other sections.
 - On every Synthesis tool call, start `context` with "automation: website-new-page-start-to-finish". Synthesis then returns the data and its warnings without general notes.
 - If you can save files here, save the result and tell me its name. If not, show it to me in full.
+- If you could not finish, open your answer with "Stuck:" and what I need to do. If your answers are not saved for you automatically, save this one with the Synthesis tool `capture_turn`: my request as `question`, your answer as `answer`, and `context` starting with "automation: website-new-page-start-to-finish".
 
 ---
 

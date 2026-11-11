@@ -44,7 +44,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`brand_kit` · `render_report` · `export_pdf` · `export_docx` · `export_pptx` · `export_xlsx` · `build_deck`
+`brand_kit` · `render_report` · `export_pdf` · `export_docx` · `export_pptx` · `export_xlsx` · `market_report` · `build_deck`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

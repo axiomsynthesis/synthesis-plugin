@@ -18,7 +18,11 @@ Use the Synthesis tools. The usual ones for this job:
   `creative_leaderboard`, `creative_fatigue_curve`, `frequency` or `spend`.
 - `google_ads_metric` and `tiktok_metric` when those channels run.
 - `mer` for total marketing spend against total sales.
-- `brand_brain` to see what this week's warnings already say about ads.
+- `brand_brain` with `action` set to `open` and `page` set to the page the lead named
+  (or your product or channel) for its numbers and links, and with `action` set to
+  `moves` for our own price changes, promotions, stock arrivals and ad changes in the
+  weeks you compare. A number that moved in a week we also changed something is not
+  the market's doing until that change is ruled out.
 
 ## What trips people up here
 
@@ -29,6 +33,11 @@ Use the Synthesis tools. The usual ones for this job:
 - A report that says it is not collected yet, or has no rows for these dates, is not
   zero spend. Say which it is.
 - Read the governed result before you use a number: keep any warning with it.
+- Amazon's ad data does not include each search's impression share or rank (Amazon
+  shows those only in its own console). Never estimate them, and never average a
+  share: weight it by impressions.
+- A head search can run above break-even on purpose to defend rank. Check the
+  brand's facts before calling it waste.
 
 ## Rules
 

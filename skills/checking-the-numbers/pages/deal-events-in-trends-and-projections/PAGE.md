@@ -46,7 +46,7 @@ so in your answer and do not present a method you were not given.
 
 ## The server tools this subject uses
 
-`monthly_projection` · `amazon_metric` · `brand_facts` · `backtest_rule`
+`amazon_metric` · `monthly_projection` · `brand_facts` · `backtest_rule`
 
 Names only. Do not guess an argument from this list — the method above
 gives each call its shape.

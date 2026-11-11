@@ -90,7 +90,8 @@ _MAX_EXTRA_FILES = 200   # helper-agent transcripts scanned for the Google flag
 # A COPY of the server's Google rule. The hook ships
 # on its own and cannot import the server, so the lists are repeated here and a
 # test fails if the two ever disagree.
-GOOGLE_TOOL_PREFIXES = ("ga4_", "google_ads_", "gsheets_", "search_console_")
+GOOGLE_TOOL_PREFIXES = ("ga4_", "google_ads_", "gsheets_", "search_console_",
+                        "google_sheets_", "google_drive_")
 _GOOGLE_DATASETS = ("ga4", "google_ads", "google_sheets", "gsheets", "search_console")
 _GOOGLE_DATASET_RE = re.compile(
     r"(?:^|[^A-Za-z0-9_])[A-Za-z0-9_]*(?:" + "|".join(_GOOGLE_DATASETS) + r")\s*\.",
